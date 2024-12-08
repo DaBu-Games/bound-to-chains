@@ -32,6 +32,6 @@ MonoBehaviour:
   jumpInputBufferTime: 0.2
   whatIsProjectile:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 0
   dmgProjectileBufferTime: 0.2
   parryBufferTime: 0.1

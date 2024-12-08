@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6854500156355779661}
   - component: {fileID: 816167258188325389}
   - component: {fileID: 7276985928649401475}
+  - component: {fileID: 4435244289362887690}
   - component: {fileID: 2325651410906016568}
   - component: {fileID: 3074708647328875250}
   m_Layer: 0
@@ -130,6 +131,24 @@ MonoBehaviour:
   canJump: 0
   isHoldingJump: 0
   canDubbelJump: 0
+--- !u!114 &4435244289362887690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3161821094649015714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78c59e9f63bdd24459b24e9fe49db1a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  throwRange: 3
+  maxThrowForce: 2000
+  chargeTime: 2
+  maxChargeTime: 3
+  ball: {fileID: 0}
+  ballRb: {fileID: 0}
 --- !u!114 &2325651410906016568
 MonoBehaviour:
   m_ObjectHideFlags: 0

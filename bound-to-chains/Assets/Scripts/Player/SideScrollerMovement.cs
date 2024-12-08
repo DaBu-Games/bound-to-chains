@@ -85,21 +85,6 @@ public class SideScrollerMovement : MonoBehaviour
 
     }
 
-    private void OnTriggerEnter2D( Collider2D other )
-    {
-
-        CanDubbelJump( other.gameObject, true );
-
-    }
-
-    private void OnTriggerExit2D( Collider2D other)
-    {
-        
-
-        CanDubbelJump( other.gameObject, false );
-
-    }
-
     private void UpdateTimers()
     {
         lastOnGroundTime -= Time.deltaTime;
@@ -117,28 +102,6 @@ public class SideScrollerMovement : MonoBehaviour
         if ( isGrounded )
         {
             lastOnGroundTime = variables.leaveGroundBufferTime;
-        }
-
-    }
-
-    private void CanDubbelJump( GameObject other, bool allowDubbelJump )
-    {
-
-        // Check if the layer of the gameobject is in the whatIsProjectile layerMask
-        if( (variables.whatIsProjectile.value & (1 << other.layer)) != 0 )
-        {
-
-            canDubbelJump = allowDubbelJump;
-
-            // Check if allowDubbelJump is true and the doubJumptimer is below or equal to 0 
-            if( allowDubbelJump && doubleJumpTimer <= 0 )
-            {
-
-                projectile = other; 
-                doubleJumpTimer = variables.dmgProjectileBufferTime;
-
-            }
-
         }
 
     }
