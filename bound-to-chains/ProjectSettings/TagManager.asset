@@ -3,8 +3,7 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags:
-  - Ball
+  tags: []
   layers:
   - Default
   - TransparentFX
@@ -12,7 +11,7 @@ TagManager:
   - Ground
   - Water
   - UI
-  - 
+  - Ball
   - 
   - 
   - 
@@ -41,6 +40,12 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: player
+    uniqueID: 730597497
+    locked: 0
+  - name: cosmetic
+    uniqueID: 3281274479
     locked: 0
   m_RenderingLayers:
   - Default

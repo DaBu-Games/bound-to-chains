@@ -11,18 +11,15 @@ public class SideScrollerMovement : MonoBehaviour
     [SerializeField] private Transform groundCheck;
 
     private Vector2 moveInput;
-    public bool isGrounded; 
-    public bool isJumping; 
-    public bool canJump; 
-    public bool isHoldingJump; 
-    public bool canDubbelJump; 
+    private bool facingRight = true;
+    public bool isGrounded;
+    private bool isJumping;
+    private bool canJump;
+    private bool isHoldingJump;
 
     private float lastOnGroundTime;
     private float lastPressedJumpTime; 
     private float lastPressedParryTime;
-    private float doubleJumpTimer; 
-
-    private GameObject projectile; 
 
     // Update is called once per frame
     private void Update()
@@ -39,7 +36,14 @@ public class SideScrollerMovement : MonoBehaviour
     public void Move( InputAction.CallbackContext context )
     {
 
-        moveInput.x = context.ReadValue<Vector2>().x; 
+        moveInput.x = context.ReadValue<Vector2>().x;
+
+        if ( !facingRight && moveInput.x > 0 || facingRight && moveInput.x < 0 )
+        {
+
+            FlipCharachter();
+
+        }
 
     }
 
@@ -90,7 +94,6 @@ public class SideScrollerMovement : MonoBehaviour
         lastOnGroundTime -= Time.deltaTime;
         lastPressedJumpTime -= Time.deltaTime;
         lastPressedParryTime -= Time.deltaTime;
-        doubleJumpTimer -= Time.deltaTime; 
     }
 
     private void LastTimeOnGround()
@@ -136,22 +139,9 @@ public class SideScrollerMovement : MonoBehaviour
         lastPressedParryTime = 0;
 
         isJumping = true;
-        
-        float force;
 
-        if ( canDubbelJump )
-        {
+        float force = variables.jumpForce;
 
-            canDubbelJump = false;
-            force = variables.doubleJumpForce;
-
-        }
-        else
-        {
-
-            force = variables.jumpForce;
-
-        }
 
         // check if there is any down force if so reset it 
 		if ( rb2d.linearVelocity.y < 0 )
@@ -233,6 +223,17 @@ public class SideScrollerMovement : MonoBehaviour
             rb2d.gravityScale = variables.defaultGravity; 
 
         }
+
+    }
+
+    private void FlipCharachter()
+    {
+
+        // reverse the bool value
+        facingRight = !facingRight;
+
+        // rotate the player 180 degerees 
+        this.transform.Rotate(0f, 180f, 0f);
 
     }
 

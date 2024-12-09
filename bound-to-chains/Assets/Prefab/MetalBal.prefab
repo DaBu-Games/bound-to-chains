@@ -103,10 +103,10 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1000
-  m_LinearDamping: 0
+  m_LinearDamping: 1
   m_AngularDamping: 8
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: d738578b39843ad49b7bfc64bc1c4ac0, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -165,4 +165,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b401b87ca56b2dc468a5234716e8afda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pushForce: 5
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 0

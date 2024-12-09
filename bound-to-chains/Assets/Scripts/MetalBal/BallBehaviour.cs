@@ -2,49 +2,33 @@ using UnityEngine;
 
 public class BallBehaviour : MonoBehaviour
 {
-    [SerializeField] private float pushForce = 5f;
 
-    private void OnCollisionEnter2D( Collision2D collision )
+    [SerializeField] private LayerMask whatIsGround;
+    private CircleCollider2D circleCollider;
+    public bool isGrounded {  get; private set; }
+
+    private void Start()
     {
-
-       // Check if the ball collides on top of the player
-        if ( collision.gameObject.CompareTag("Player") && IsBallOnTopOfPlayer( collision.transform.position ) )
-        {
-            // Push the player back when the ball collides with the player
-            PushPlayerBack( collision );
-        }
+        circleCollider = GetComponent<CircleCollider2D>();
     }
 
-
-    private bool IsBallOnTopOfPlayer( Vector2 playerPosition )
+    void Update()
     {
-        Vector2 ballPosition = transform.position;
-
-        // Check if the ball is within a small distance above the player
-        if ( ballPosition.y > playerPosition.y && Mathf.Abs( ballPosition.x - playerPosition.x ) < 1f )
-        {
-            return true;
-        }
-
-        return false;
+        CheckGroundedStatus(); 
     }
 
-
-    void PushPlayerBack(Collision2D collision)
+    private void CheckGroundedStatus()
     {
-        // Get the direction from the ball to the player
-        Vector2 direction = collision.transform.position - transform.position;
 
-        // Normalize the direction so the force is always applied in the same manner
-        direction.Normalize();
+        isGrounded = Physics2D.OverlapCircle(transform.position, circleCollider.radius, whatIsGround);
 
-        // Get the player's Rigidbody2D component and apply the force
-        Rigidbody2D playerRb = collision.gameObject.GetComponent<Rigidbody2D>();
-        if (playerRb != null)
-        {
-            // Apply the force to the player, pushing them away from the ball
-            playerRb.AddForce( direction * pushForce, ForceMode2D.Impulse );
-        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        // Visualize the overlap circle in the editor
+        Gizmos.color = isGrounded ? Color.green : Color.red;
+        Gizmos.DrawWireSphere(transform.position, circleCollider != null ? circleCollider.radius : 0f);
     }
 
 }
