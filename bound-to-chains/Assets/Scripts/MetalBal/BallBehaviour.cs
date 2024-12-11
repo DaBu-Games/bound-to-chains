@@ -3,32 +3,43 @@ using UnityEngine;
 public class BallBehaviour : MonoBehaviour
 {
 
-    [SerializeField] private LayerMask whatIsGround;
-    private CircleCollider2D circleCollider;
+    [SerializeField] private LayerMask groundLayerMask;
+    [SerializeField] private float groundDrag;
+    [SerializeField] private float airDrag;
+    [SerializeField] private float raycastRange;
+
+    private Rigidbody2D rb2d;
     public bool isGrounded {  get; private set; }
 
     private void Start()
     {
-        circleCollider = GetComponent<CircleCollider2D>();
+        rb2d = GetComponent<Rigidbody2D>();
     }
 
-    void Update()
+    private void FixedUpdate()
     {
-        CheckGroundedStatus(); 
+        CheckGroundedStatus();
     }
 
     private void CheckGroundedStatus()
     {
 
-        isGrounded = Physics2D.OverlapCircle(transform.position, circleCollider.radius, whatIsGround);
+        bool oldGroundState = isGrounded;
+
+        isGrounded = Physics2D.Raycast( transform.position, Vector2.down, raycastRange, groundLayerMask );
+
+        if ( oldGroundState != isGrounded )
+        {
+            SetAngularDrag();
+        }
+
+        Debug.DrawRay( transform.position, Vector2.down * raycastRange, isGrounded ? Color.green : Color.red );
 
     }
 
-    private void OnDrawGizmosSelected()
+    private void SetAngularDrag()
     {
-        // Visualize the overlap circle in the editor
-        Gizmos.color = isGrounded ? Color.green : Color.red;
-        Gizmos.DrawWireSphere(transform.position, circleCollider != null ? circleCollider.radius : 0f);
+        rb2d.linearDamping = isGrounded ? groundDrag : airDrag;
     }
 
 }

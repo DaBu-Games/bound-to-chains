@@ -15,7 +15,7 @@ public class ThrowBall : MonoBehaviour
     private Rigidbody2D ballrb;
 
     private float chargeStartTime;
-    private float throwRange = 0.75f;
+    private float raycastRange = 0.75f;
     private bool isInRange = false;
     private bool isCharging = false;
 
@@ -32,9 +32,13 @@ public class ThrowBall : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         CheckForBall();
+    }
+
+    private void Update()
+    {
         CheckChargeDuration();
     }
 
@@ -42,11 +46,11 @@ public class ThrowBall : MonoBehaviour
     {
 
         // Check if the player is close enough to the metal ball
-        RaycastHit2D hit = Physics2D.Raycast( transform.position, transform.right, throwRange, ballLayerMask );
+        RaycastHit2D hit = Physics2D.Raycast( transform.position, transform.right, raycastRange, ballLayerMask );
 
         isInRange = hit.collider != null;
 
-        Debug.DrawRay( transform.position, transform.right * throwRange, isInRange ? Color.green : Color.red );
+        Debug.DrawRay( transform.position, transform.right * raycastRange, isInRange ? Color.green : Color.red );
 
     }
 
@@ -102,7 +106,7 @@ public class ThrowBall : MonoBehaviour
         Debug.Log( throwForce );
 
         ballrb.AddForce( throwForce * transform.right, ForceMode2D.Impulse );
-        ballrb.AddForce( throwForce * transform.up, ForceMode2D.Impulse);
+        ballrb.AddForce( throwForce * upWordsScale * transform.up, ForceMode2D.Impulse);
 
         ResetThrowState();
 
