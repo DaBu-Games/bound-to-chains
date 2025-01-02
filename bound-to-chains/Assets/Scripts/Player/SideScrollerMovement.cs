@@ -56,7 +56,6 @@ public class SideScrollerMovement : MonoBehaviour
         {
 
             lastPressedJumpTime = variables.jumpInputBufferTime; 
-            lastPressedParryTime = variables.parryBufferTime; 
             isHoldingJump = true; 
 
         }

@@ -31,9 +31,9 @@ public class SidescrollerVariables : ScriptableObject
     [SerializeField] public float leaveGroundBufferTime;
     [SerializeField] public float jumpInputBufferTime;
 
-    [Header ("Projectile")]
-    [SerializeField] public LayerMask whatIsProjectile;
-    [SerializeField] public float dmgProjectileBufferTime;
-    [SerializeField] public float parryBufferTime;
+    //[Header ("Projectile")]
+    //[SerializeField] public LayerMask whatIsProjectile;
+    //[SerializeField] public float dmgProjectileBufferTime;
+    //[SerializeField] public float parryBufferTime;
 
 }
