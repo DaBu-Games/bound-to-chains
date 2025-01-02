@@ -540,11 +540,11 @@ PrefabInstance:
       objectReference: {fileID: 1767605382}
     - target: {fileID: 4225987509034597118, guid: fadc657f1a41883449b4c56dc2eecb38, type: 3}
       propertyPath: groundDrag
-      value: 80
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 4225987509034597118, guid: fadc657f1a41883449b4c56dc2eecb38, type: 3}
       propertyPath: raycastRange
-      value: 0.41
+      value: 0.42
       objectReference: {fileID: 0}
     - target: {fileID: 4225987509034597118, guid: fadc657f1a41883449b4c56dc2eecb38, type: 3}
       propertyPath: groundLayerMask.m_Bits
@@ -769,6 +769,10 @@ PrefabInstance:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 6200000, guid: ad37ef47e4248184a919623b3976bb4b, type: 2}
+    - target: {fileID: 2325651410906016568, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
+      propertyPath: m_Actions
+      value: 
+      objectReference: {fileID: -944628639613478452, guid: 39954f193e125c14e9ef4b58b2df7def, type: 3}
     - target: {fileID: 3161821094649015714, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
       propertyPath: m_Name
       value: Player

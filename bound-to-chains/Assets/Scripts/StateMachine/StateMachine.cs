@@ -5,16 +5,36 @@ public class StateMachine : MonoBehaviour
 {
 
     private State currentState;
+    [SerializeField] private PlayerInput playerInput;
+    [SerializeField] private Transform states; 
 
     void Start()
     {
-        //currentState = ;
+
+        foreach ( Transform stateTransform in states ) 
+        {
+            State state = stateTransform.GetComponent<State>(); 
+
+            state.Initialize( this, playerInput );
+
+            if( state is IdleState)
+            {
+                currentState = state;
+            }
+            
+        }
+        
         currentState.EnterState();
     }
 
     void Update()
     {
-        currentState.UpdateState();
+        currentState?.UpdateState();
+    }
+
+    void FixedUpdate()
+    {
+        currentState?.FixedUpdateState();
     }
 
     public void SwitchState( State newState )

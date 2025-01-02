@@ -26,7 +26,7 @@ public class ThrowBall : MonoBehaviour
     
     private void Start()
     {
-        movementScript = this.transform.GetComponent<SideScrollerMovement>();
+        //movementScript = this.transform.GetComponent<SideScrollerMovement>();
         ballScript = metalBall.GetComponent<BallBehaviour>();
         ballrb = metalBall.GetComponent <Rigidbody2D>();
     }

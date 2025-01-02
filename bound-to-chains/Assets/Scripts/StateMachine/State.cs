@@ -1,13 +1,15 @@
 using UnityEngine;
 
-public abstract class State
+public abstract class State : MonoBehaviour
 {
 
     protected StateMachine stateMachine;
+    protected PlayerInput playerInput;
 
-    public State( StateMachine stateMachine )
+    public void Initialize( StateMachine stateMachine, PlayerInput playerInput )
     {
         this.stateMachine = stateMachine;
+        this.playerInput = playerInput;
     }
 
     public abstract void EnterState();

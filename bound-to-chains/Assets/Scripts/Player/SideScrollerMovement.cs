@@ -27,9 +27,9 @@ public class SideScrollerMovement : MonoBehaviour
 
         UpdateTimers();
 
-        LastTimeOnGround();
+        //LastTimeOnGround();
 
-        HandelJump();
+        //HandelJump();
         
     }
 
@@ -48,43 +48,43 @@ public class SideScrollerMovement : MonoBehaviour
     }
 
 
-    public void Jump( InputAction.CallbackContext context )
-    {
+    //public void Jump( InputAction.CallbackContext context )
+    //{
 
-        // Check if the button is pressed 
-        if( context.performed )
-        {
+    //    // Check if the button is pressed 
+    //    if( context.performed )
+    //    {
 
-            lastPressedJumpTime = variables.jumpInputBufferTime; 
-            isHoldingJump = true; 
+    //        lastPressedJumpTime = variables.jumpInputBufferTime; 
+    //        isHoldingJump = true; 
 
-        }
-        // Check if the button is let go
-        else if ( context.canceled )
-        {
+    //    }
+    //    // Check if the button is let go
+    //    else if ( context.canceled )
+    //    {
 
-            isHoldingJump = false; 
+    //        isHoldingJump = false; 
 
-        }
+    //    }
 
-    }
+    //}
 
     // all the physics-based code / movement  
     private void FixedUpdate()
     {
         
-        Run();
-        Gravity();
-        WhileJumping();
+        //Run();
+        //Gravity();
+        //WhileJumping();
 
-        // Jumping
-        if ( canJump )
-        {
+        //// Jumping
+        //if ( canJump )
+        //{
 
-            canJump = false; 
-            Jump();
+        //    canJump = false; 
+        //    Jump();
 
-        }
+        //}
 
     }
 
@@ -95,82 +95,82 @@ public class SideScrollerMovement : MonoBehaviour
         lastPressedParryTime -= Time.deltaTime;
     }
 
-    private void LastTimeOnGround()
-    {
+    //private void LastTimeOnGround()
+    //{
 
-        // Checking if the character is grounded
-        isGrounded = Physics2D.OverlapBox( groundCheck.position, new Vector2( transform.localScale.x * variables.ScaleXtimes, transform.localScale.y * variables.ScaleYtimes ), 0, variables.whatIsGround );
+    //    // Checking if the character is grounded
+    //    isGrounded = Physics2D.OverlapBox( groundCheck.position, new Vector2( transform.localScale.x * variables.ScaleXtimes, transform.localScale.y * variables.ScaleYtimes ), 0, variables.whatIsGround );
 
-        if ( isGrounded )
-        {
-            lastOnGroundTime = variables.leaveGroundBufferTime;
-        }
+    //    if ( isGrounded )
+    //    {
+    //        lastOnGroundTime = variables.leaveGroundBufferTime;
+    //    }
 
-    }
+    //}
 
-    private void HandelJump()
-    {
+    //private void HandelJump()
+    //{
 
-        // check if the player is grounded or if the player has touched te ground in time of 'variables.leaveGroundBufferTime'
-        // and check if the player is not already jumping and if the player has pressed the jump butten in the time of 'variables.jumpInputBufferTime'
-        if( ( isGrounded || lastOnGroundTime  > 0 ) && !isJumping && lastPressedJumpTime > 0 )
-        {
+    //    // check if the player is grounded or if the player has touched te ground in time of 'variables.leaveGroundBufferTime'
+    //    // and check if the player is not already jumping and if the player has pressed the jump butten in the time of 'variables.jumpInputBufferTime'
+    //    if( ( isGrounded || lastOnGroundTime  > 0 ) && !isJumping && lastPressedJumpTime > 0 )
+    //    {
 
-            canJump = true; 
+    //        canJump = true; 
 
-        }
-        // check if the player is grounded has no y velocity and isjumping is equal to true
-        else if ( isGrounded && rb2d.linearVelocity.y <= 0 && isJumping )
-        {
+    //    }
+    //    // check if the player is grounded has no y velocity and isjumping is equal to true
+    //    else if ( isGrounded && rb2d.linearVelocity.y <= 0 && isJumping )
+    //    {
 
-            isJumping = false; 
+    //        isJumping = false; 
 
-        }
+    //    }
         
-    }
+    //}
 
-    private void Jump()
-    {
+  //  private void Jump()
+  //  {
 
-        // reset times; 
-        lastOnGroundTime = 0; 
-        lastPressedJumpTime = 0;
-        lastPressedParryTime = 0;
+  //      // reset times; 
+  //      lastOnGroundTime = 0; 
+  //      lastPressedJumpTime = 0;
+  //      lastPressedParryTime = 0;
 
-        isJumping = true;
+  //      isJumping = true;
 
-        float force = variables.jumpForce;
+  //      float force = variables.jumpForce;
 
 
-        // check if there is any down force if so reset it 
-		if ( rb2d.linearVelocity.y < 0 )
-        {
+  //      // check if there is any down force if so reset it 
+		//if ( rb2d.linearVelocity.y < 0 )
+  //      {
 
-            force -= rb2d.linearVelocity.y;
+  //          force -= rb2d.linearVelocity.y;
 
-        }
+  //      }
 
-        // add postive y force to the player 
-        rb2d.AddForce( Vector2.up * force, ForceMode2D.Impulse);
+  //      // add postive y force to the player 
+  //      rb2d.AddForce( Vector2.up * force, ForceMode2D.Impulse);
 
-        // Clamp the upward velocity to the maximum jump force
-        rb2d.linearVelocity = new Vector2( rb2d.linearVelocity.x, Mathf.Clamp( rb2d.linearVelocity.y, -Mathf.Infinity, variables.maxJumpForce ) );
+  //      // Clamp the upward velocity to the maximum jump force
+  //      rb2d.linearVelocity = new Vector2( rb2d.linearVelocity.x, Mathf.Clamp( rb2d.linearVelocity.y, -Mathf.Infinity, variables.maxJumpForce ) );
 
-    }
+  //  }
 
-    private void WhileJumping()
-    {
+    //private void WhileJumping()
+    //{
 
-        // check if the jump button is let go while jumping
-        // if so increase the gravity of the player
-        if( rb2d.linearVelocity.y > 0 && isJumping && !isHoldingJump )
-        {
+    //    // check if the jump button is let go while jumping
+    //    // if so increase the gravity of the player
+    //    if( rb2d.linearVelocity.y > 0 && isJumping && !isHoldingJump )
+    //    {
 
-            rb2d.gravityScale = variables.jumpCutGravity; 
+    //        rb2d.gravityScale = variables.jumpCutGravity; 
 
-        }
+    //    }
 
-    }
+    //}
 
     private void Run()
     {
@@ -206,24 +206,24 @@ public class SideScrollerMovement : MonoBehaviour
 
     }
 
-    private void Gravity()
-    {
+    //private void Gravity()
+    //{
 
-        // check if the player is falling
-        if ( rb2d.linearVelocity.y < 0 )
-        {
+    //    // check if the player is falling
+    //    if ( rb2d.linearVelocity.y < 0 )
+    //    {
 
-            rb2d.gravityScale = variables.fallingGravity; 
+    //        rb2d.gravityScale = variables.fallingGravity; 
 
-        }
-        else
-        {
+    //    }
+    //    else
+    //    {
 
-            rb2d.gravityScale = variables.defaultGravity; 
+    //        rb2d.gravityScale = variables.defaultGravity; 
 
-        }
+    //    }
 
-    }
+    //}
 
     private void FlipCharachter()
     {
