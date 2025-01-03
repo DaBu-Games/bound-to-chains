@@ -10,6 +10,7 @@ public class PlayerInput : MonoBehaviour
     public Vector2 moveInput { get; private set; }
     public Rigidbody2D rb2d { get; private set; }
     public bool isHoldingJump {  get; private set; }
+    public bool isHoldingCharge { get; private set; }
 
     private bool facingRight = true;
 
@@ -21,7 +22,7 @@ public class PlayerInput : MonoBehaviour
 
     public void Move(InputAction.CallbackContext context)
     {
-
+        // Get the move input and put it in a vector 2 
         moveInput = context.ReadValue<Vector2>();
 
         if ( !facingRight && moveInput.x > 0 || facingRight && moveInput.x < 0 )
@@ -39,7 +40,6 @@ public class PlayerInput : MonoBehaviour
         if ( context.performed )
         {
 
-            //lastPressedJumpTime = variables.jumpInputBufferTime;
             isHoldingJump = true;
 
         }
@@ -52,6 +52,25 @@ public class PlayerInput : MonoBehaviour
         }
 
     }
+    public void ThrowInput( InputAction.CallbackContext context )
+    {
+
+        // Check if the button is pressed 
+        if ( context.performed )
+        {
+
+            isHoldingCharge = true; 
+
+        }
+        // Check if the button is let go
+        else if ( context.canceled )
+        {
+            isHoldingCharge = false;
+
+        }
+
+    }
+
     private void FlipCharachter()
     {
 

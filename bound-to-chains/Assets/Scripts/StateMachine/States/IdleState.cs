@@ -5,6 +5,7 @@ public class IdleState : State
 
     [SerializeField] private WalkingState walkingState;
     [SerializeField] private JumpingState jumpingState;
+    [SerializeField] private ThrowState throwState;
 
     public override void EnterState()
     {
@@ -23,15 +24,20 @@ public class IdleState : State
 
     public override void UpdateState()
     {
-
+        // check if the player is holding the jump button if so enter the jump state
         if ( playerInput.isHoldingJump ) 
         {
             stateMachine.SwitchState( jumpingState );
         }
-
+        // check if the player has x axis input if so enter walk state
         else if ( playerInput.moveInput.x != 0 )
         {
             stateMachine.SwitchState( walkingState );
+        }
+        // check if the player is pressing the throw button if so enter the throw state
+        else if (playerInput.isHoldingCharge)
+        {
+            stateMachine.SwitchState(throwState);
         }
 
     }

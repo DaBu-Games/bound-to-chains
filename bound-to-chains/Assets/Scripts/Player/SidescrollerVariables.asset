@@ -16,22 +16,17 @@ MonoBehaviour:
   ScaleYtimes: 0.1
   whatIsGround:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 72
   defaultGravity: 4
   fallingGravity: 4
   jumpCutGravity: 10
   moveSpeedAccelGround: 5
-  moveSpeedDeccelGround: 4
+  moveSpeedDeccelGround: 6
   moveSpeedAccelAir: 5
-  moveSpeedDeccelAir: 4
+  moveSpeedDeccelAir: 6
   maxMoveSpeed: 8
   jumpForce: 15
   doubleJumpForce: 15
-  maxJumpForce: 30
+  maxJumpForce: 15
   leaveGroundBufferTime: 0.1
   jumpInputBufferTime: 0.2
-  whatIsProjectile:
-    serializedVersion: 2
-    m_Bits: 0
-  dmgProjectileBufferTime: 0.2
-  parryBufferTime: 0.1

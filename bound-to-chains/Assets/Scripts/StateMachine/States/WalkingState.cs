@@ -24,10 +24,12 @@ public class WalkingState : State
 
     public override void UpdateState()
     {
+        // check if the player is jumping if so enter the jump state
         if (playerInput.isHoldingJump)
         {
             stateMachine.SwitchState(jumpingState);
         }
+        // check if the player has no x axis input if so enter the idle state
         else if ( playerInput.moveInput.x == 0 )
         {
             stateMachine.SwitchState(idleState);

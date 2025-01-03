@@ -3,16 +3,14 @@ using UnityEngine;
 
 public class JumpingState : State
 {
-
-    [SerializeField] private Transform groundCheck;
     [SerializeField] private IdleState idleState;
+    [SerializeField] private CheckForGround playerGroundCheck;
 
-    public bool isGrounded {  get; private set; }
     private bool canJump;
     private bool isJumping;
 
     private float lastPressedJumpTime;
-    private float lastOnGroundTime;
+
 
     public override void EnterState()
     {
@@ -42,7 +40,6 @@ public class JumpingState : State
 
     public override void UpdateState()
     {
-        LastTimeOnGround();
         HandelJump();
     }
 
@@ -127,39 +124,19 @@ public class JumpingState : State
         playerInput.rb2d.AddForce(movement * Vector2.right, ForceMode2D.Force);
     }
 
-    private void LastTimeOnGround()
-    {
-
-        Transform player = playerInput.player.transform;
-
-        // Checking if the character is grounded
-        isGrounded = Physics2D.OverlapBox( 
-            groundCheck.position, 
-            new Vector2(player.localScale.x * playerInput.variables.ScaleXtimes, player.localScale.y * playerInput.variables.ScaleYtimes), 
-            0, 
-            playerInput.variables.whatIsGround
-        );
-
-        if (isGrounded)
-        {
-            lastOnGroundTime = Time.time;
-        }
-
-    }
-
     private void HandelJump()
     {
 
         // check if the player is grounded or if the player has touched te ground in time of 'variables.leaveGroundBufferTime'
         // and check if the player is not already jumping and if the player has pressed the jump butten in the time of 'variables.jumpInputBufferTime'
-        if ( ( isGrounded || Time.time - lastOnGroundTime <= playerInput.variables.leaveGroundBufferTime ) && !isJumping && Time.time - lastPressedJumpTime <= playerInput.variables.jumpInputBufferTime )
+        if ( ( playerGroundCheck.isGrounded || Time.time - playerGroundCheck.lastOnGroundTime <= playerInput.variables.leaveGroundBufferTime ) && !isJumping && Time.time - lastPressedJumpTime <= playerInput.variables.jumpInputBufferTime )
         {
 
             canJump = true;
 
         }
         // check if the player is grounded has no y velocity and isjumping is equal to true
-        else if ( isGrounded && playerInput.rb2d.linearVelocity.y <= 0 && isJumping )
+        else if ( playerGroundCheck.isGrounded && playerInput.rb2d.linearVelocity.y <= 0 && isJumping )
         {
 
             isJumping = false;
