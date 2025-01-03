@@ -9,12 +9,9 @@ public class JumpingState : State
     private bool canJump;
     private bool isJumping;
 
-    private float lastPressedJumpTime;
-
-
     public override void EnterState()
     {
-        lastPressedJumpTime = Time.time;
+
     }
 
     public override void ExitState()
@@ -71,6 +68,8 @@ public class JumpingState : State
                 ) 
             );
 
+
+
     }
 
     private void Gravity()
@@ -124,16 +123,24 @@ public class JumpingState : State
         playerInput.rb2d.AddForce(movement * Vector2.right, ForceMode2D.Force);
     }
 
+    private bool CanBufferJump()
+    {
+        return Time.time - playerGroundCheck.lastOnGroundTime <= playerInput.variables.leaveGroundBufferTime;
+    }
+
+    public bool IsJumpBufferd()
+    {
+        return Time.time - playerInput.lastPressedJumpTime <= playerInput.variables.jumpInputBufferTime && Time.time > playerInput.variables.jumpInputBufferTime;
+    }
+
     private void HandelJump()
     {
 
         // check if the player is grounded or if the player has touched te ground in time of 'variables.leaveGroundBufferTime'
         // and check if the player is not already jumping and if the player has pressed the jump butten in the time of 'variables.jumpInputBufferTime'
-        if ( ( playerGroundCheck.isGrounded || Time.time - playerGroundCheck.lastOnGroundTime <= playerInput.variables.leaveGroundBufferTime ) && !isJumping && Time.time - lastPressedJumpTime <= playerInput.variables.jumpInputBufferTime )
+        if ( ( playerGroundCheck.isGrounded || CanBufferJump() ) && !isJumping && IsJumpBufferd() )
         {
-
             canJump = true;
-
         }
         // check if the player is grounded has no y velocity and isjumping is equal to true
         else if ( playerGroundCheck.isGrounded && playerInput.rb2d.linearVelocity.y <= 0 && isJumping )
@@ -141,7 +148,7 @@ public class JumpingState : State
 
             isJumping = false;
             stateMachine.SwitchState( idleState );
-
+            
         }
 
     }

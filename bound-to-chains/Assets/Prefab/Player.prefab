@@ -110,12 +110,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9209175119351591768}
-  - component: {fileID: 6854500156355779661}
+  - component: {fileID: 7910484743267188178}
   - component: {fileID: 816167258188325389}
   - component: {fileID: 2943702112446533777}
   - component: {fileID: 2325651410906016568}
   - component: {fileID: 3074708647328875250}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -131,7 +131,7 @@ Transform:
   m_GameObject: {fileID: 3161821094649015714}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.1272537, y: 1.116032, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -140,7 +140,7 @@ Transform:
   - {fileID: 2498445830337566432}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &6854500156355779661
+--- !u!61 &7910484743267188178
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -270,26 +270,6 @@ MonoBehaviour:
     m_ActionName: 'Player/Move[/DualShock4GamepadHID/leftStick,/DualShock4GamepadHID1/leftStick,/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: AimingKeys, Assembly-CSharp
-        m_MethodName: Aim
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: dc39626e-ba75-4675-a097-84da7a8c052c
-    m_ActionName: 'Player/Look[/DualShock4GamepadHID/rightStick,/DualShock4GamepadHID1/rightStick,/Mouse/position]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: a3ba8f02-42a7-4662-8291-a98b9b865306
-    m_ActionName: 'Player/Fire[/DualShock4GamepadHID/rightTrigger,/DualShock4GamepadHID1/rightTrigger,/Mouse/leftButton]'
-  - m_PersistentCalls:
-      m_Calls:
       - m_Target: {fileID: 2943702112446533777}
         m_TargetAssemblyTypeName: PlayerInput, Assembly-CSharp
         m_MethodName: Jump
@@ -306,8 +286,8 @@ MonoBehaviour:
     m_ActionName: 'Player/Jump[/DualShock4GamepadHID/buttonSouth,/DualShock4GamepadHID1/buttonSouth,/Keyboard/space]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: ThrowBall, Assembly-CSharp
+      - m_Target: {fileID: 2943702112446533777}
+        m_TargetAssemblyTypeName: PlayerInput, Assembly-CSharp
         m_MethodName: ThrowInput
         m_Mode: 0
         m_Arguments:
@@ -360,6 +340,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 8fbf3046-93d0-438c-82f9-b6d18c7f75ea
     m_ActionName: UI/TrackedDeviceOrientation
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2943702112446533777}
+        m_TargetAssemblyTypeName: PlayerInput, Assembly-CSharp
+        m_MethodName: Climbing
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: e0141e16-4375-408e-980a-32a78fdc0715
+    m_ActionName: 'Player/Climbe[/Keyboard/w]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -587,6 +583,7 @@ Transform:
   - {fileID: 6526873565879320864}
   - {fileID: 2077691976090845974}
   - {fileID: 6247234068696707325}
+  - {fileID: 605515207712822280}
   m_Father: {fileID: 9209175119351591768}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8483625267691246480
@@ -696,3 +693,53 @@ MonoBehaviour:
   walkingState: {fileID: 4467296702791501768}
   jumpingState: {fileID: 3131377324592010583}
   throwState: {fileID: 1541951948131304294}
+  climbingState: {fileID: 8259888527526329501}
+--- !u!1 &7965660497296411648
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 605515207712822280}
+  - component: {fileID: 8259888527526329501}
+  m_Layer: 0
+  m_Name: Climb
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &605515207712822280
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7965660497296411648}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2498445830337566432}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8259888527526329501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7965660497296411648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7be72f9078c0726488598406ba01d18c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  idleState: {fileID: 211795484026099421}
+  climbSpeed: 2
+  chainLayerMask:
+    serializedVersion: 2
+    m_Bits: 128

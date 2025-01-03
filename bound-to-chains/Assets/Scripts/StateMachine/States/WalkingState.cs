@@ -25,7 +25,7 @@ public class WalkingState : State
     public override void UpdateState()
     {
         // check if the player is jumping if so enter the jump state
-        if (playerInput.isHoldingJump)
+        if ( jumpingState.IsJumpBufferd() )
         {
             stateMachine.SwitchState(jumpingState);
         }

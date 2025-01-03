@@ -24,15 +24,7 @@ public class ThrowState : State
     public override void EnterState()
     {
 
-        // check if the player is not in the range of the ball if so exit state
-        if ( !CheckForBall() )
-        {
-            ResetThrowState();
-        }
-        else
-        {
-            chargeStartTime = Time.time;
-        }
+        chargeStartTime = Time.time;
 
     }
 
@@ -51,7 +43,7 @@ public class ThrowState : State
         CheckChargeDuration();
     }
 
-    private bool CheckForBall()
+    public bool CheckForBall()
     {
 
         // Check if the player is close enough to the metal ball

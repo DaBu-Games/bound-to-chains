@@ -10,7 +10,9 @@ public class PlayerInput : MonoBehaviour
     public Vector2 moveInput { get; private set; }
     public Rigidbody2D rb2d { get; private set; }
     public bool isHoldingJump {  get; private set; }
+    public float lastPressedJumpTime { get; private set; }
     public bool isHoldingCharge { get; private set; }
+    public bool isHoldingClimbe { get; private set; }
 
     private bool facingRight = true;
 
@@ -37,10 +39,11 @@ public class PlayerInput : MonoBehaviour
     {
 
         // Check if the button is pressed 
-        if ( context.performed )
+        if ( context.started )
         {
 
             isHoldingJump = true;
+            lastPressedJumpTime = Time.time;
 
         }
         // Check if the button is let go
@@ -70,6 +73,25 @@ public class PlayerInput : MonoBehaviour
         }
 
     }
+    public void Climbing( InputAction.CallbackContext context )
+    {
+
+        // Check if the button is pressed 
+        if ( context.performed )
+        {
+
+            isHoldingClimbe = true;
+
+        }
+        // Check if the button is let go
+        else if ( context.canceled )
+        {
+            isHoldingClimbe = false;
+
+        }
+
+    }
+
 
     private void FlipCharachter()
     {

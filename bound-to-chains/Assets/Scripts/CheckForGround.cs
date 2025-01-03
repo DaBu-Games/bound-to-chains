@@ -26,6 +26,7 @@ public class CheckForGround : MonoBehaviour
         variables.whatIsGround
         );
 
+        // if grounded is true update the lastOngroudTime to the current time 
         if (isGrounded)
         {
             lastOnGroundTime = Time.time;

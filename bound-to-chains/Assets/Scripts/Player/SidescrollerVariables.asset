@@ -16,7 +16,7 @@ MonoBehaviour:
   ScaleYtimes: 0.1
   whatIsGround:
     serializedVersion: 2
-    m_Bits: 72
+    m_Bits: 584
   defaultGravity: 4
   fallingGravity: 4
   jumpCutGravity: 10
