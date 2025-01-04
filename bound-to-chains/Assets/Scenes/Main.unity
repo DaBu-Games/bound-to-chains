@@ -139,6 +139,11 @@ Rigidbody2D:
   m_CorrespondingSourceObject: {fileID: 1434425746346610428, guid: fadc657f1a41883449b4c56dc2eecb38, type: 3}
   m_PrefabInstance: {fileID: 1033439464}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &124138341 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1554542375044241030, guid: fadc657f1a41883449b4c56dc2eecb38, type: 3}
+  m_PrefabInstance: {fileID: 1033439464}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &192413353
 GameObject:
   m_ObjectHideFlags: 0
@@ -472,7 +477,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8785952306812289235, guid: 9e7abd25aab15da45b3d3decd876b165, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.07
+      value: 2.07
       objectReference: {fileID: 0}
     - target: {fileID: 8785952306812289235, guid: 9e7abd25aab15da45b3d3decd876b165, type: 3}
       propertyPath: m_LocalPosition.z
@@ -699,6 +704,10 @@ PrefabInstance:
       propertyPath: m_ConnectedRigidBody
       value: 
       objectReference: {fileID: 1767605382}
+    - target: {fileID: 5201260824129302090, guid: fadc657f1a41883449b4c56dc2eecb38, type: 3}
+      propertyPath: m_AutoConfigureConnectedAnchor
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5229586303528192923, guid: fadc657f1a41883449b4c56dc2eecb38, type: 3}
       propertyPath: m_ConnectedAnchor.x
       value: 0.00000005835472
@@ -992,7 +1001,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1541951948131304294, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
       propertyPath: ballLayerMask.m_Bits
-      value: 192
+      value: 64
       objectReference: {fileID: 0}
     - target: {fileID: 2325651410906016568, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
       propertyPath: m_Actions
@@ -1053,6 +1062,18 @@ PrefabInstance:
     - target: {fileID: 6854500156355779661, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
       propertyPath: m_ExcludeLayers.m_Bits
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8259888527526329501, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
+      propertyPath: climbSpeed
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8259888527526329501, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
+      propertyPath: ballTransform
+      value: 
+      objectReference: {fileID: 124138341}
+    - target: {fileID: 8259888527526329501, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
+      propertyPath: playerBellowBallDifference
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 9209175119351591768, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
       propertyPath: m_LocalPosition.x

@@ -10,12 +10,12 @@ public class IdleState : State
 
     public override void EnterState()
     {
-        Debug.Log("Start idle state");
+      
     }
 
     public override void ExitState()
     {
-        Debug.Log("Stop idle state");
+
     }
 
     public override void FixedUpdateState()
@@ -31,7 +31,7 @@ public class IdleState : State
             stateMachine.SwitchState( jumpingState );
         }
         // check if the player is holding the climbe button if so enter the climbe state
-        else if ( playerInput.isHoldingClimbe )
+        else if ( playerInput.isHoldingClimbe && climbingState.IsPlayerBelowBall() )
         {
             stateMachine.SwitchState( climbingState );
         }
@@ -60,6 +60,6 @@ public class IdleState : State
         float movement = speedDif * playerInput.variables.moveSpeedDeccelGround;
 
         // Apply the calculated force to decelerate the Rigidbody2D
-        playerInput.rb2d.AddForce (movement * Vector2.right, ForceMode2D.Force );
+        playerInput.rb2d.AddForce ( movement * Vector2.right, ForceMode2D.Force );
     }
 }

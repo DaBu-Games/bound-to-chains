@@ -101,7 +101,7 @@ GameObject:
   - component: {fileID: 1139682522420676408}
   m_Layer: 7
   m_Name: Chain
-  m_TagString: Untagged
+  m_TagString: Chain
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

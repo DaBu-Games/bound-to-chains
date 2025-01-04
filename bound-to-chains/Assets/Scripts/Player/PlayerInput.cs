@@ -22,6 +22,11 @@ public class PlayerInput : MonoBehaviour
         rb2d = player.GetComponent<Rigidbody2D>();
     }
 
+    private void Update()
+    {
+        Debug.Log( rb2d.linearVelocity.y );
+    }
+
     public void Move(InputAction.CallbackContext context)
     {
         // Get the move input and put it in a vector 2 
