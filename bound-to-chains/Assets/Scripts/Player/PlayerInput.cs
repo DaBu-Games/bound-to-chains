@@ -24,7 +24,7 @@ public class PlayerInput : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log( rb2d.linearVelocity.y );
+        
     }
 
     public void Move(InputAction.CallbackContext context)

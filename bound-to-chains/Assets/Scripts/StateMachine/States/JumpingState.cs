@@ -7,11 +7,11 @@ public class JumpingState : State
     [SerializeField] private CheckForGround playerGroundCheck;
 
     private bool canJump;
-    private bool isJumping;
+    public bool isJumping {  get; private set; }
 
     public override void EnterState()
     {
-
+        canJump = true; 
     }
 
     public override void ExitState()
@@ -30,9 +30,9 @@ public class JumpingState : State
 
         }
 
-        Gravity();
-        WhileJumping();
-        MovingAir(); 
+        //Gravity();
+        //WhileJumping();
+        //MovingAir(); 
     }
 
     public override void UpdateState()
@@ -72,56 +72,56 @@ public class JumpingState : State
 
     }
 
-    private void Gravity()
-    {
+    //private void Gravity()
+    //{
 
-        // check if the player is falling
-        if (playerInput.rb2d.linearVelocity.y < 0)
-        {
+    //    // check if the player is falling
+    //    if (playerInput.rb2d.linearVelocity.y < 0)
+    //    {
 
-            playerInput.rb2d.gravityScale = playerInput.variables.fallingGravity;
+    //        playerInput.rb2d.gravityScale = playerInput.variables.fallingGravity;
 
-        }
-        else
-        {
+    //    }
+    //    else
+    //    {
 
-            playerInput.rb2d.gravityScale = playerInput.variables.defaultGravity;
+    //        playerInput.rb2d.gravityScale = playerInput.variables.defaultGravity;
 
-        }
+    //    }
 
-    }
+    //}
 
-    private void WhileJumping()
-    {
+    //private void WhileJumping()
+    //{
 
-        // check if the jump button is let go while jumping
-        // if so increase the gravity of the player
-        if ( playerInput.rb2d.linearVelocity.y > 0 && isJumping && !playerInput.isHoldingJump )
-        {
+    //    // check if the jump button is let go while jumping
+    //    // if so increase the gravity of the player
+    //    if ( playerInput.rb2d.linearVelocity.y > 0 && isJumping && !playerInput.isHoldingJump )
+    //    {
 
-            playerInput.rb2d.gravityScale = playerInput.variables.jumpCutGravity;
+    //        playerInput.rb2d.gravityScale = playerInput.variables.jumpCutGravity;
 
-        }
+    //    }
 
-    }
+    //}
 
-    private void MovingAir()
-    {
-        // Calculate the target speed based on player input and max movement speed
-        float targetSpeed = playerInput.moveInput.x * playerInput.variables.maxMoveSpeed;
+    //private void MovingAir()
+    //{
+    //    // Calculate the target speed based on player input and max movement speed
+    //    float targetSpeed = playerInput.moveInput.x * playerInput.variables.maxMoveSpeed;
 
-        // check if the player is moving if is so accel if not deccel 
-        float accelRate = (Mathf.Abs(playerInput.moveInput.x) > 0.01f) ? playerInput.variables.moveSpeedAccelAir : playerInput.variables.moveSpeedDeccelAir;
+    //    // check if the player is moving if is so accel if not deccel 
+    //    float accelRate = (Mathf.Abs(playerInput.moveInput.x) > 0.01f) ? playerInput.variables.moveSpeedAccelAir : playerInput.variables.moveSpeedDeccelAir;
 
-        // Calculate the difference between the target speed and the current velocity
-        float speedDif = targetSpeed - playerInput.rb2d.linearVelocity.x;
+    //    // Calculate the difference between the target speed and the current velocity
+    //    float speedDif = targetSpeed - playerInput.rb2d.linearVelocity.x;
 
-        // Calculate the force to be applied based on the acceleration rate and speed difference
-        float movement = speedDif * accelRate;
+    //    // Calculate the force to be applied based on the acceleration rate and speed difference
+    //    float movement = speedDif * accelRate;
 
-        // Apply the calculated force to the Rigidbody2D
-        playerInput.rb2d.AddForce(movement * Vector2.right, ForceMode2D.Force);
-    }
+    //    // Apply the calculated force to the Rigidbody2D
+    //    playerInput.rb2d.AddForce(movement * Vector2.right, ForceMode2D.Force);
+    //}
 
     private bool CanBufferJump()
     {

@@ -963,6 +963,10 @@ PrefabInstance:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 6200000, guid: ad37ef47e4248184a919623b3976bb4b, type: 2}
+    - target: {fileID: 816167258188325389, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
+      propertyPath: m_Constraints
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 1508976196719641175, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
       propertyPath: m_Size.x
       value: 2.326176
@@ -1073,7 +1077,7 @@ PrefabInstance:
       objectReference: {fileID: 124138341}
     - target: {fileID: 8259888527526329501, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
       propertyPath: playerBellowBallDifference
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9209175119351591768, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
       propertyPath: m_LocalPosition.x
