@@ -20,6 +20,9 @@ public class PlayerInput : MonoBehaviour
     void Start()
     {
         rb2d = player.GetComponent<Rigidbody2D>();
+
+        // Set the default gravity of the player
+        rb2d.gravityScale = variables.defaultGravity;
     }
 
     private void Update()
@@ -60,6 +63,12 @@ public class PlayerInput : MonoBehaviour
         }
 
     }
+
+    public void ResetJumpTime()
+    {
+        lastPressedJumpTime = lastPressedJumpTime - variables.jumpInputBufferTime; 
+    }
+
     public void ThrowInput( InputAction.CallbackContext context )
     {
 

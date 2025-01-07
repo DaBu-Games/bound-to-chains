@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class IdleState : State
 {
+    [SerializeField] private CheckForGround playerGroundCheck;
 
     [SerializeField] private WalkingState walkingState;
     [SerializeField] private JumpingState jumpingState;
@@ -26,24 +27,24 @@ public class IdleState : State
     public override void UpdateState()
     {
         // check if the player is holding the jump button if so enter the jump state
-        if ( jumpingState.IsJumpBufferd() ) 
+        if ( jumpingState.CanPlayerJump() ) 
         {
             stateMachine.SwitchState( jumpingState );
         }
-        // check if the player is holding the climbe button if so enter the climbe state
-        else if ( playerInput.isHoldingClimbe && climbingState.IsPlayerBelowBall() )
+        // check if the player is holding the climbe button and is bellow the ball if so enter the climbe state
+        else if ( climbingState.CanPlayerClimbe() )
         {
             stateMachine.SwitchState( climbingState );
         }
         // check if the player has x axis input if so enter walk state
-        else if ( playerInput.moveInput.x != 0 )
+        else if ( walkingState.CanPlayerWalk() )
         {
             stateMachine.SwitchState( walkingState );
         }
         // check if the player is pressing the throw button if so enter the throw state
-        else if ( playerInput.isHoldingCharge && throwState.CheckForBall() )
+        else if ( throwState.CanPlayerThrow() )
         {
-            stateMachine.SwitchState(throwState);
+            stateMachine.SwitchState( throwState );
         }
 
     }
@@ -61,5 +62,12 @@ public class IdleState : State
 
         // Apply the calculated force to decelerate the Rigidbody2D
         playerInput.rb2d.AddForce ( movement * Vector2.right, ForceMode2D.Force );
+    }
+
+
+    // Check if the player has no x input and is grounded
+    public bool CanPlayerIdle()
+    {
+        return playerInput.moveInput.x == 0 && playerGroundCheck.isGrounded; 
     }
 }

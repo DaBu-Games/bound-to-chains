@@ -44,8 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbe911384f55b9b498c120622433bb95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerGroundCheck: {fileID: 8571051339322228545}
   idleState: {fileID: 211795484026099421}
   jumpingState: {fileID: 3131377324592010583}
+  fallingState: {fileID: 5797161323019810506}
 --- !u!1 &1694202501845751863
 GameObject:
   m_ObjectHideFlags: 0
@@ -460,7 +462,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbb6e4ba36619ba40a792e6b678504b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  idleState: {fileID: 211795484026099421}
+  risingState: {fileID: 3085033669924631151}
   playerGroundCheck: {fileID: 8571051339322228545}
 --- !u!1 &4674593305375973374
 GameObject:
@@ -584,6 +586,8 @@ Transform:
   - {fileID: 2077691976090845974}
   - {fileID: 6247234068696707325}
   - {fileID: 605515207712822280}
+  - {fileID: 2347467505954089451}
+  - {fileID: 1575862526773220925}
   m_Father: {fileID: 9209175119351591768}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8483625267691246480
@@ -600,6 +604,56 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerInput: {fileID: 2943702112446533777}
   states: {fileID: 2498445830337566432}
+--- !u!1 &5898467350868377298
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1575862526773220925}
+  - component: {fileID: 5797161323019810506}
+  m_Layer: 0
+  m_Name: Falling
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1575862526773220925
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5898467350868377298}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.97255784, y: 1.3907684, z: -0.019992096}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2498445830337566432}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5797161323019810506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5898467350868377298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e99e8246cffc35d4293e7d4fe583a00a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  climbingState: {fileID: 8259888527526329501}
+  jumpingState: {fileID: 3131377324592010583}
+  walkingState: {fileID: 4467296702791501768}
+  idleState: {fileID: 211795484026099421}
+  fallingState: {fileID: 0}
+  playerGroundCheck: {fileID: 8571051339322228545}
 --- !u!1 &6490782919925794835
 GameObject:
   m_ObjectHideFlags: 0
@@ -690,10 +744,61 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6eb6090413a71534b896617c020909b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerGroundCheck: {fileID: 8571051339322228545}
   walkingState: {fileID: 4467296702791501768}
   jumpingState: {fileID: 3131377324592010583}
   throwState: {fileID: 1541951948131304294}
   climbingState: {fileID: 8259888527526329501}
+--- !u!1 &7829525484100410168
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2347467505954089451}
+  - component: {fileID: 3085033669924631151}
+  m_Layer: 0
+  m_Name: Rising
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2347467505954089451
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7829525484100410168}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.97255784, y: 1.3907684, z: -0.019992096}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2498445830337566432}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3085033669924631151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7829525484100410168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b61128ee06a8484190787869802ae70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  climbingState: {fileID: 8259888527526329501}
+  jumpingState: {fileID: 3131377324592010583}
+  walkingState: {fileID: 4467296702791501768}
+  idleState: {fileID: 211795484026099421}
+  fallingState: {fileID: 5797161323019810506}
+  playerGroundCheck: {fileID: 8571051339322228545}
 --- !u!1 &7965660497296411648
 GameObject:
   m_ObjectHideFlags: 0
@@ -741,6 +846,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   idleState: {fileID: 211795484026099421}
   climbSpeed: 2
+  playerBellowBallDifference: 2
+  ballTransform: {fileID: 0}
 --- !u!61 &1089963357265323447
 BoxCollider2D:
   m_ObjectHideFlags: 0

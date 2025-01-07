@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class RisingState : State
+public class RisingState : State
 {
     [SerializeField] private ClimbingState climbingState;
     [SerializeField] private JumpingState jumpingState;
@@ -8,7 +8,7 @@ public abstract class RisingState : State
     [SerializeField] private IdleState idleState;
     [SerializeField] private FallingState fallingState;
 
-    [SerializeField] private CheckForGround playerGroundCheck;
+    [SerializeField] protected CheckForGround playerGroundCheck;
 
     public override void EnterState()
     {
@@ -17,7 +17,10 @@ public abstract class RisingState : State
 
     public override void ExitState()
     {
-
+        if ( jumpingState.isJumping ) 
+        { 
+            jumpingState.CancelJump();
+        }
     }
 
     public override void FixedUpdateState()
@@ -30,38 +33,39 @@ public abstract class RisingState : State
     {
 
         // check if the player is holding the climbe button and is under the ball if so enter the climbe state
-        if (playerInput.isHoldingClimbe && climbingState.IsPlayerBelowBall())
+        if ( climbingState.CanPlayerClimbe() )
         {
             stateMachine.SwitchState(climbingState);
+            return;
         }
+
         // all the states that can happen when the player is grounded
-        else if (playerGroundCheck.isGrounded)
+        if ( !jumpingState.isJumping )
         {
 
             // check if the player is holding the jump button if so enter the jump state
-            if (jumpingState.IsJumpBufferd())
+            if ( jumpingState.CanPlayerJump() )
             {
                 stateMachine.SwitchState(jumpingState);
+                return;
             }
             // check if the player has x axis input if so enter walk state
-            else if (playerInput.moveInput.x != 0)
+            else if ( walkingState.CanPlayerWalk() )
             {
                 stateMachine.SwitchState(walkingState);
+                return;
             }
             // if there are no inputs go to the idle state
-            else
+            else if ( idleState.CanPlayerIdle() )
             {
                 stateMachine.SwitchState(idleState);
+                return;
             }
 
         }
+
         // the state that can happen when the player is still in the air
-        else
-        {
-
-            HandleAirborneSpecific();
-
-        }
+        HandleAirborneSpecific();
 
     }
 
@@ -87,11 +91,12 @@ public abstract class RisingState : State
     {
 
         // check if the jump button is let go while jumping
-        // if so increase the gravity of the player
+        // if so increase the gravity of the player and "cancel" the jump
         if ( jumpingState.isJumping && !playerInput.isHoldingJump )
         {
 
             playerInput.rb2d.gravityScale = playerInput.variables.jumpCutGravity;
+            jumpingState.CancelJump();
 
         }
 
@@ -100,10 +105,17 @@ public abstract class RisingState : State
     protected virtual void HandleAirborneSpecific()
     {
         // check if the player is falling if so switch to the falling state
-        if ( playerInput.rb2d.linearVelocity.y < 0 )
-        {
+        if ( fallingState.CanPlayerFall() )
+        {   
             stateMachine.SwitchState( fallingState );
         }
     }
+
+    // Check if the player has a upward velocity above 0 and the player is not grounded
+    public bool CanPlayerRise()
+    {
+        return playerInput.rb2d.linearVelocity.y > 0 && !playerGroundCheck.isGrounded;
+    }
+
 
 }

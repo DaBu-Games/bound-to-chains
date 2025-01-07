@@ -30,8 +30,8 @@ public class ClimbingState : State
 
     public override void UpdateState()
     {
-        // Exit climbing state if the climb button is released or there's no chain to climb
-        if ( !playerInput.isHoldingClimbe || chainsInHitbox.Count == 0 || !IsPlayerBelowBall() )
+        // Exit the climbe state if canplayerclimbe is false
+        if ( !CanPlayerClimbe() )
         {
             stateMachine.SwitchState(idleState);
         }
@@ -128,6 +128,12 @@ public class ClimbingState : State
 
         // Switch to idle state
         stateMachine.SwitchState(idleState);
+    }
+
+    // check if the player is holding the climbe button has more then 0 chains and the player is bellow the ball
+    public bool CanPlayerClimbe()
+    {
+        return playerInput.isHoldingClimbe && chainsInHitbox.Count > 0 && IsPlayerBelowBall();
     }
 }
 

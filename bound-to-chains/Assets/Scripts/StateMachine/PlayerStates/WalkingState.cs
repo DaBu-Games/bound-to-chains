@@ -1,11 +1,15 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class WalkingState : State
 {
 
+    [SerializeField] private CheckForGround playerGroundCheck;
+
     [SerializeField] private IdleState idleState;
     [SerializeField] private JumpingState jumpingState;
+    [SerializeField] private FallingState fallingState;
 
     public override void EnterState()
     {
@@ -24,16 +28,21 @@ public class WalkingState : State
 
     public override void UpdateState()
     {
-        // check if the player is jumping if so enter the jump state
-        if ( jumpingState.IsJumpBufferd() )
+        // check if the player can jump if so enter the jump state
+        if ( jumpingState.CanPlayerJump() )
         {
             stateMachine.SwitchState(jumpingState);
         }
         // check if the player has no x axis input if so enter the idle state
-        else if ( playerInput.moveInput.x == 0 )
+        else if ( idleState.CanPlayerIdle() )
         {
             stateMachine.SwitchState(idleState);
         }
+        else if ( fallingState.CanPlayerFall() )
+        {
+            stateMachine.SwitchState( fallingState );
+        }
+
     }
 
     private void Walking()
@@ -53,5 +62,11 @@ public class WalkingState : State
         // Apply the calculated force to the Rigidbody2D
         playerInput.rb2d.AddForce(movement * Vector2.right, ForceMode2D.Force);
 
+    }
+
+    // Check if the player input x is not equal to 0 and if the player is grounded
+    public bool CanPlayerWalk()
+    {
+        return playerInput.moveInput.x != 0 && playerGroundCheck.isGrounded; 
     }
 }

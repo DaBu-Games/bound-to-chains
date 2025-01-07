@@ -63,14 +63,17 @@ public class ThrowState : State
         if ( CanCharge() )
         {
 
+            // Calculate how long the player has been charging
             float chargeDuration = Time.time - chargeStartTime;
 
+            // if the player has let go the charge button
             if ( !playerInput.isHoldingCharge )
             {
 
                 ThrowBallWithForce( chargeDuration );
 
             }
+            // Set the max chargeduration to maxChargeTime
             else if ( chargeDuration >= maxChargeTime )
             {
                 ThrowBallWithForce( maxChargeTime );
@@ -83,6 +86,8 @@ public class ThrowState : State
         }
 
     }
+
+    // check if the ball and player are grounded and the ball is inrange of the player
     private bool CanCharge()
     {
         return ballBehaviour.isGrounded && playerGroundCheck.isGrounded && isInRange;
@@ -90,7 +95,7 @@ public class ThrowState : State
 
     private void ThrowBallWithForce(float chargeDuration)
     {
-
+        // Calculate how hard the player can throw the ball
         float chargeFactor = Mathf.Min(chargeDuration / chargeTime, 1f);
         float throwForce = Mathf.Lerp(minThrowForce, maxThrowForce, chargeFactor);
 
@@ -102,11 +107,18 @@ public class ThrowState : State
     }
 
    
+    // Reset the ChargeStartTime and switch state
     private void ResetThrowState()
     {
         chargeStartTime = 0f;
         stateMachine.SwitchState( idleState );
 
+    }
+
+    // Check if the player can charge and is holding the charge button
+    public bool CanPlayerThrow()
+    {
+        return CanCharge() && playerInput.isHoldingCharge; 
     }
 
 }
