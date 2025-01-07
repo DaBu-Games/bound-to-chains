@@ -118,6 +118,8 @@ public class ThrowState : State
     // Check if the player can charge and is holding the charge button
     public bool CanPlayerThrow()
     {
+        CheckForBall();
+
         return CanCharge() && playerInput.isHoldingCharge; 
     }
 

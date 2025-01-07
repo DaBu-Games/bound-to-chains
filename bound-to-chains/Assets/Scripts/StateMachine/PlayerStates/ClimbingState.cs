@@ -5,21 +5,27 @@ using UnityEngine.InputSystem;
 public class ClimbingState : State
 {
     [SerializeField] private IdleState idleState;
+    [SerializeField] private BallBehaviour ballBehaviour;
+
+    [SerializeField] private LayerMask excludeLayers;
+
     [SerializeField] private float climbSpeed = 4;
     [SerializeField] private float playerBellowBallDifference = 2f;
-    [SerializeField] private Transform ballTransform;
+    
 
     private List<Transform> chainsInHitbox = new List<Transform>(); // Chains in the trigger zone
     private Transform currentChain; // The chain the player is climbing towards
 
     public override void EnterState()
     {
-        playerInput.rb2d.gravityScale = 0; 
+        playerInput.SetPlayerGravity( 0f ); 
+        playerInput.SetExcludeLayers( excludeLayers );
     }
 
     public override void ExitState()
     {
-        playerInput.rb2d.gravityScale = playerInput.variables.defaultGravity;
+        playerInput.SetPlayerGravity( playerInput.variables.defaultGravity );
+        playerInput.ResetExludeLayers(); 
     }
 
     public override void FixedUpdateState()
@@ -37,20 +43,14 @@ public class ClimbingState : State
         }
     }
 
-    public bool IsPlayerBelowBall()
-    {
-        Debug.Log(ballTransform.position.y - playerInput.player.transform.position.y); 
-        return ballTransform.position.y - playerInput.player.transform.position.y >= playerBellowBallDifference;
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D( Collider2D collision )
     {
         // Add chain to the list when it enters the hitbox
         if (collision.CompareTag("Chain"))
         {
             chainsInHitbox.Add(collision.transform);
         }
-        else if (collision.CompareTag("Ball"))
+        else if ( collision.CompareTag("Ball") && playerInput.isHoldingClimbe )
         {
             FinishClimb();
         }
@@ -95,6 +95,8 @@ public class ClimbingState : State
         }
         
     }
+
+    // Get the position of the hinge joined ancher point and convert it to world space
     private Vector2 GetAnchorPoint(HingeJoint2D hingeJoint)
     {
         // Get the anchor point in local space
@@ -110,7 +112,7 @@ public class ClimbingState : State
     {
         if (currentChain == null) return;
 
-        // Get the position of the hinge joined ancher point and convert it to world space
+        // Get the target position of where the player is going to 
         Vector2 targetPosition = GetAnchorPoint( currentChain.GetComponent<HingeJoint2D>() );
 
         Vector2 direction = (targetPosition - (Vector2)playerInput.player.transform.position).normalized;
@@ -133,7 +135,7 @@ public class ClimbingState : State
     // check if the player is holding the climbe button has more then 0 chains and the player is bellow the ball
     public bool CanPlayerClimbe()
     {
-        return playerInput.isHoldingClimbe && chainsInHitbox.Count > 0 && IsPlayerBelowBall();
+        return playerInput.isHoldingClimbe && chainsInHitbox.Count > 0 && ballBehaviour.IsTransformBellowBall( playerInput.player.transform.position.y, playerBellowBallDifference );
     }
 }
 

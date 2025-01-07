@@ -42,4 +42,9 @@ public class BallBehaviour : MonoBehaviour
         rb2d.linearDamping = isGrounded ? groundDrag : airDrag;
     }
 
+    public bool IsTransformBellowBall( float transformYCheck, float diffrence )
+    {
+        return this.transform.position.y - transformYCheck >= diffrence;
+    }
+
 }

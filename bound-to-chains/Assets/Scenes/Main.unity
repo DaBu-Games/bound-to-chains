@@ -1067,10 +1067,18 @@ PrefabInstance:
       propertyPath: m_ExcludeLayers.m_Bits
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7910484743267188178, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8259888527526329501, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
       propertyPath: climbSpeed
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 8259888527526329501, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
+      propertyPath: ballBehaviour
+      value: 
+      objectReference: {fileID: 124138335}
     - target: {fileID: 8259888527526329501, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
       propertyPath: ballTransform
       value: 

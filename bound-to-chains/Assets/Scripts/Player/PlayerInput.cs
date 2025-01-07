@@ -9,10 +9,13 @@ public class PlayerInput : MonoBehaviour
 
     public Vector2 moveInput { get; private set; }
     public Rigidbody2D rb2d { get; private set; }
+    public BoxCollider2D boxCollider2D { get; private set; }
     public bool isHoldingJump {  get; private set; }
     public float lastPressedJumpTime { get; private set; }
     public bool isHoldingCharge { get; private set; }
     public bool isHoldingClimbe { get; private set; }
+
+    private LayerMask originalExcludeLayers;
 
     private bool facingRight = true;
 
@@ -21,8 +24,27 @@ public class PlayerInput : MonoBehaviour
     {
         rb2d = player.GetComponent<Rigidbody2D>();
 
+        boxCollider2D = player.GetComponent<BoxCollider2D>();
+
+        originalExcludeLayers = boxCollider2D.excludeLayers;
+
         // Set the default gravity of the player
         rb2d.gravityScale = variables.defaultGravity;
+    }
+
+    public void SetPlayerGravity( float gravity )
+    {
+        rb2d.gravityScale = gravity;
+    }
+
+    public void SetExcludeLayers( LayerMask excludeLayers )
+    {
+        boxCollider2D.excludeLayers = excludeLayers;
+    }
+
+    public void ResetExludeLayers()
+    {
+        SetExcludeLayers( originalExcludeLayers );
     }
 
     private void Update()

@@ -845,9 +845,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   idleState: {fileID: 211795484026099421}
-  climbSpeed: 2
-  playerBellowBallDifference: 2
-  ballTransform: {fileID: 0}
+  ballBehaviour: {fileID: 0}
+  excludeLayers:
+    serializedVersion: 2
+    m_Bits: 576
+  climbSpeed: 4
+  playerBellowBallDifference: 1
 --- !u!61 &1089963357265323447
 BoxCollider2D:
   m_ObjectHideFlags: 0
