@@ -8,6 +8,7 @@ public class IdleState : State
     [SerializeField] private JumpingState jumpingState;
     [SerializeField] private ThrowState throwState;
     [SerializeField] private ClimbingState climbingState;
+    [SerializeField] private HangingState hangingState;
 
     public override void EnterState()
     {
@@ -45,6 +46,10 @@ public class IdleState : State
         else if ( throwState.CanPlayerThrow() )
         {
             stateMachine.SwitchState( throwState );
+        }
+        else if( hangingState.CanPlayerHang() )
+        {
+            stateMachine.SwitchState( hangingState );
         }
 
     }

@@ -47,6 +47,11 @@ public class PlayerInput : MonoBehaviour
         SetExcludeLayers( originalExcludeLayers );
     }
 
+    public bool HasNoExcludeLayers()
+    {
+        return boxCollider2D.excludeLayers == originalExcludeLayers;
+    }
+
     private void Update()
     {
         

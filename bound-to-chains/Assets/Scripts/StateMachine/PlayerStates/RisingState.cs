@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class RisingState : State
 {
@@ -7,6 +8,7 @@ public class RisingState : State
     [SerializeField] private WalkingState walkingState;
     [SerializeField] private IdleState idleState;
     [SerializeField] private FallingState fallingState;
+    [SerializeField] private HangingState hangingState;
 
     [SerializeField] protected CheckForGround playerGroundCheck;
 
@@ -20,6 +22,10 @@ public class RisingState : State
         if ( jumpingState.isJumping ) 
         { 
             jumpingState.CancelJump();
+        }
+        if( !playerInput.HasNoExcludeLayers() )
+        {
+            playerInput.ResetExludeLayers();
         }
     }
 
@@ -39,8 +45,14 @@ public class RisingState : State
             return;
         }
 
+        if( hangingState.CanPlayerHang() )
+        {
+            stateMachine.SwitchState(hangingState);
+            return;
+        }
+
         // all the states that can happen when the player is grounded
-        if ( !jumpingState.isJumping )
+        if ( !jumpingState.isJumping && playerInput.HasNoExcludeLayers() )
         {
 
             // check if the player is holding the jump button if so enter the jump state

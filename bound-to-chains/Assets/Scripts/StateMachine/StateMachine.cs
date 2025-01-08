@@ -51,4 +51,9 @@ public class StateMachine : MonoBehaviour
         currentState = newState;
         currentState.EnterState();
     }
+
+    public State GetCurrentState()
+    {
+        return currentState;
+    }
 }
