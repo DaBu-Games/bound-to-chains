@@ -1,5 +1,59 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &192366732582287721
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7713521346568058698}
+  - component: {fileID: 2953189447355313167}
+  m_Layer: 0
+  m_Name: Pulling
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7713521346568058698
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 192366732582287721}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2498445830337566432}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2953189447355313167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 192366732582287721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22cff55b23ca56c4496aefe6bf3e07d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ballLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
+  ballBehaviour: {fileID: 0}
+  ballrb2d: {fileID: 0}
+  maxThrowForce: 1600
+  minThrowForce: 200
+  raycastRange: 0.55
+  idleState: {fileID: 211795484026099421}
+  playerGroundCheck: {fileID: 8571051339322228545}
 --- !u!1 &921067071946161221
 GameObject:
   m_ObjectHideFlags: 0
@@ -581,6 +635,7 @@ Transform:
   - {fileID: 2347467505954089451}
   - {fileID: 1575862526773220925}
   - {fileID: 9036655084984962159}
+  - {fileID: 7713521346568058698}
   m_Father: {fileID: 9209175119351591768}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8483625267691246480
@@ -743,6 +798,7 @@ MonoBehaviour:
   walkingState: {fileID: 4467296702791501768}
   jumpingState: {fileID: 3131377324592010583}
   throwState: {fileID: 1541951948131304294}
+  pullingState: {fileID: 2953189447355313167}
   climbingState: {fileID: 8259888527526329501}
   hangingState: {fileID: 2953841095504223801}
   fallingState: {fileID: 5797161323019810506}

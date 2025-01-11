@@ -7,6 +7,7 @@ public class IdleState : State
     [SerializeField] private WalkingState walkingState;
     [SerializeField] private JumpingState jumpingState;
     [SerializeField] private ThrowState throwState;
+    [SerializeField] private PullingState pullingState;
     [SerializeField] private ClimbingState climbingState;
     [SerializeField] private HangingState hangingState;
     [SerializeField] private FallingState fallingState;
@@ -47,6 +48,10 @@ public class IdleState : State
         else if ( throwState.CanPlayerThrow() )
         {
             stateMachine.SwitchState( throwState );
+        }
+        else if ( pullingState.CanPlayerPull() )
+        {
+            stateMachine.SwitchState( pullingState );
         }
         else if( hangingState.CanPlayerHang() )
         {

@@ -554,7 +554,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1554542375044241030, guid: fadc657f1a41883449b4c56dc2eecb38, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.44
+      value: 0.27499986
       objectReference: {fileID: 0}
     - target: {fileID: 1554542375044241030, guid: fadc657f1a41883449b4c56dc2eecb38, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1120,6 +1120,26 @@ PrefabInstance:
       propertyPath: m_ActionEvents.Array.data[4].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: PlayerInput, Assembly-CSharp
       objectReference: {fileID: 0}
+    - target: {fileID: 2953189447355313167, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
+      propertyPath: ballrb2d
+      value: 
+      objectReference: {fileID: 124138337}
+    - target: {fileID: 2953189447355313167, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
+      propertyPath: upWordsScale
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2953189447355313167, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
+      propertyPath: ballBehaviour
+      value: 
+      objectReference: {fileID: 124138335}
+    - target: {fileID: 2953189447355313167, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
+      propertyPath: maxThrowForce
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 2953189447355313167, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
+      propertyPath: minThrowForce
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 2953841095504223801, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
       propertyPath: lastHinge
       value: 
@@ -1130,7 +1150,7 @@ PrefabInstance:
       objectReference: {fileID: 124138335}
     - target: {fileID: 2953841095504223801, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
       propertyPath: minForceOnHinge
-      value: 10
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 3161821094649015714, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
       propertyPath: m_Name
@@ -1202,7 +1222,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9209175119351591768, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.865
+      value: 5.58
       objectReference: {fileID: 0}
     - target: {fileID: 9209175119351591768, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
       propertyPath: m_LocalPosition.y
