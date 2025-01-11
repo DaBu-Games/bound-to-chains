@@ -14,7 +14,7 @@ public class RisingState : State
 
     public override void EnterState()
     {
-        
+        playerAnimator.Play("RisingAnimation");
     }
 
     public override void ExitState()

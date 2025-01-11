@@ -5,6 +5,7 @@ public class FallingState : RisingState
     public override void EnterState()
     {
         playerInput.rb2d.gravityScale = playerInput.variables.fallingGravity;
+        playerAnimator.Play("FallingAnimation");
     }
 
     public override void ExitState()

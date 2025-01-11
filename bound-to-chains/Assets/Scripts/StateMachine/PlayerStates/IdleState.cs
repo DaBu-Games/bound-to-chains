@@ -9,10 +9,11 @@ public class IdleState : State
     [SerializeField] private ThrowState throwState;
     [SerializeField] private ClimbingState climbingState;
     [SerializeField] private HangingState hangingState;
+    [SerializeField] private FallingState fallingState;
 
     public override void EnterState()
     {
-      
+        playerAnimator.Play("IdleAnimation");
     }
 
     public override void ExitState()
@@ -50,6 +51,10 @@ public class IdleState : State
         else if( hangingState.CanPlayerHang() )
         {
             stateMachine.SwitchState( hangingState );
+        }
+        else if ( fallingState.CanPlayerFall() )
+        {
+            stateMachine.SwitchState( fallingState) ;
         }
 
     }

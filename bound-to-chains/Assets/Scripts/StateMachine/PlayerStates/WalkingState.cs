@@ -14,7 +14,7 @@ public class WalkingState : State
 
     public override void EnterState()
     {
-        
+        playerAnimator.Play("WalkAnimation");
     }
 
     public override void ExitState()

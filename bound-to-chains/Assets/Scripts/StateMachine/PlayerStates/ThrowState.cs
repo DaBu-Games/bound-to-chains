@@ -1,8 +1,10 @@
 using UnityEngine;
+using System.Collections;
 using UnityEngine.InputSystem;
 
 public class ThrowState : State
-{
+{ 
+
     [SerializeField] private LayerMask ballLayerMask;
     [SerializeField] private BallBehaviour ballBehaviour;
     [SerializeField] private Rigidbody2D ballrb2d; 
@@ -25,6 +27,7 @@ public class ThrowState : State
     {
 
         chargeStartTime = Time.time;
+        playerAnimator.Play("ChargeAnimation");
 
     }
 
@@ -47,11 +50,11 @@ public class ThrowState : State
     {
 
         // Check if the player is close enough to the metal ball
-        RaycastHit2D hit = Physics2D.Raycast( playerInput.player.transform.position, playerInput.player.transform.right, raycastRange, ballLayerMask );
+        RaycastHit2D hit = Physics2D.Raycast( this.transform.position, this.transform.right, raycastRange, ballLayerMask );
 
         isInRange = hit.collider != null;
 
-        Debug.DrawRay( playerInput.player.transform.position, playerInput.player.transform.right * raycastRange, isInRange ? Color.green : Color.red );
+        Debug.DrawRay( this.transform.position, this.transform.right * raycastRange, isInRange ? Color.green : Color.red );
 
         return isInRange;
 
@@ -60,7 +63,7 @@ public class ThrowState : State
     private void CheckChargeDuration()
     {
 
-        if ( CanCharge() )
+        if ( CanCharge() && chargeStartTime != 0f )
         {
 
             // Calculate how long the player has been charging
@@ -76,7 +79,9 @@ public class ThrowState : State
             // Set the max chargeduration to maxChargeTime
             else if ( chargeDuration >= maxChargeTime )
             {
+
                 ThrowBallWithForce( maxChargeTime );
+
             }
 
         }
@@ -95,6 +100,9 @@ public class ThrowState : State
 
     private void ThrowBallWithForce(float chargeDuration)
     {
+
+        playerAnimator.Play( "ThrowingAnimation" );
+
         // Calculate how hard the player can throw the ball
         float chargeFactor = Mathf.Min(chargeDuration / chargeTime, 1f);
         float throwForce = Mathf.Lerp(minThrowForce, maxThrowForce, chargeFactor);
@@ -102,15 +110,19 @@ public class ThrowState : State
         ballrb2d.AddForce(throwForce * playerInput.player.transform.right, ForceMode2D.Impulse);
         ballrb2d.AddForce(throwForce * upWordsScale * playerInput.player.transform.up, ForceMode2D.Impulse);
 
-        ResetThrowState();
+        StartCoroutine( ResetThrowState() );
 
     }
 
    
     // Reset the ChargeStartTime and switch state
-    private void ResetThrowState()
+    private IEnumerator ResetThrowState()
     {
+
         chargeStartTime = 0f;
+
+        yield return new WaitForSeconds( 0.25f );
+
         stateMachine.SwitchState( idleState );
 
     }

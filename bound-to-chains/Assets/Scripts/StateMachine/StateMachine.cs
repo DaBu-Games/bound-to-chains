@@ -6,6 +6,7 @@ public class StateMachine : MonoBehaviour
 
     private State currentState;
     [SerializeField] private PlayerInput playerInput;
+    [SerializeField] private Animator playerAnimator;
     [SerializeField] private Transform states; 
 
     void Start()
@@ -17,7 +18,7 @@ public class StateMachine : MonoBehaviour
             State state = stateTransform.GetComponent<State>(); 
 
             // Call the Initialize function and pas in the stateMachine and the playerinput
-            state.Initialize( this, playerInput );
+            state.Initialize( this, playerInput, playerAnimator );
 
             // make the start state the IdleState
             if( state is IdleState)

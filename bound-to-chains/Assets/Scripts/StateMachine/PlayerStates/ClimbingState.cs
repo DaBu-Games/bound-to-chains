@@ -27,6 +27,8 @@ public class ClimbingState : State
         playerInput.SetExcludeLayers( excludeLayers );
 
         playerInput.rb2d.linearVelocity = new Vector2(playerInput.rb2d.linearVelocity.x, 0);
+
+        playerAnimator.Play( "ClimbingAnimation" );
     }
 
     public override void ExitState()

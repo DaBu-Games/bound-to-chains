@@ -20,7 +20,7 @@ public class HangingState : State
 
     public override void EnterState()
     {
-        
+        playerAnimator.Play("HangingAnimation");
     }
 
     public override void ExitState()
