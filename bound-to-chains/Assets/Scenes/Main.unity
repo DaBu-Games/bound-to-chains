@@ -1094,7 +1094,7 @@ PrefabInstance:
       objectReference: {fileID: 124138335}
     - target: {fileID: 1541951948131304294, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
       propertyPath: maxThrowForce
-      value: 200
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 1541951948131304294, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
       propertyPath: minThrowForce
@@ -1125,8 +1125,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 124138337}
     - target: {fileID: 2953189447355313167, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
+      propertyPath: yDiffrence
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2953189447355313167, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
       propertyPath: upWordsScale
-      value: 1.5
+      value: 1.1
       objectReference: {fileID: 0}
     - target: {fileID: 2953189447355313167, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
       propertyPath: ballBehaviour
@@ -1134,11 +1138,15 @@ PrefabInstance:
       objectReference: {fileID: 124138335}
     - target: {fileID: 2953189447355313167, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
       propertyPath: maxThrowForce
-      value: 200
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 2953189447355313167, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
       propertyPath: minThrowForce
-      value: 20
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2953189447355313167, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
+      propertyPath: layerAboveBallDifference
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2953841095504223801, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
       propertyPath: lastHinge

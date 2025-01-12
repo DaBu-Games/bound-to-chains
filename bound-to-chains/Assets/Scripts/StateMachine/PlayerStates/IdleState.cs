@@ -9,7 +9,7 @@ public class IdleState : State
     [SerializeField] private ThrowState throwState;
     [SerializeField] private PullingState pullingState;
     [SerializeField] private ClimbingState climbingState;
-    [SerializeField] private HangingState hangingState;
+    [SerializeField] private RisingState risingState;
     [SerializeField] private FallingState fallingState;
 
     public override void EnterState()
@@ -53,13 +53,13 @@ public class IdleState : State
         {
             stateMachine.SwitchState( pullingState );
         }
-        else if( hangingState.CanPlayerHang() )
-        {
-            stateMachine.SwitchState( hangingState );
-        }
         else if ( fallingState.CanPlayerFall() )
         {
             stateMachine.SwitchState( fallingState) ;
+        }
+        else if ( risingState.CanPlayerRise())
+        {
+            stateMachine.SwitchState( risingState );
         }
 
     }

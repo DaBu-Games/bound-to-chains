@@ -24,7 +24,14 @@ public class WalkingState : State
 
     public override void FixedUpdateState()
     {
-        Walking(); 
+        Walking();
+
+        if (!playerInput.facingRight && playerInput.moveInput.x > 0 || playerInput.facingRight && playerInput.moveInput.x < 0)
+        {
+
+            playerInput.FlipCharachter();
+
+        }
     }
 
     public override void UpdateState()

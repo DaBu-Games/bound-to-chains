@@ -33,6 +33,13 @@ public class HangingState : State
 
         DecelPlayer();
 
+        if ( !playerInput.facingRight && playerInput.moveInput.x > 0 || playerInput.facingRight && playerInput.moveInput.x < 0)
+        {
+
+            playerInput.FlipCharachter();
+
+        }
+
     }
 
     public override void UpdateState()
@@ -45,15 +52,7 @@ public class HangingState : State
 
         if ( !CanPlayerHang() ) 
         {
-            if ( risingState.CanPlayerRise())
-            {
-                stateMachine.SwitchState(risingState);
-            }
-            else if ( fallingState.CanPlayerFall())
-            {
-                stateMachine.SwitchState(fallingState);
-            }
-            else if (idleState.CanPlayerIdle())
+            if (idleState.CanPlayerIdle())
             {
                 stateMachine.SwitchState(idleState);
             }
@@ -85,7 +84,7 @@ public class HangingState : State
     private bool IsPlayerHanging()
     {
 
-        return lastHinge.reactionForce.magnitude > minForceOnHinge;
+        return lastHinge.reactionForce.magnitude > minForceOnHinge && ballBehaviour.isGrounded;
 
     }
 

@@ -11,6 +11,10 @@ public class PullingState : State
     [SerializeField] private float maxThrowForce = 2000f;
     [SerializeField] private float minThrowForce = 2000f;
     [SerializeField] private float raycastRange = 0.55f;
+    [SerializeField] private float layerAboveBallDifference = 0.55f;
+
+    [SerializeField] private LayerMask ballExcludeLayers;
+    [SerializeField] private float minForceOnBall = 40f;
 
     [SerializeField] private IdleState idleState;
     [SerializeField] private CheckForGround playerGroundCheck;
@@ -72,14 +76,14 @@ public class PullingState : State
             if (!playerInput.isHoldingCharge)
             {
 
-                ThrowBallWithForce(chargeDuration);
+                PullBallWithForce(chargeDuration);
 
             }
             // Set the max chargeduration to maxChargeTime
             else if (chargeDuration >= maxChargeTime)
             {
 
-                ThrowBallWithForce(maxChargeTime);
+                PullBallWithForce(maxChargeTime);
 
             }
 
@@ -91,13 +95,7 @@ public class PullingState : State
 
     }
 
-    // check if the ball and player are grounded and the ball is inrange of the player
-    private bool CanCharge()
-    {
-        return ballBehaviour.isGrounded && playerGroundCheck.isGrounded && !isInRange;
-    }
-
-    private void ThrowBallWithForce(float chargeDuration)
+    private void PullBallWithForce( float chargeDuration )
     {
 
         playerAnimator.Play("ThrowingAnimation");
@@ -108,8 +106,15 @@ public class PullingState : State
         float chargeFactor = Mathf.Min(chargeDuration / chargeTime, 1f);
         float pullForce = Mathf.Lerp( minThrowForce, maxThrowForce, chargeFactor );
 
+        ballBehaviour.SetAirDrag();
+
         ballrb2d.AddForce( pullForce * directionToPlayer, ForceMode2D.Impulse );
-        ballrb2d.AddForce( pullForce * upWordsScale * Vector2.up , ForceMode2D.Impulse );
+        ballrb2d.AddForce(pullForce * upWordsScale * Vector2.up, ForceMode2D.Impulse);
+
+        if ( ballBehaviour.IsTransformAboveBall( playerInput.player.transform.position.y, layerAboveBallDifference ) )
+        {
+            ballBehaviour.SetExcludeLayers(ballExcludeLayers);
+        }
 
         StartCoroutine(ResetThrowState());
 
@@ -128,11 +133,17 @@ public class PullingState : State
 
     }
 
+    // check if the player is grounded and the ball is not inrange of the player
+    private bool CanCharge()
+    {
+        return playerGroundCheck.isGrounded && !isInRange ;
+    }
+
     // Check if the player can charge and is holding the charge button
     public bool CanPlayerPull()
     {
         CheckForBall();
 
-        return CanCharge() && playerInput.isHoldingCharge;
+        return CanCharge() && playerInput.isHoldingCharge && ( ballBehaviour.GetForceOnBall() > minForceOnBall || ballBehaviour.isGrounded );
     }
 }

@@ -49,9 +49,13 @@ MonoBehaviour:
     m_Bits: 64
   ballBehaviour: {fileID: 0}
   ballrb2d: {fileID: 0}
+  upWordsScale: 1.5
   maxThrowForce: 1600
   minThrowForce: 200
   raycastRange: 0.55
+  ballExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 768
   idleState: {fileID: 211795484026099421}
   playerGroundCheck: {fileID: 8571051339322228545}
 --- !u!1 &921067071946161221
@@ -800,7 +804,7 @@ MonoBehaviour:
   throwState: {fileID: 1541951948131304294}
   pullingState: {fileID: 2953189447355313167}
   climbingState: {fileID: 8259888527526329501}
-  hangingState: {fileID: 2953841095504223801}
+  risingState: {fileID: 3085033669924631151}
   fallingState: {fileID: 5797161323019810506}
 --- !u!1 &7829525484100410168
 GameObject:

@@ -17,7 +17,7 @@ public class PlayerInput : MonoBehaviour
 
     private LayerMask originalExcludeLayers;
 
-    private bool facingRight = true;
+    public bool facingRight { get; private set; }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -30,6 +30,8 @@ public class PlayerInput : MonoBehaviour
 
         // Set the default gravity of the player
         rb2d.gravityScale = variables.defaultGravity;
+
+        facingRight = true;
     }
 
     public void SetPlayerGravity( float gravity )
@@ -61,13 +63,6 @@ public class PlayerInput : MonoBehaviour
     {
         // Get the move input and put it in a vector 2 
         moveInput = context.ReadValue<Vector2>();
-
-        if ( !facingRight && moveInput.x > 0 || facingRight && moveInput.x < 0 )
-        {
-
-            FlipCharachter();
-
-        }
 
     }
     public void Jump( InputAction.CallbackContext context ) 
@@ -134,7 +129,7 @@ public class PlayerInput : MonoBehaviour
     }
 
 
-    private void FlipCharachter()
+    public void FlipCharachter()
     {
 
         // reverse the bool value
@@ -143,5 +138,13 @@ public class PlayerInput : MonoBehaviour
         // rotate the player 180 degerees 
         player.transform.Rotate( 0f, 180f, 0f );
 
+    }
+
+    public void ResetCharachterRotation()
+    {
+
+        facingRight = true; 
+
+        player.transform.rotation = Quaternion.identity;
     }
 }

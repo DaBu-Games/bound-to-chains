@@ -33,6 +33,13 @@ public class RisingState : State
     {
         WhileJumping();
         MovingAir();
+
+        if (!playerInput.facingRight && playerInput.moveInput.x > 0 || playerInput.facingRight && playerInput.moveInput.x < 0)
+        {
+
+            playerInput.FlipCharachter();
+
+        }
     }
 
     public override void UpdateState()

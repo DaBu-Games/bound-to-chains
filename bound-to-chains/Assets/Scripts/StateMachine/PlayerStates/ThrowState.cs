@@ -107,6 +107,8 @@ public class ThrowState : State
         float chargeFactor = Mathf.Min(chargeDuration / chargeTime, 1f);
         float throwForce = Mathf.Lerp(minThrowForce, maxThrowForce, chargeFactor);
 
+        ballBehaviour.SetAirDrag();
+
         ballrb2d.AddForce(throwForce * playerInput.player.transform.right, ForceMode2D.Impulse);
         ballrb2d.AddForce(throwForce * upWordsScale * playerInput.player.transform.up, ForceMode2D.Impulse);
 

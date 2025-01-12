@@ -26,6 +26,8 @@ public class ClimbingState : State
         playerInput.SetPlayerGravity( 0f ); 
         playerInput.SetExcludeLayers( excludeLayers );
 
+        playerInput.ResetCharachterRotation();
+
         playerInput.rb2d.linearVelocity = new Vector2(playerInput.rb2d.linearVelocity.x, 0);
 
         playerAnimator.Play( "ClimbingAnimation" );
