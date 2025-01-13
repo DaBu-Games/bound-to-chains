@@ -4,9 +4,9 @@ public class IdleState : State
 {
     [SerializeField] private CheckForGround playerGroundCheck;
 
+    [SerializeField] private CrouchingState crouchingState;
     [SerializeField] private WalkingState walkingState;
     [SerializeField] private JumpingState jumpingState;
-    [SerializeField] private ThrowState throwState;
     [SerializeField] private PullingState pullingState;
     [SerializeField] private ClimbingState climbingState;
     [SerializeField] private RisingState risingState;
@@ -44,10 +44,9 @@ public class IdleState : State
         {
             stateMachine.SwitchState( walkingState );
         }
-        // check if the player is pressing the throw button if so enter the throw state
-        else if ( throwState.CanPlayerThrow() )
+        else if ( crouchingState.CanPlayerCrouch() )
         {
-            stateMachine.SwitchState( throwState );
+            stateMachine.SwitchState( crouchingState );
         }
         else if ( pullingState.CanPlayerPull() )
         {

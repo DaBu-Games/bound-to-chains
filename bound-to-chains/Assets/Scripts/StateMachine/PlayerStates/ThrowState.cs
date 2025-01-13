@@ -16,8 +16,10 @@ public class ThrowState : State
     [SerializeField] private IdleState idleState;
     [SerializeField] private CheckForGround playerGroundCheck;
 
+    [SerializeField] private Color targetColor;
+
     private float chargeStartTime;
-    private bool isInRange = false;
+    public bool isInRange {  get; private set; }
 
     private float maxChargeTime = 3f;
     private float chargeTime = 2f;
@@ -27,13 +29,13 @@ public class ThrowState : State
     {
 
         chargeStartTime = Time.time;
-        playerAnimator.Play("ChargeAnimation");
 
     }
 
     public override void ExitState()
     {
-        
+        playerInput.ResetPlayerMass();
+        playerInput.ResetPlayerDamping();
     }
 
     public override void FixedUpdateState()
@@ -69,6 +71,14 @@ public class ThrowState : State
             // Calculate how long the player has been charging
             float chargeDuration = Time.time - chargeStartTime;
 
+            // Calculate the charge ratio
+            float chargeRatio = chargeDuration / chargeTime;
+            chargeRatio = Mathf.Clamp01(chargeRatio); // Ensure it's between 0 and 1
+
+            Color newColor = Color.Lerp(playerInput.spriteRenderer.material.color, targetColor, chargeRatio);
+
+            playerInput.spriteRenderer.color = newColor;
+
             // if the player has let go the charge button
             if ( !playerInput.isHoldingCharge )
             {
@@ -87,13 +97,13 @@ public class ThrowState : State
         }
         else
         {
-            ResetThrowState();
+            StartCoroutine( ResetThrowState() );
         }
 
     }
 
     // check if the ball and player are grounded and the ball is inrange of the player
-    private bool CanCharge()
+    public bool CanCharge()
     {
         return ballBehaviour.isGrounded && playerGroundCheck.isGrounded && isInRange;
     }
@@ -122,6 +132,8 @@ public class ThrowState : State
     {
 
         chargeStartTime = 0f;
+
+        playerInput.spriteRenderer.color = playerInput.spriteRenderer.material.color;
 
         yield return new WaitForSeconds( 0.25f );
 

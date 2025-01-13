@@ -7,6 +7,10 @@ public class BallBehaviour : MonoBehaviour
     [SerializeField] private float groundDrag;
     [SerializeField] private float airDrag;
     [SerializeField] private float raycastRange;
+    [SerializeField] private HingeJoint2D firstHinge;
+    [SerializeField] private HingeJoint2D middelHinge;
+    [SerializeField] private HingeJoint2D lastHinge;
+    [SerializeField] private float maxForceOnHinge = 40f;
 
     private Rigidbody2D rb2d;
     private CircleCollider2D circleCollider2D;
@@ -28,6 +32,7 @@ public class BallBehaviour : MonoBehaviour
     {
         CheckExcludeLayers();
         CheckGroundedStatus();
+        LimitVelocity(); 
     }
 
     private void CheckGroundedStatus()
@@ -59,6 +64,17 @@ public class BallBehaviour : MonoBehaviour
             SetExcludeLayers(originalExcludeLayers);
         }
 
+    }
+
+    // make sure the veloctiy of the ball doesnt go to high so the chain wont break 
+    private void LimitVelocity()
+    {
+        Debug.Log( lastHinge.reactionForce.magnitude );
+
+        if ( firstHinge.reactionForce.magnitude > maxForceOnHinge || lastHinge.reactionForce.magnitude > maxForceOnHinge || middelHinge.reactionForce.magnitude > maxForceOnHinge )
+        {
+            rb2d.linearVelocityY = rb2d.linearVelocityY * 0.9f; 
+        }
     }
 
     public void SetAirDrag()

@@ -9,13 +9,18 @@ public class PlayerInput : MonoBehaviour
 
     public Vector2 moveInput { get; private set; }
     public Rigidbody2D rb2d { get; private set; }
+    public SpriteRenderer spriteRenderer { get; private set; }
     public BoxCollider2D boxCollider2D { get; private set; }
     public bool isHoldingJump {  get; private set; }
     public float lastPressedJumpTime { get; private set; }
     public bool isHoldingCharge { get; private set; }
     public bool isHoldingClimbe { get; private set; }
+    public bool isHoldingCrouch { get; private set; }
 
     private LayerMask originalExcludeLayers;
+    private float startingMass;
+    private float startingLinearDamping;
+    private float startingAngularDamping;
 
     public bool facingRight { get; private set; }
 
@@ -24,12 +29,18 @@ public class PlayerInput : MonoBehaviour
     {
         rb2d = player.GetComponent<Rigidbody2D>();
 
+        spriteRenderer = player.GetComponent<SpriteRenderer>();
+
         boxCollider2D = player.GetComponent<BoxCollider2D>();
 
         originalExcludeLayers = boxCollider2D.excludeLayers;
 
         // Set the default gravity of the player
         rb2d.gravityScale = variables.defaultGravity;
+        startingMass = rb2d.mass;
+
+        startingLinearDamping = rb2d.linearDamping;
+        startingAngularDamping = rb2d.angularDamping;
 
         facingRight = true;
     }
@@ -37,6 +48,28 @@ public class PlayerInput : MonoBehaviour
     public void SetPlayerGravity( float gravity )
     {
         rb2d.gravityScale = gravity;
+    }
+
+    public void SetPlayerMass(float mass)
+    {
+        rb2d.mass = mass;
+    }
+
+    public void ResetPlayerMass()
+    {
+        SetPlayerMass( startingMass );
+    }
+
+    public void SetPlayerDamping( float damping)
+    {
+        rb2d.linearDamping = damping;
+        rb2d.angularDamping = damping;
+    }
+
+    public void ResetPlayerDamping()
+    {
+        rb2d.linearDamping = startingLinearDamping;
+        rb2d.angularDamping = startingAngularDamping;
     }
 
     public void SetExcludeLayers( LayerMask excludeLayers )
@@ -122,7 +155,28 @@ public class PlayerInput : MonoBehaviour
         // Check if the button is let go
         else if ( context.canceled )
         {
+
             isHoldingClimbe = false;
+
+        }
+
+    }
+
+    public void Crouching(InputAction.CallbackContext context)
+    {
+
+        // Check if the button is pressed 
+        if ( context.performed )
+        {
+
+            isHoldingCrouch = true;
+
+        }
+        // Check if the button is let go
+        else if ( context.canceled )
+        {
+
+            isHoldingCrouch = false;
 
         }
 

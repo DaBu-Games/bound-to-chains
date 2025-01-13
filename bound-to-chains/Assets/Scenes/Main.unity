@@ -162,7 +162,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!50 &192413354
 Rigidbody2D:
   serializedVersion: 5
@@ -516,6 +516,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9e7abd25aab15da45b3d3decd876b165, type: 3}
+--- !u!233 &777626283 stripped
+HingeJoint2D:
+  m_CorrespondingSourceObject: {fileID: 3599793167146045281, guid: fadc657f1a41883449b4c56dc2eecb38, type: 3}
+  m_PrefabInstance: {fileID: 1033439464}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1033439464
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -552,13 +557,21 @@ PrefabInstance:
       propertyPath: m_Mass
       value: 0.05
       objectReference: {fileID: 0}
+    - target: {fileID: 1434425746346610428, guid: fadc657f1a41883449b4c56dc2eecb38, type: 3}
+      propertyPath: m_Mass
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1434425746346610428, guid: fadc657f1a41883449b4c56dc2eecb38, type: 3}
+      propertyPath: m_LinearDamping
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1554542375044241030, guid: fadc657f1a41883449b4c56dc2eecb38, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.27499986
+      value: -1.3050001
       objectReference: {fileID: 0}
     - target: {fileID: 1554542375044241030, guid: fadc657f1a41883449b4c56dc2eecb38, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.25
+      value: 4.3100004
       objectReference: {fileID: 0}
     - target: {fileID: 1554542375044241030, guid: fadc657f1a41883449b4c56dc2eecb38, type: 3}
       propertyPath: m_LocalPosition.z
@@ -638,11 +651,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2281232691334084790, guid: fadc657f1a41883449b4c56dc2eecb38, type: 3}
       propertyPath: m_ConnectedAnchor.x
-      value: 0.000000056824792
+      value: 0.000000056824774
       objectReference: {fileID: 0}
     - target: {fileID: 2281232691334084790, guid: fadc657f1a41883449b4c56dc2eecb38, type: 3}
       propertyPath: m_ConnectedAnchor.y
-      value: -1.2999997
+      value: -1.2999994
       objectReference: {fileID: 0}
     - target: {fileID: 2330671524612247370, guid: fadc657f1a41883449b4c56dc2eecb38, type: 3}
       propertyPath: m_Mass
@@ -701,12 +714,36 @@ PrefabInstance:
       value: -1.2999978
       objectReference: {fileID: 0}
     - target: {fileID: 4225987509034597118, guid: fadc657f1a41883449b4c56dc2eecb38, type: 3}
+      propertyPath: airDrag
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4225987509034597118, guid: fadc657f1a41883449b4c56dc2eecb38, type: 3}
+      propertyPath: lastHinge
+      value: 
+      objectReference: {fileID: 1861501556}
+    - target: {fileID: 4225987509034597118, guid: fadc657f1a41883449b4c56dc2eecb38, type: 3}
+      propertyPath: firstHinge
+      value: 
+      objectReference: {fileID: 1373102674}
+    - target: {fileID: 4225987509034597118, guid: fadc657f1a41883449b4c56dc2eecb38, type: 3}
       propertyPath: groundDrag
       value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 4225987509034597118, guid: fadc657f1a41883449b4c56dc2eecb38, type: 3}
+      propertyPath: maxVelocity
+      value: 6.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4225987509034597118, guid: fadc657f1a41883449b4c56dc2eecb38, type: 3}
+      propertyPath: middelHinge
+      value: 
+      objectReference: {fileID: 777626283}
+    - target: {fileID: 4225987509034597118, guid: fadc657f1a41883449b4c56dc2eecb38, type: 3}
       propertyPath: raycastRange
       value: 0.42
+      objectReference: {fileID: 0}
+    - target: {fileID: 4225987509034597118, guid: fadc657f1a41883449b4c56dc2eecb38, type: 3}
+      propertyPath: maxForceOnHinge
+      value: 220
       objectReference: {fileID: 0}
     - target: {fileID: 4225987509034597118, guid: fadc657f1a41883449b4c56dc2eecb38, type: 3}
       propertyPath: groundLayerMask.m_Bits
@@ -746,7 +783,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5201260824129302090, guid: fadc657f1a41883449b4c56dc2eecb38, type: 3}
       propertyPath: m_ConnectedAnchor.y
-      value: -0.29999995
+      value: -0.2999997
       objectReference: {fileID: 0}
     - target: {fileID: 5201260824129302090, guid: fadc657f1a41883449b4c56dc2eecb38, type: 3}
       propertyPath: m_ConnectedRigidBody
@@ -878,6 +915,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fadc657f1a41883449b4c56dc2eecb38, type: 3}
+--- !u!233 &1373102674 stripped
+HingeJoint2D:
+  m_CorrespondingSourceObject: {fileID: 2100304761999164110, guid: fadc657f1a41883449b4c56dc2eecb38, type: 3}
+  m_PrefabInstance: {fileID: 1033439464}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1727566922
 GameObject:
   m_ObjectHideFlags: 0
@@ -1064,6 +1106,10 @@ PrefabInstance:
       propertyPath: m_Constraints
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 816167258188325389, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
+      propertyPath: m_LinearDamping
+      value: 0.05
+      objectReference: {fileID: 0}
     - target: {fileID: 1508976196719641175, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
       propertyPath: m_Size.x
       value: 2.326176
@@ -1086,7 +1132,7 @@ PrefabInstance:
       objectReference: {fileID: 124138337}
     - target: {fileID: 1541951948131304294, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
       propertyPath: raycastRange
-      value: 0.75
+      value: 0.55
       objectReference: {fileID: 0}
     - target: {fileID: 1541951948131304294, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
       propertyPath: ballBehaviour
@@ -1094,7 +1140,7 @@ PrefabInstance:
       objectReference: {fileID: 124138335}
     - target: {fileID: 1541951948131304294, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
       propertyPath: maxThrowForce
-      value: 100
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 1541951948131304294, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
       propertyPath: minThrowForce
@@ -1121,6 +1167,10 @@ PrefabInstance:
       value: PlayerInput, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 2953189447355313167, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
+      propertyPath: Damping
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2953189447355313167, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
       propertyPath: ballrb2d
       value: 
       objectReference: {fileID: 124138337}
@@ -1138,7 +1188,7 @@ PrefabInstance:
       objectReference: {fileID: 124138335}
     - target: {fileID: 2953189447355313167, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
       propertyPath: maxThrowForce
-      value: 50
+      value: 65
       objectReference: {fileID: 0}
     - target: {fileID: 2953189447355313167, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
       propertyPath: minThrowForce
@@ -1230,11 +1280,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9209175119351591768, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.58
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 9209175119351591768, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.95
+      value: 4.61
       objectReference: {fileID: 0}
     - target: {fileID: 9209175119351591768, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
       propertyPath: m_LocalPosition.z

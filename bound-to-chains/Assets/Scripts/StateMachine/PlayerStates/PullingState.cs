@@ -10,17 +10,21 @@ public class PullingState : State
     [SerializeField] private float upWordsScale;
     [SerializeField] private float maxThrowForce = 2000f;
     [SerializeField] private float minThrowForce = 2000f;
-    [SerializeField] private float raycastRange = 0.55f;
     [SerializeField] private float layerAboveBallDifference = 0.55f;
 
     [SerializeField] private LayerMask ballExcludeLayers;
     [SerializeField] private float minForceOnBall = 40f;
 
     [SerializeField] private IdleState idleState;
+    [SerializeField] private ThrowState throwState;
     [SerializeField] private CheckForGround playerGroundCheck;
 
+    [SerializeField] private Color targetColor;
+
     private float chargeStartTime;
-    private bool isInRange = false;
+
+    [SerializeField] private float crouchingMass = 5f;
+    [SerializeField] private float Damping = 2f;
 
     private float maxChargeTime = 3f;
     private float chargeTime = 2f;
@@ -28,39 +32,27 @@ public class PullingState : State
 
     public override void EnterState()
     {
-
-        chargeStartTime = Time.time;
         playerAnimator.Play("ChargeAnimation");
+        playerInput.SetPlayerMass(crouchingMass);
+        playerInput.SetPlayerDamping(Damping);
+        chargeStartTime = Time.time;
 
     }
 
     public override void ExitState()
     {
-
+        playerInput.ResetPlayerMass();
+        playerInput.ResetPlayerDamping();
     }
 
     public override void FixedUpdateState()
     {
-        CheckForBall();
+        throwState.CheckForBall();
     }
 
     public override void UpdateState()
     {
         CheckChargeDuration();
-    }
-
-    public bool CheckForBall()
-    {
-
-        // Check if the player is close enough to the metal ball
-        RaycastHit2D hit = Physics2D.Raycast(this.transform.position, this.transform.right, raycastRange, ballLayerMask);
-
-        isInRange = hit.collider != null;
-
-        Debug.DrawRay(this.transform.position, this.transform.right * raycastRange, isInRange ? Color.green : Color.red);
-
-        return isInRange;
-
     }
 
     private void CheckChargeDuration()
@@ -71,6 +63,15 @@ public class PullingState : State
 
             // Calculate how long the player has been charging
             float chargeDuration = Time.time - chargeStartTime;
+
+            // Calculate the charge ratio
+            float chargeRatio = chargeDuration / chargeTime;
+            chargeRatio = Mathf.Clamp01(chargeRatio); // Ensure it's between 0 and 1
+
+
+            Color newColor = Color.Lerp( playerInput.spriteRenderer.material.color, targetColor, chargeRatio);
+
+            playerInput.spriteRenderer.color = newColor;
 
             // if the player has let go the charge button
             if (!playerInput.isHoldingCharge)
@@ -90,7 +91,7 @@ public class PullingState : State
         }
         else
         {
-            ResetThrowState();
+            StartCoroutine( ResetThrowState() );
         }
 
     }
@@ -109,7 +110,7 @@ public class PullingState : State
         ballBehaviour.SetAirDrag();
 
         ballrb2d.AddForce( pullForce * directionToPlayer, ForceMode2D.Impulse );
-        ballrb2d.AddForce(pullForce * upWordsScale * Vector2.up, ForceMode2D.Impulse);
+        ballrb2d.AddForce( pullForce * upWordsScale * Vector2.up, ForceMode2D.Impulse );
 
         if ( ballBehaviour.IsTransformAboveBall( playerInput.player.transform.position.y, layerAboveBallDifference ) )
         {
@@ -127,6 +128,8 @@ public class PullingState : State
 
         chargeStartTime = 0f;
 
+        playerInput.spriteRenderer.color = playerInput.spriteRenderer.material.color;
+
         yield return new WaitForSeconds(0.25f);
 
         stateMachine.SwitchState(idleState);
@@ -136,13 +139,13 @@ public class PullingState : State
     // check if the player is grounded and the ball is not inrange of the player
     private bool CanCharge()
     {
-        return playerGroundCheck.isGrounded && !isInRange ;
+        return playerGroundCheck.isGrounded && !throwState.isInRange ;
     }
 
     // Check if the player can charge and is holding the charge button
     public bool CanPlayerPull()
     {
-        CheckForBall();
+        throwState.CheckForBall();
 
         return CanCharge() && playerInput.isHoldingCharge && ( ballBehaviour.GetForceOnBall() > minForceOnBall || ballBehaviour.isGrounded );
     }

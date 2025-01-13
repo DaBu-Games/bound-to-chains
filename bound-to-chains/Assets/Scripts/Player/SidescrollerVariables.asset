@@ -22,11 +22,13 @@ MonoBehaviour:
   jumpCutGravity: 10
   moveSpeedAccelGround: 5
   moveSpeedDeccelGround: 6
+  moveSpeedAccelCrouching: 8
+  moveSpeedDeccelCrouching: 6
   moveSpeedAccelAir: 5
   moveSpeedDeccelAir: 6
   maxMoveSpeed: 8
-  jumpForce: 15
+  jumpForce: 18
   doubleJumpForce: 15
-  maxJumpForce: 15
+  maxJumpForce: 18
   leaveGroundBufferTime: 0.1
   jumpInputBufferTime: 0.2
