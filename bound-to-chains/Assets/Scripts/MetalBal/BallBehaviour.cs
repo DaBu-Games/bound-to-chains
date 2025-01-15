@@ -69,11 +69,15 @@ public class BallBehaviour : MonoBehaviour
     // make sure the veloctiy of the ball doesnt go to high so the chain wont break 
     private void LimitVelocity()
     {
-        Debug.Log( lastHinge.reactionForce.magnitude );
-
+ 
         if ( firstHinge.reactionForce.magnitude > maxForceOnHinge || lastHinge.reactionForce.magnitude > maxForceOnHinge || middelHinge.reactionForce.magnitude > maxForceOnHinge )
         {
-            rb2d.linearVelocityY = rb2d.linearVelocityY * 0.9f; 
+
+            if( rb2d.linearVelocity.magnitude > 0f )
+            {
+                rb2d.linearVelocity = rb2d.linearVelocity * -0.9f;
+            }
+
         }
     }
 

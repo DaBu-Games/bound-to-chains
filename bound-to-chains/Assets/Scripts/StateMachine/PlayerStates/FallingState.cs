@@ -25,6 +25,12 @@ public class FallingState : RisingState
         
     }
 
+    protected override void LimitVelocity()
+    {
+
+        playerInput.rb2d.linearVelocityY = Mathf.Clamp( playerInput.rb2d.linearVelocity.y, -playerInput.variables.maxVelocity, float.MaxValue );
+    }
+
     // Check if the player has no upward velocity and the player is not grounded
     public bool CanPlayerFall()
     {

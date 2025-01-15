@@ -20,6 +20,7 @@ MonoBehaviour:
   defaultGravity: 4
   fallingGravity: 4
   jumpCutGravity: 10
+  maxVelocity: 10
   moveSpeedAccelGround: 5
   moveSpeedDeccelGround: 6
   moveSpeedAccelCrouching: 8
@@ -27,8 +28,8 @@ MonoBehaviour:
   moveSpeedAccelAir: 5
   moveSpeedDeccelAir: 6
   maxMoveSpeed: 8
-  jumpForce: 18
+  jumpForce: 22
   doubleJumpForce: 15
-  maxJumpForce: 18
+  maxJumpForce: 22
   leaveGroundBufferTime: 0.1
   jumpInputBufferTime: 0.2

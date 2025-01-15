@@ -26,8 +26,8 @@ public class PullingState : State
     [SerializeField] private float crouchingMass = 5f;
     [SerializeField] private float Damping = 2f;
 
-    private float maxChargeTime = 3f;
-    private float chargeTime = 2f;
+    [SerializeField] private float maxChargeTime = 3f;
+    [SerializeField] private float chargeTime = 2f;
 
 
     public override void EnterState()

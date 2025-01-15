@@ -33,6 +33,7 @@ public class RisingState : State
     {
         WhileJumping();
         MovingAir();
+        LimitVelocity();
 
         if (!playerInput.facingRight && playerInput.moveInput.x > 0 || playerInput.facingRight && playerInput.moveInput.x < 0)
         {
@@ -119,6 +120,11 @@ public class RisingState : State
 
         }
 
+    }
+
+    protected virtual void LimitVelocity()
+    {
+        return;
     }
 
     protected virtual void HandleAirborneSpecific()

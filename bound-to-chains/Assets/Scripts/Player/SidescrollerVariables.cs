@@ -16,6 +16,7 @@ public class SidescrollerVariables : ScriptableObject
     [SerializeField] public float defaultGravity;
     [SerializeField] public float fallingGravity;
     [SerializeField] public float jumpCutGravity;
+    [SerializeField] public float maxVelocity;
 
     [Header ("Forces")]
     [SerializeField] public float moveSpeedAccelGround;

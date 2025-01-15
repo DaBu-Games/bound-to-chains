@@ -63,6 +63,8 @@ MonoBehaviour:
   targetColor: {r: 1, g: 0.40392157, b: 0.39215687, a: 1}
   crouchingMass: 5
   Damping: 5
+  maxChargeTime: 3
+  chargeTime: 2
 --- !u!1 &921067071946161221
 GameObject:
   m_ObjectHideFlags: 0
@@ -168,6 +170,8 @@ MonoBehaviour:
   idleState: {fileID: 211795484026099421}
   playerGroundCheck: {fileID: 8571051339322228545}
   targetColor: {r: 1, g: 0.40392157, b: 0.39215687, a: 1}
+  maxChargeTime: 3
+  chargeTime: 2
 --- !u!1 &1738602379063146885
 GameObject:
   m_ObjectHideFlags: 0
@@ -1021,7 +1025,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.005964875, y: 0.13069895}
+  m_Offset: {x: 0.025942504, y: 0.13069895}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1031,5 +1035,5 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.9901979, y: 0.2613979}
+  m_Size: {x: 1.2510208, y: 0.2613979}
   m_EdgeRadius: 0

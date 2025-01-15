@@ -21,8 +21,8 @@ public class ThrowState : State
     private float chargeStartTime;
     public bool isInRange {  get; private set; }
 
-    private float maxChargeTime = 3f;
-    private float chargeTime = 2f;
+    [SerializeField] private float maxChargeTime = 3f;
+    [SerializeField] private float chargeTime = 2f;
 
 
     public override void EnterState()
