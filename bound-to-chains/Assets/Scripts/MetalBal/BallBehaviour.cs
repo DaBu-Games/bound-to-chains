@@ -3,6 +3,7 @@ using UnityEngine;
 public class BallBehaviour : MonoBehaviour
 {
 
+    [SerializeField] private CheckForGround playerGroundCheck;
     [SerializeField] private LayerMask groundLayerMask;
     [SerializeField] private float groundDrag;
     [SerializeField] private float airDrag;
@@ -69,12 +70,13 @@ public class BallBehaviour : MonoBehaviour
     // make sure the veloctiy of the ball doesnt go to high so the chain wont break 
     private void LimitVelocity()
     {
- 
+
         if ( firstHinge.reactionForce.magnitude > maxForceOnHinge || lastHinge.reactionForce.magnitude > maxForceOnHinge || middelHinge.reactionForce.magnitude > maxForceOnHinge )
         {
-
-            if( rb2d.linearVelocity.magnitude > 0f )
+            
+            if ( rb2d.linearVelocity.magnitude > 0f && playerGroundCheck.isGrounded )
             {
+                
                 rb2d.linearVelocity = rb2d.linearVelocity * -0.9f;
             }
 
@@ -104,6 +106,11 @@ public class BallBehaviour : MonoBehaviour
     public bool IsTransformAboveBall( float transformYCheck, float diffrence )
     {
         return transformYCheck - this.transform.position.y >= diffrence;
+    }
+
+    public bool CheckDistanceFromBall(Vector2 objectPosition, float diffrence)
+    {
+        return Vector2.Distance(this.transform.position, objectPosition) >= diffrence;
     }
 
 }

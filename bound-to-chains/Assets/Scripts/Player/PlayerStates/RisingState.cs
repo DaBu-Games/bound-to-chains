@@ -23,7 +23,7 @@ public class RisingState : State
         { 
             jumpingState.CancelJump();
         }
-        if( !playerInput.HasNoExcludeLayers() )
+        if( !playerInput.HasNoExcludeLayers() && !climbingState.isColliding )
         {
             playerInput.ResetExludeLayers();
         }

@@ -1,16 +1,10 @@
 fileFormatVersion: 2
-guid: 64f613d7d0c0fdd41bdc45660134d7e1
+guid: 85d0eb9f2264cff4a82c08b7b006e352
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8891180011573125036
-    second: assets_0
-  - first:
-      213: -1687144669380700377
-    second: assets_1
-  - first:
-      213: -2892819179972619951
-    second: assets_2
+      213: 9121319458817263389
+    second: metal-platform_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -119,57 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: assets_0
+      name: metal-platform_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 45
-        width: 32
-        height: 7
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: caf9edfec11d36b70800000000000000
-      internalID: 8891180011573125036
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: assets_1
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 11
-        width: 31
-        height: 11
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 7279ed0bcde0698e0800000000000000
-      internalID: -1687144669380700377
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: assets_2
-      rect:
-        serializedVersion: 2
-        x: 32
         y: 0
-        width: 32
-        height: 32
+        width: 40
+        height: 40
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -178,30 +128,30 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1519b4a5844aad7d0800000000000000
-      internalID: -2892819179972619951
+      spriteID: d1749a198bf659e70800000000000000
+      internalID: 9121319458817263389
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: assets_3
+      name: metal-platform_1
       rect:
         serializedVersion: 2
-        x: 32
-        y: 39
-        width: 32
-        height: 12
+        x: 0
+        y: 40
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f8c21f8f4bf4fee459d7bafdd7bf162f
-      internalID: -744757509
+      spriteID: fbc72fed9a86d4240b764b459ebbd04f
+      internalID: 1712884499
       vertices: []
       indices: 
       edges: []
@@ -210,7 +160,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 6ba002890e2efa04593f2621a8fe4608
+    spriteID: d8bef938473ff914880527e953fc72bc
     internalID: 0
     vertices: []
     indices: 
@@ -220,10 +170,8 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      assets_0: 8891180011573125036
-      assets_1: -1687144669380700377
-      assets_2: -2892819179972619951
-      assets_3: -744757509
+      metal-platform_0: 9121319458817263389
+      metal-platform_1: 1712884499
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

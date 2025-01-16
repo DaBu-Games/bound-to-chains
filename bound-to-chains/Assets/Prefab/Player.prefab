@@ -52,7 +52,7 @@ MonoBehaviour:
   upWordsScale: 1.5
   maxThrowForce: 1600
   minThrowForce: 200
-  layerAboveBallDifference: 0.55
+  playerAboveBallDifference: 0.55
   ballExcludeLayers:
     serializedVersion: 2
     m_Bits: 768
@@ -275,6 +275,7 @@ MonoBehaviour:
   walkingState: {fileID: 4467296702791501768}
   risingState: {fileID: 3085033669924631151}
   fallingState: {fileID: 5797161323019810506}
+  playerFromBallDifference: 2
   playerBellowBallDifference: 2
   minForceOnHinge: 40
   decelHanging: 1
@@ -981,6 +982,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   risingState: {fileID: 3085033669924631151}
   fallingState: {fileID: 5797161323019810506}
+  idleState: {fileID: 0}
   ballBehaviour: {fileID: 0}
   excludeLayers:
     serializedVersion: 2
@@ -1025,7 +1027,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.025942504, y: 0.13069895}
+  m_Offset: {x: 0.007094592, y: -0.07346901}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1035,5 +1037,5 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.2510208, y: 0.2613979}
+  m_Size: {x: 1.451443, y: 0.62458175}
   m_EdgeRadius: 0

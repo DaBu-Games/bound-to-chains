@@ -10,7 +10,7 @@ public class PullingState : State
     [SerializeField] private float upWordsScale;
     [SerializeField] private float maxThrowForce = 2000f;
     [SerializeField] private float minThrowForce = 2000f;
-    [SerializeField] private float layerAboveBallDifference = 0.55f;
+    [SerializeField] private float playerAboveBallDifference = 0.55f;
 
     [SerializeField] private LayerMask ballExcludeLayers;
     [SerializeField] private float minForceOnBall = 40f;
@@ -112,7 +112,7 @@ public class PullingState : State
         ballrb2d.AddForce( pullForce * directionToPlayer, ForceMode2D.Impulse );
         ballrb2d.AddForce( pullForce * upWordsScale * Vector2.up, ForceMode2D.Impulse );
 
-        if ( ballBehaviour.IsTransformAboveBall( playerInput.player.transform.position.y, layerAboveBallDifference ) )
+        if ( ballBehaviour.IsTransformAboveBall( playerInput.player.transform.position.y, playerAboveBallDifference ) )
         {
             ballBehaviour.SetExcludeLayers(ballExcludeLayers);
         }

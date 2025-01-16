@@ -87,11 +87,6 @@ public class PlayerInput : MonoBehaviour
         return boxCollider2D.excludeLayers == originalExcludeLayers;
     }
 
-    private void Update()
-    {
-        
-    }
-
     public void Move(InputAction.CallbackContext context)
     {
         // Get the move input and put it in a vector 2 

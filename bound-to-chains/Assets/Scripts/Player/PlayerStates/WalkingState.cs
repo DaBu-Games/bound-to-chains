@@ -19,7 +19,7 @@ public class WalkingState : State
 
     public override void ExitState()
     {
-        
+
     }
 
     public override void FixedUpdateState()

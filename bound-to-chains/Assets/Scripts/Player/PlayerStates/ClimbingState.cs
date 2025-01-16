@@ -6,6 +6,7 @@ public class ClimbingState : State
 {
     [SerializeField] private RisingState risingState;
     [SerializeField] private FallingState fallingState;
+    [SerializeField] private IdleState idleState;
     [SerializeField] private BallBehaviour ballBehaviour;
 
     [SerializeField] private LayerMask excludeLayers;
@@ -17,6 +18,8 @@ public class ClimbingState : State
     [SerializeField] private float climbSpeed = 4f;
     [SerializeField] private float climbEndJump = 20f;
     [SerializeField] private float playerBellowBallDifference = 2f;
+
+    public bool isColliding { get; private set; }
 
     private List<Transform> chainsInHitbox = new List<Transform>(); // Chains in the trigger zone
     private Transform currentChain; // The chain the player is climbing towards
@@ -68,9 +71,14 @@ public class ClimbingState : State
         {
             chainsInHitbox.Add(collision.transform);
         }
-        else if ( collision.CompareTag("Ball") && stateMachine.GetCurrentState() is ClimbingState )
+        else if ( collision.CompareTag("Ball") && stateMachine.GetCurrentState() is ClimbingState)
         {
+            isColliding = false;
             FinishClimb();
+        }
+        else if ( collision.CompareTag("Platform") )
+        {
+            isColliding = true;
         }
     }
 
@@ -81,6 +89,16 @@ public class ClimbingState : State
         {
             chainsInHitbox.Remove(collision.transform);
 
+        }
+        else if( collision.CompareTag("Platform") && isColliding )
+        {
+            isColliding = false;
+            playerInput.ResetExludeLayers();
+        }
+        else if ( collision.CompareTag("Ground") && stateMachine.GetCurrentState() is ClimbingState )
+        {
+            isColliding = false;
+            FinishClimb();
         }
     }
 
@@ -124,11 +142,11 @@ public class ClimbingState : State
             }
         }
 
-        if (highestChain.transform.position.y >= playerInput.player.transform.position.y)
+        if ( highestChain != null && highestChain.transform.position.y >= playerInput.player.transform.position.y )
         {
             // Update the current chain to the highest one found
             currentChain = highestChain;
-        }
+        } 
         
     }
 

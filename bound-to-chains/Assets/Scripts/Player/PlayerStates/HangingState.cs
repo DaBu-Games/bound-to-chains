@@ -14,6 +14,7 @@ public class HangingState : State
     [SerializeField] private RisingState risingState;
     [SerializeField] private FallingState fallingState;
 
+    [SerializeField] private float playerFromBallDifference = 2f;
     [SerializeField] private float playerBellowBallDifference = 2f;
     [SerializeField] private float minForceOnHinge = 40f;
     [SerializeField] private float decelHanging = 1f; 
@@ -84,12 +85,12 @@ public class HangingState : State
     private bool IsPlayerHanging()
     {
 
-        return lastHinge.reactionForce.magnitude > minForceOnHinge && ballBehaviour.isGrounded;
+        return lastHinge.reactionForce.magnitude > minForceOnHinge && ballBehaviour.isGrounded && ballBehaviour.IsTransformBellowBall( playerInput.player.transform.position.y, playerBellowBallDifference );
 
     }
 
     public bool CanPlayerHang()
     {
-        return ballBehaviour.IsTransformBellowBall( playerInput.player.transform.position.y, playerBellowBallDifference ) && !playerGroundCheck.isGrounded && IsPlayerHanging(); 
+        return ballBehaviour.CheckDistanceFromBall( playerInput.player.transform.position, playerFromBallDifference ) && !playerGroundCheck.isGrounded && IsPlayerHanging(); 
     }
 }

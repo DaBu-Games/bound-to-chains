@@ -151,7 +151,7 @@ Rigidbody2D:
     m_Bits: 960
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!233 &597378001580496643
 HingeJoint2D:
