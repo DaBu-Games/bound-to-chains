@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class BallBehaviour : MonoBehaviour
 {
@@ -8,10 +9,7 @@ public class BallBehaviour : MonoBehaviour
     [SerializeField] private float groundDrag;
     [SerializeField] private float airDrag;
     [SerializeField] private float raycastRange;
-    [SerializeField] private HingeJoint2D firstHinge;
-    [SerializeField] private HingeJoint2D middelHinge;
-    [SerializeField] private HingeJoint2D lastHinge;
-    [SerializeField] private float maxForceOnHinge = 40f;
+    [SerializeField] private float maxVelocity; 
 
     private Rigidbody2D rb2d;
     private CircleCollider2D circleCollider2D;
@@ -35,6 +33,11 @@ public class BallBehaviour : MonoBehaviour
         CheckGroundedStatus();
         LimitVelocity(); 
     }
+    private void LimitVelocity()
+    {
+        rb2d.linearVelocityY = Mathf.Clamp( rb2d.linearVelocity.y, -maxVelocity, float.MaxValue);
+    }
+
 
     private void CheckGroundedStatus()
     {
@@ -60,27 +63,17 @@ public class BallBehaviour : MonoBehaviour
     private void CheckExcludeLayers()
     {
 
-        if ( rb2d.linearVelocity.y <= 0 && circleCollider2D.excludeLayers != originalExcludeLayers )
+        if ( rb2d.linearVelocity.y <= 0 && originalExcludeLayers != circleCollider2D.excludeLayers )
         {
-            SetExcludeLayers(originalExcludeLayers);
-        }
+            // Check if the ball is still inside a tilemap or platform
+            bool isStillInsideTilemap = Physics2D.OverlapCircle(transform.position, raycastRange, LayerMask.GetMask("Platform") );
 
-    }
-
-    // make sure the veloctiy of the ball doesnt go to high so the chain wont break 
-    private void LimitVelocity()
-    {
-
-        if ( firstHinge.reactionForce.magnitude > maxForceOnHinge || lastHinge.reactionForce.magnitude > maxForceOnHinge || middelHinge.reactionForce.magnitude > maxForceOnHinge )
-        {
-            
-            if ( rb2d.linearVelocity.magnitude > 0f && playerGroundCheck.isGrounded )
+            if (!isStillInsideTilemap)
             {
-                
-                rb2d.linearVelocity = rb2d.linearVelocity * -0.9f;
+                SetExcludeLayers(originalExcludeLayers);
             }
-
         }
+
     }
 
     public void SetAirDrag()
@@ -90,12 +83,12 @@ public class BallBehaviour : MonoBehaviour
 
     public void SetExcludeLayers( LayerMask excludeLayers )
     {
+        Debug.Log("test"); 
         circleCollider2D.excludeLayers = excludeLayers;
     }
-
     public float GetForceOnBall()
     {
-        return hingeJoint2D.reactionForce.magnitude; 
+        return hingeJoint2D.reactionForce.magnitude;
     }
 
     public bool IsTransformBellowBall( float transformYCheck, float diffrence )

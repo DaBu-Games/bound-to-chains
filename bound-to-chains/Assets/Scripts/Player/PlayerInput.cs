@@ -3,8 +3,11 @@ using UnityEngine.InputSystem;
 
 public class PlayerInput : MonoBehaviour
 {
+    [SerializeField] private SidescrollerVariables chained;
+    [SerializeField] private SidescrollerVariables unchained;
+    [SerializeField] private HingeJoint2D lastHinge;
 
-    public SidescrollerVariables variables; 
+    public SidescrollerVariables variables { get; private set; }
     public GameObject player;
 
     public Vector2 moveInput { get; private set; }
@@ -27,6 +30,7 @@ public class PlayerInput : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        variables = chained; 
         rb2d = player.GetComponent<Rigidbody2D>();
 
         spriteRenderer = player.GetComponent<SpriteRenderer>();
@@ -85,6 +89,14 @@ public class PlayerInput : MonoBehaviour
     public bool HasNoExcludeLayers()
     {
         return boxCollider2D.excludeLayers == originalExcludeLayers;
+    }
+
+    public void UnChainePlayer()
+    {
+        variables = unchained; 
+        lastHinge.connectedBody = null;
+        lastHinge.useConnectedAnchor = false;
+        SetPlayerGravity( variables.defaultGravity );
     }
 
     public void Move(InputAction.CallbackContext context)

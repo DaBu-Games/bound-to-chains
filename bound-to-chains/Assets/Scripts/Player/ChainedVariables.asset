@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6f3ebe848ed3b244b531d9658434849, type: 3}
+  m_Name: ChainedVariables
+  m_EditorClassIdentifier: 
+  ScaleXtimes: 0.6
+  ScaleYtimes: 0.1
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 584
+  defaultGravity: 4
+  fallingGravity: 4
+  jumpCutGravity: 10
+  maxVelocity: 8
+  moveSpeedAccelGround: 5
+  moveSpeedDeccelGround: 6
+  moveSpeedAccelCrouching: 8
+  moveSpeedDeccelCrouching: 6
+  moveSpeedAccelAir: 5
+  moveSpeedDeccelAir: 6
+  maxMoveSpeed: 8
+  jumpForce: 22
+  doubleJumpForce: 15
+  maxJumpForce: 22
+  leaveGroundBufferTime: 0.1
+  jumpInputBufferTime: 0.2

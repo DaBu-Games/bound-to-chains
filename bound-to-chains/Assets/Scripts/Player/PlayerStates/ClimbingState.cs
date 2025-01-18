@@ -55,10 +55,18 @@ public class ClimbingState : State
         {
             if( risingState.CanPlayerRise() )
             {
+                if ( !isColliding )
+                {
+                    playerInput.ResetExludeLayers();
+                }
                 stateMachine.SwitchState( risingState );
             }
             else if( fallingState.CanPlayerFall() ) 
             {
+                if (!isColliding)
+                {
+                    playerInput.ResetExludeLayers();
+                }
                 stateMachine.SwitchState( fallingState );
             }
         }
@@ -71,7 +79,7 @@ public class ClimbingState : State
         {
             chainsInHitbox.Add(collision.transform);
         }
-        else if ( collision.CompareTag("Ball") && stateMachine.GetCurrentState() is ClimbingState)
+        else if ( collision.CompareTag("Ball") && stateMachine.GetCurrentState() is ClimbingState )
         {
             isColliding = false;
             FinishClimb();
@@ -90,7 +98,7 @@ public class ClimbingState : State
             chainsInHitbox.Remove(collision.transform);
 
         }
-        else if( collision.CompareTag("Platform") && isColliding )
+        else if( collision.CompareTag("Platform") && isColliding && stateMachine.GetCurrentState() is not ClimbingState && !playerInput.HasNoExcludeLayers() )
         {
             isColliding = false;
             playerInput.ResetExludeLayers();
