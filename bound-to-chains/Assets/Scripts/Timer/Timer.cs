@@ -31,9 +31,10 @@ public class Timer : MonoBehaviour
     {
         startTime = false;
 
-        if (currentIndex < audioEvents.Count) 
+        if ( currentIndex < audioEvents.Count && currentIndex != 0 ) 
         {
-            audioEvents[currentIndex].audioSource.Stop();
+            audioEvents[ currentIndex - 1 ].audioSource.Stop();
+            Debug.Log("Stop"); 
         }
         
     }
@@ -46,8 +47,6 @@ public class Timer : MonoBehaviour
         {
 
             elapsedTime += Time.deltaTime;
-
-            Debug.Log( elapsedTime );
 
             if ( elapsedTime >= audioEvents[currentIndex].delay ) 
             { 
