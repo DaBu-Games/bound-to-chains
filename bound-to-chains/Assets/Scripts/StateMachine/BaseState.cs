@@ -5,7 +5,7 @@ public abstract class BaseState<T> : IState
 
     protected T stateMachine;
 
-    public void Initialize( T stateMachine )
+    protected BaseState(T stateMachine)
     {
         this.stateMachine = stateMachine;
     }

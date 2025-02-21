@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Transition : MonoBehaviour
+public class Transition
 {
     public readonly IState fromState;
     public readonly IState toState;

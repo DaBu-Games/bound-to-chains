@@ -7,7 +7,7 @@ public class BoltCutters : MonoBehaviour
     {
         if( collision.gameObject.CompareTag( "Player" ) )
         {
-            collision.gameObject.GetComponent<PlayerInput>().UnChainePlayer();
+            collision.gameObject.GetComponent<Player>().UnChainePlayer();
             this.gameObject.SetActive( false );
             collision.gameObject.GetComponent<UnityEngine.InputSystem.PlayerInput>().enabled = true;
         }

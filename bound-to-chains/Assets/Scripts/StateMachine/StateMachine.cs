@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 
-public class StateMachine : MonoBehaviour
+public class StateMachine
 {
     public IState currentState { get; private set; }
     private Dictionary<System.Type, IState> allStates = new Dictionary<System.Type, IState>();
@@ -18,8 +18,9 @@ public class StateMachine : MonoBehaviour
            {
                 SwitchState( transition.toState );
            }
-            
         }
+
+        Debug.Log(currentState.ToString());
         
         currentState?.OnUpdate();
     }
