@@ -11,10 +11,7 @@ public class ThrowState : BaseState<Player>
         stateMachine.CheckChargeDuration( true );
     }
 
-    public override void OnFixedUpdate()
-    {
-        stateMachine.CheckForBall();
-    }
+    public override void OnFixedUpdate() { }
 
     public override void OnEnterState()
     {

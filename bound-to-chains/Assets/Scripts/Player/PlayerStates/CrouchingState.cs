@@ -8,12 +8,10 @@ public class CrouchingState : BaseState<Player>
     private float crouchingMass = 5f;
     private float Damping = 2f;
 
-    public override void OnUpdate(){}
+    public override void OnUpdate() { }
 
     public override void OnFixedUpdate()
     {
-        stateMachine.Crouching();
-        stateMachine.CheckForBall();
         stateMachine.FlipCharachter();
     }
 
@@ -25,5 +23,9 @@ public class CrouchingState : BaseState<Player>
         stateMachine.ResetLinearVelocity();
     }
 
-    public override void OnExitState(){}
+    public override void OnExitState()
+    {
+        stateMachine.ResetPlayerMass();
+        stateMachine.ResetPlayerDamping();
+    }
 }

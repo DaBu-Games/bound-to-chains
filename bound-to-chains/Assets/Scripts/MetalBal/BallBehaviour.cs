@@ -4,13 +4,6 @@ using UnityEngine.InputSystem;
 public class BallBehaviour : MonoBehaviour
 {
 
-    [SerializeField] private CheckForGround playerGroundCheck;
-    [SerializeField] private LayerMask groundLayerMask;
-    [SerializeField] private float groundDrag;
-    [SerializeField] private float airDrag;
-    [SerializeField] private float raycastRange;
-    [SerializeField] private float maxVelocity; 
-
     private Rigidbody2D rb2d;
     private CircleCollider2D circleCollider2D;
     private HingeJoint2D hingeJoint2D;
@@ -83,7 +76,6 @@ public class BallBehaviour : MonoBehaviour
 
     public void SetExcludeLayers( LayerMask excludeLayers )
     {
-        Debug.Log("test"); 
         circleCollider2D.excludeLayers = excludeLayers;
     }
     public float GetForceOnBall()

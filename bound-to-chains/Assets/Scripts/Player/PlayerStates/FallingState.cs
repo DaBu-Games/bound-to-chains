@@ -7,7 +7,12 @@ public class FallingState : BaseState<Player>
 
     public override void OnUpdate() { }
 
-    public override void OnFixedUpdate() { }
+    public override void OnFixedUpdate()
+    {
+        stateMachine.WhileJumping();
+        stateMachine.MovingAir();
+        stateMachine.FlipCharachter();
+    }
 
     public override void OnEnterState()
     {

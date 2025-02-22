@@ -18,7 +18,7 @@ public class ClimbingState : BaseState<Player>
     public override void OnEnterState()
     {
         stateMachine.SetPlayerGravity(0f);
-        //stateMachine.SetExcludeLayers( stateMachine.variables.excludeLayers );
+        //stateMachine.SetExcludeLayers( stateMachine.playerExcludeLayers );
 
         stateMachine.ResetCharachterRotation();
 

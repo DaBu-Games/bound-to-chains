@@ -14,11 +14,7 @@ public class PullingState : BaseState<Player>
         stateMachine.CheckChargeDuration( false );
     }
 
-    public override void OnFixedUpdate()
-    {
-        stateMachine.CheckForBall(); 
-    }
-
+    public override void OnFixedUpdate() { }
     public override void OnEnterState()
     {
         stateMachine.playerAnimator.Play("ChargeAnimation");

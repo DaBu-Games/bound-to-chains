@@ -38,6 +38,7 @@ Transform:
   m_Children:
   - {fileID: 7799707055440324420}
   - {fileID: 605515207712822280}
+  - {fileID: 4140855359549565145}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &638933444685990293
@@ -212,14 +213,11 @@ MonoBehaviour:
   boxCollider2D: {fileID: 7910484743267188178}
   ballBehaviour: {fileID: 0}
   ballrb2d: {fileID: 0}
-  ballLayerMask:
-    serializedVersion: 2
-    m_Bits: 64
   playerAnimator: {fileID: 638933444685990293}
   checkForChains: {fileID: 9169222250130335005}
+  checkForBall: {fileID: 1938823460636007448}
   maxChargeTime: 3
   chargeTime: 2
-  raycastRange: 1
   upWordsScale: 1.2
   maxThrowForce: 2000
   minThrowForce: 2000
@@ -396,6 +394,54 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!1 &5181788233445915747
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4140855359549565145}
+  - component: {fileID: 1938823460636007448}
+  m_Layer: 8
+  m_Name: BallCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4140855359549565145
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5181788233445915747}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.45, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9209175119351591768}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1938823460636007448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5181788233445915747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b88864562ab9be54ab41c97f2a86fc1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ballLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
+  raycastRange: 1
 --- !u!1 &6490782919925794835
 GameObject:
   m_ObjectHideFlags: 0
@@ -407,7 +453,7 @@ GameObject:
   - component: {fileID: 7799707055440324420}
   - component: {fileID: 8571051339322228545}
   m_Layer: 0
-  m_Name: groundCheck
+  m_Name: GroundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

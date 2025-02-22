@@ -14,43 +14,22 @@ public class Player : MonoBehaviour
     [SerializeField] private BoxCollider2D boxCollider2D;
     [SerializeField] private BallBehaviour ballBehaviour;
     [SerializeField] private Rigidbody2D ballrb2d;
-    [SerializeField] private LayerMask ballLayerMask;
     [SerializeField] public Animator playerAnimator;
     [SerializeField] public CheckForChains checkForChains;
+    [SerializeField] public CheckForBall checkForBall;
 
+
+
+    public SidescrollerVariables variables { get; private set; }
     private bool facingRight;
     private StateMachine stateMachine;
     private LayerMask originalExcludeLayers;
     private float startingMass;
     private float startingLinearDamping;
     private float startingAngularDamping;
-
-    private bool canJump; 
+    private bool canJump;
     public bool isJumping { get; private set; }
     private float chargeStartTime;
-    [SerializeField] private float maxChargeTime = 3f;
-    [SerializeField] private float chargeTime = 2f;
-    [SerializeField] private float raycastRange = 1f;
-    [SerializeField] private float upWordsScale = 1.2f;
-    [SerializeField] private float maxThrowForce = 2000f;
-    [SerializeField] private float minThrowForce = 2000f;
-    [SerializeField] private float playerAboveBallDifference = 0.55f;
-    [SerializeField] private LayerMask ballExcludeLayers;
-    [SerializeField] private Color targetColor;
-    private bool isInRangeBall;
-
-    [SerializeField] private float maxMovingClimb = 4f;
-    [SerializeField] private float movingAccelerationRate = 4f;
-    [SerializeField] private float movingDecelerationRate = 4f;
-    [SerializeField] private float climbSpeed = 4f;
-    [SerializeField] private float climbEndJump = 20f;
-    [SerializeField] private float playerBellowBallDifference = 2f;
-
-    private float playerFromBallDifference = 2f;
-    private float minForceOnHinge = 40f;
-    private float minForceOnBall = 40f; 
-
-    public SidescrollerVariables variables { get; private set; }
 
     private IState risingState;
     private IState idleState;
@@ -80,13 +59,14 @@ public class Player : MonoBehaviour
         IState walkingState = new WalkingState(this);
 
         //Climbing 
-        stateMachine.AddTransition(new Transition(climbingState, risingState, () => CanPlayerRise()));
-        stateMachine.AddTransition(new Transition(climbingState, fallingState, () => CanPlayerFall()));
+        stateMachine.AddTransition(new Transition(climbingState, risingState, () => CanPlayerRise() && !CanPlayerClimbe()));
+        stateMachine.AddTransition(new Transition(climbingState, fallingState, () => CanPlayerFall() && !CanPlayerClimbe()));
 
         //Crouching
-        stateMachine.AddTransition(new Transition(climbingState, throwState, () => CanPlayerThrow()));
-        stateMachine.AddTransition(new Transition(climbingState, pullingState, () => CanPlayerPull()));
-        stateMachine.AddTransition(new Transition(climbingState, idleState, () => CanPlayerIdle()));
+        stateMachine.AddTransition(new Transition(crouchingState, throwState, () => CanPlayerThrow() && playerInput.isHoldingCharge));
+        stateMachine.AddTransition(new Transition(crouchingState, pullingState, () => CanPlayerPull() && playerInput.isHoldingCharge));
+        stateMachine.AddTransition(new Transition(crouchingState, idleState, () => CanPlayerIdle() && !checkForBall.BallCheck() && !playerInput.isHoldingCrouch ));
+        stateMachine.AddTransition(new Transition(crouchingState, walkingState, () => CanPlayerWalk() && !checkForBall.BallCheck() && !playerInput.isHoldingCrouch));
 
         //Falling
         stateMachine.AddTransition(new Transition(fallingState, climbingState, () => CanPlayerClimbe()));
@@ -106,7 +86,7 @@ public class Player : MonoBehaviour
         stateMachine.AddTransition(new Transition(idleState, climbingState, () => CanPlayerClimbe()));
         stateMachine.AddTransition(new Transition(idleState, walkingState, () => CanPlayerWalk()));
         stateMachine.AddTransition(new Transition(idleState, crouchingState, () => CanPlayerCrouch()));
-        stateMachine.AddTransition(new Transition(idleState, pullingState, () => CanPlayerPull()));
+        stateMachine.AddTransition(new Transition(idleState, pullingState, () => CanPlayerPull() && playerInput.isHoldingCharge));
         stateMachine.AddTransition(new Transition(idleState, fallingState, () => CanPlayerFall()));
         stateMachine.AddTransition(new Transition(idleState, risingState, () => CanPlayerRise()));
 
@@ -141,99 +121,80 @@ public class Player : MonoBehaviour
     #region 
 
     // check if the player is holding the climbe button has more then 0 chains and the player is bellow the ball
-    public bool CanPlayerClimbe()
+    private bool CanPlayerClimbe()
     {
         return playerInput.isHoldingClimbe && checkForChains.chainsInHitbox.Count > 0 && 
                 ballBehaviour.IsTransformBellowBall( this.transform.position.y, playerBellowBallDifference) && 
                     ballBehaviour.isGrounded;
     }
-    public bool CanPlayerCrouch()
+    private bool CanPlayerCrouch()
     {
-        CheckForBall();
-
-        return playerGroundCheck.isGrounded && ( playerInput.isHoldingCrouch || CanChargePull() );
+        return playerGroundCheck.isGrounded && ( playerInput.isHoldingCrouch || ballBehaviour.isGrounded && checkForBall.BallCheck() );
     }
 
     // Check if the player has no upward velocity and the player is not grounded
-    public bool CanPlayerFall()
+    private bool CanPlayerFall()
     {
         return rb2d.linearVelocity.y < 0 && !playerGroundCheck.isGrounded;
     }
 
     private bool IsPlayerHanging()
     {
-
         return lastHinge.reactionForce.magnitude > minForceOnHinge && ballBehaviour.isGrounded && 
                 ballBehaviour.IsTransformBellowBall(this.transform.position.y, playerBellowBallDifference);
-
     }
 
-    public bool CanPlayerHang()
+    private bool CanPlayerHang()
     {
         return ballBehaviour.CheckDistanceFromBall(this.transform.position, playerFromBallDifference) && 
                 !playerGroundCheck.isGrounded && IsPlayerHanging();
     }
 
     // Check if the player has no x input and is grounded
-    public bool CanPlayerIdle()
+    private bool CanPlayerIdle()
     {
         return playerInput.moveInput.x == 0 && playerGroundCheck.isGrounded;
     }
 
-    public bool CanBufferJump()
+    private bool CanBufferJump()
     {
         return Time.time - playerGroundCheck.lastOnGroundTime <= variables.leaveGroundBufferTime;
     }
 
-    public bool IsJumpBufferd()
+    private bool IsJumpBufferd()
     {
         return Time.time - playerInput.lastPressedJumpTime <= variables.jumpInputBufferTime && Time.time > variables.jumpInputBufferTime;
     }
 
     // Check if the player is grounded or if the player has touched te ground in time of 'variables.leaveGroundBufferTime'
     // And check if the player is not already jumping and if the player has pressed the jump butten in the time of 'variables.jumpInputBufferTime'
-    public bool CanPlayerJump()
+    private bool CanPlayerJump()
     {
 
         return (playerGroundCheck.isGrounded || CanBufferJump()) && !isJumping && IsJumpBufferd();
 
     }
 
-    private bool CanChargePull()
+    // Check if the player can charge and is holding the charge button
+    private bool CanPlayerPull()
     {
-        return playerGroundCheck.isGrounded && isInRangeBall;
+        return playerGroundCheck.isGrounded && !checkForBall.BallCheck()
+                && (ballBehaviour.GetForceOnBall() > minForceOnBall || ballBehaviour.isGrounded);
     }
 
-    // Check if the player can charge and is holding the charge button
-    public bool CanPlayerPull()
+    private bool CanPlayerThrow()
     {
-        CheckForBall();
-
-        return CanChargePull() && playerInput.isHoldingCharge && (ballBehaviour.GetForceOnBall() > minForceOnBall || ballBehaviour.isGrounded);
+        return playerGroundCheck.isGrounded && checkForBall.BallCheck() && ballBehaviour.isGrounded;
     }
 
     // Check if the player has a upward velocity above 0 and the player is not grounded
-    public bool CanPlayerRise()
+    private bool CanPlayerRise()
     {
         return rb2d.linearVelocity.y > 0 && !playerGroundCheck.isGrounded;
     }
 
-    // check if the ball and player are grounded and the ball is inrange of the player
-    public bool CanChargeThrow()
-    {
-        return ballBehaviour.isGrounded && CanChargePull();
-    }
-
-    // Check if the player can charge and is holding the charge button
-    public bool CanPlayerThrow()
-    {
-        CheckForBall();
-
-        return CanChargeThrow() && playerInput.isHoldingCharge;
-    }
-
     // Check if the player input x is not equal to 0 and if the player is grounded
-    public bool CanPlayerWalk()
+    private bool CanPlayerWalk()
     {
         return playerInput.moveInput.x != 0 && playerGroundCheck.isGrounded;
     }
@@ -350,25 +311,6 @@ public class Player : MonoBehaviour
         rb2d.AddForce(movement * Vector2.right, ForceMode2D.Force);
     }
 
-    public void Crouching()
-    {
-        // Calculate the target speed based on player input and max movement speed
-        float targetSpeed = playerInput.moveInput.x * variables.maxMoveSpeed;
-
-        // check if the player is moving if is so accel if not deccel 
-        float accelRate = (Mathf.Abs(playerInput.moveInput.x) > 0.01f) ? variables.moveSpeedAccelCrouching : variables.moveSpeedDeccelCrouching;
-
-        // Calculate the difference between the target speed and the current velocity
-        float speedDif = targetSpeed - rb2d.linearVelocity.x;
-
-        // Calculate the force to be applied based on the acceleration rate and speed difference
-        float movement = speedDif * accelRate;
-
-        // Apply the calculated force to the Rigidbody2D
-        rb2d.AddForce(movement * Vector2.right, ForceMode2D.Force);
-
-    }
-
     public void MovingAir()
     {
         // Calculate the target speed based on player input and max movement speed
@@ -459,26 +401,11 @@ public class Player : MonoBehaviour
         chargeStartTime = Time.time;
     }
 
-    public bool CheckForBall()
-    {
-
-        // Check if the player is close enough to the metal ball
-        RaycastHit2D hit = Physics2D.Raycast(this.transform.position, this.transform.right, raycastRange, ballLayerMask);
-
-        isInRangeBall = hit.collider != null;
-
-        Debug.DrawRay(this.transform.position, this.transform.right * raycastRange, isInRangeBall ? Color.green : Color.red);
-
-        return isInRangeBall;
-
-    }
-
     public void CheckChargeDuration( bool isThrowing )
     {
 
-        if (isThrowing ? CanChargeThrow() : CanChargePull() && chargeStartTime != 0f)
+        if ( ( isThrowing ? CanPlayerThrow() : CanPlayerPull() ) && chargeStartTime != 0f)
         {
-
             // Calculate how long the player has been charging
             float chargeDuration = Time.time - chargeStartTime;
 
@@ -524,7 +451,6 @@ public class Player : MonoBehaviour
 
     public void ThrowBallWithForce(float chargeDuration)
     {
-
         playerAnimator.Play("ThrowingAnimation");
 
         // Calculate how hard the player can throw the ball
@@ -537,12 +463,10 @@ public class Player : MonoBehaviour
         ballrb2d.AddForce(throwForce * upWordsScale * this.transform.up, ForceMode2D.Impulse);
 
         StartCoroutine(ResetChargeState());
-
     }
 
     private void PullBallWithForce(float chargeDuration)
     {
-
         playerAnimator.Play("ThrowingAnimation");
 
         Vector2 directionToPlayer = (this.transform.position - ballrb2d.transform.position).normalized;
@@ -554,7 +478,7 @@ public class Player : MonoBehaviour
         ballBehaviour.SetAirDrag();
 
         ballrb2d.AddForce(pullForce * directionToPlayer, ForceMode2D.Impulse);
-        ballrb2d.AddForce(pullForce * upWordsScale * Vector2.up, ForceMode2D.Impulse);
+        ballrb2d.AddForce(pullForce * upWordsScale * this.transform.up, ForceMode2D.Impulse);
 
         if (ballBehaviour.IsTransformAboveBall(this.transform.position.y, playerAboveBallDifference))
         {
@@ -562,22 +486,18 @@ public class Player : MonoBehaviour
         }
 
         StartCoroutine(ResetChargeState());
-
     }
 
 
     // Reset the ChargeStartTime and switch state
     public IEnumerator ResetChargeState()
     {
-
         chargeStartTime = 0f;
-
         spriteRenderer.color = spriteRenderer.material.color;
 
         yield return new WaitForSeconds(0.25f);
 
         stateMachine.SwitchState(idleState);
-
     }
 
     public void Walking()
