@@ -23,5 +23,9 @@ public class FallingState : BaseState<Player>
     public override void OnExitState()
     {
         stateMachine.SetPlayerGravity(stateMachine.variables.defaultGravity);
+        if (!stateMachine.HasNoExcludeLayers() && !stateMachine.checkForChains.isColliding)
+        {
+            stateMachine.ResetExludeLayers();
+        }
     }
 }

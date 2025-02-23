@@ -254,6 +254,7 @@ public class Player : MonoBehaviour
 
     public void ResetExludeLayers()
     {
+        Debug.Log("reset");
         SetExcludeLayers(originalExcludeLayers);
     }
 

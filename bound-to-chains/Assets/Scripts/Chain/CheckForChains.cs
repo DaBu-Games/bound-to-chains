@@ -20,7 +20,6 @@ public class CheckForChains : MonoBehaviour
         }
         else if ( collision.CompareTag("Ball") && player.GetPlayerState() is ClimbingState )
         {
-            isColliding = false;
             player.FinishClimb();
         }
         else if (collision.CompareTag("Platform"))
@@ -40,7 +39,6 @@ public class CheckForChains : MonoBehaviour
         else if (collision.CompareTag("Platform") && isColliding && player.GetPlayerState() is not ClimbingState && !player.HasNoExcludeLayers())
         {
             isColliding = false;
-            player.ResetExludeLayers();
         }
         else if (collision.CompareTag("Ground") && player.GetPlayerState() is ClimbingState)
         {

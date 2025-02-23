@@ -14,16 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundLayerMask:
     serializedVersion: 2
-    m_Bits: 0
-  maxVelocity: 0
-  groundDrag: 0
-  airDrag: 0
+    m_Bits: 520
+  maxVelocity: 4.2
+  groundDrag: 100
+  airDrag: 0.05
   ballExcludeLayers:
     serializedVersion: 2
     m_Bits: 768
-  minForceOnHinge: 0
-  minForceOnBall: 0
+  minForceOnHinge: 20
+  minForceOnBall: 40
   playerAboveBallDifference: 0.55
   playerBellowBallDifference: 0.2
-  playerFromBallDifference: 0
-  raycastRange: 0
+  playerFromBallDifference: 4
+  raycastRange: 0.42
