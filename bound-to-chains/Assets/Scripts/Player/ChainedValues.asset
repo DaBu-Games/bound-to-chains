@@ -9,18 +9,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6f3ebe848ed3b244b531d9658434849, type: 3}
-  m_Name: UnchainedVariables
+  m_Script: {fileID: 11500000, guid: f9befcdbf5efe9947964bc40b22ff52c, type: 3}
+  m_Name: ChainedValues
   m_EditorClassIdentifier: 
   ScaleXtimes: 0.6
   ScaleYtimes: 0.1
   whatIsGround:
     serializedVersion: 2
     m_Bits: 584
-  defaultGravity: 6
-  fallingGravity: 6
-  jumpCutGravity: 12
-  maxVelocity: 10
+  defaultGravity: 4
+  fallingGravity: 4
+  jumpCutGravity: 10
+  maxVelocity: 8
   moveSpeedAccelGround: 5
   moveSpeedDeccelGround: 6
   moveSpeedAccelCrouching: 8
@@ -28,8 +28,25 @@ MonoBehaviour:
   moveSpeedAccelAir: 5
   moveSpeedDeccelAir: 6
   maxMoveSpeed: 8
-  jumpForce: 18
+  jumpForce: 22
   doubleJumpForce: 15
-  maxJumpForce: 18
+  maxJumpForce: 22
   leaveGroundBufferTime: 0.1
   jumpInputBufferTime: 0.2
+  maxThrowForce: 0
+  minThrowForce: 0
+  upWordsScalePull: 0
+  maxPullForce: 0
+  minPullForce: 0
+  targetColor: {r: 0, g: 0, b: 0, a: 0}
+  upWordsScale: 0
+  maxChargeTime: 0
+  chargeTime: 0
+  climbExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  maxMovingClimb: 0
+  movingAccelerationRate: 0
+  movingDecelerationRate: 0
+  climbSpeed: 0
+  climbEndJump: 0

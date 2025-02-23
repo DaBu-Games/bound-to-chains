@@ -4,7 +4,7 @@ public class CheckForGround : MonoBehaviour
 {
 
     [SerializeField] private Transform groundCheck;
-    public SidescrollerVariables variables;
+    [SerializeField] private PlayerValues variables;
 
     public bool isGrounded { get; private set; }
     public float lastOnGroundTime { get; private set; }

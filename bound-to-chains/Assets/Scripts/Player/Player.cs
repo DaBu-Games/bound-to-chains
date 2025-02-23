@@ -4,8 +4,8 @@ using UnityEditor.Animations;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private SidescrollerVariables chained;
-    [SerializeField] private SidescrollerVariables unchained;
+    [SerializeField] private PlayerValues chained;
+    [SerializeField] private PlayerValues unchained;
     [SerializeField] private PlayerInput playerInput;
     [SerializeField] private HingeJoint2D lastHinge;
     [SerializeField] private CheckForGround playerGroundCheck;
@@ -13,14 +13,13 @@ public class Player : MonoBehaviour
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private BoxCollider2D boxCollider2D;
     [SerializeField] private BallBehaviour ballBehaviour;
+    [SerializeField] private BallValues ballValues;
     [SerializeField] private Rigidbody2D ballrb2d;
     [SerializeField] public Animator playerAnimator;
     [SerializeField] public CheckForChains checkForChains;
     [SerializeField] public CheckForBall checkForBall;
 
-
-
-    public SidescrollerVariables variables { get; private set; }
+    public PlayerValues variables { get; private set; }
     private bool facingRight;
     private StateMachine stateMachine;
     private LayerMask originalExcludeLayers;
@@ -124,7 +123,7 @@ public class Player : MonoBehaviour
     private bool CanPlayerClimbe()
     {
         return playerInput.isHoldingClimbe && checkForChains.chainsInHitbox.Count > 0 && 
-                ballBehaviour.IsTransformBellowBall( this.transform.position.y, playerBellowBallDifference) && 
+                ballBehaviour.IsTransformBellowBall( this.transform.position.y, ballValues.playerBellowBallDifference) && 
                     ballBehaviour.isGrounded;
     }
     private bool CanPlayerCrouch()
@@ -140,13 +139,13 @@ public class Player : MonoBehaviour
 
     private bool IsPlayerHanging()
     {
-        return lastHinge.reactionForce.magnitude > minForceOnHinge && ballBehaviour.isGrounded && 
-                ballBehaviour.IsTransformBellowBall(this.transform.position.y, playerBellowBallDifference);
+        return lastHinge.reactionForce.magnitude > ballValues.minForceOnHinge && ballBehaviour.isGrounded && 
+                ballBehaviour.IsTransformBellowBall(this.transform.position.y, ballValues.playerBellowBallDifference);
     }
 
     private bool CanPlayerHang()
     {
-        return ballBehaviour.CheckDistanceFromBall(this.transform.position, playerFromBallDifference) && 
+        return ballBehaviour.CheckDistanceFromBall(this.transform.position, ballValues.playerFromBallDifference) && 
                 !playerGroundCheck.isGrounded && IsPlayerHanging();
     }
 
@@ -179,7 +178,7 @@ public class Player : MonoBehaviour
     private bool CanPlayerPull()
     {
         return playerGroundCheck.isGrounded && !checkForBall.BallCheck()
-                && (ballBehaviour.GetForceOnBall() > minForceOnBall || ballBehaviour.isGrounded);
+                && (ballBehaviour.GetForceOnBall() > ballValues.minForceOnBall || ballBehaviour.isGrounded);
     }
 
     private bool CanPlayerThrow()
@@ -410,10 +409,10 @@ public class Player : MonoBehaviour
             float chargeDuration = Time.time - chargeStartTime;
 
             // Calculate the charge ratio
-            float chargeRatio = chargeDuration / chargeTime;
+            float chargeRatio = chargeDuration / variables.chargeTime;
             chargeRatio = Mathf.Clamp01(chargeRatio); // Ensure it's between 0 and 1
 
-            Color newColor = Color.Lerp(spriteRenderer.material.color, targetColor, chargeRatio);
+            Color newColor = Color.Lerp(spriteRenderer.material.color, variables.targetColor, chargeRatio);
 
             spriteRenderer.color = newColor;
 
@@ -430,15 +429,15 @@ public class Player : MonoBehaviour
                 }
             }
             // Set the max chargeduration to maxChargeTime
-            else if (chargeDuration >= maxChargeTime)
+            else if (chargeDuration >= variables.maxChargeTime )
             {
                 if (!isThrowing)
                 {
-                    PullBallWithForce(maxChargeTime);
+                    PullBallWithForce(variables.maxChargeTime);
                 }
                 else
                 {
-                    ThrowBallWithForce(maxChargeTime);
+                    ThrowBallWithForce(variables.maxChargeTime);
                 }
             }
         }
@@ -454,13 +453,13 @@ public class Player : MonoBehaviour
         playerAnimator.Play("ThrowingAnimation");
 
         // Calculate how hard the player can throw the ball
-        float chargeFactor = Mathf.Min(chargeDuration / chargeTime, 1f);
-        float throwForce = Mathf.Lerp(minThrowForce, maxThrowForce, chargeFactor);
+        float chargeFactor = Mathf.Min(chargeDuration / variables.chargeTime, 1f);
+        float throwForce = Mathf.Lerp(variables.minThrowForce, variables.maxThrowForce, chargeFactor);
 
         ballBehaviour.SetAirDrag();
 
         ballrb2d.AddForce(throwForce * this.transform.right, ForceMode2D.Impulse);
-        ballrb2d.AddForce(throwForce * upWordsScale * this.transform.up, ForceMode2D.Impulse);
+        ballrb2d.AddForce(throwForce * variables.upWordsScale * this.transform.up, ForceMode2D.Impulse);
 
         StartCoroutine(ResetChargeState());
     }
@@ -472,17 +471,17 @@ public class Player : MonoBehaviour
         Vector2 directionToPlayer = (this.transform.position - ballrb2d.transform.position).normalized;
 
         // Calculate how hard the player can throw the ball
-        float chargeFactor = Mathf.Min(chargeDuration / chargeTime, 1f);
-        float pullForce = Mathf.Lerp(minThrowForce, maxThrowForce, chargeFactor);
+        float chargeFactor = Mathf.Min(chargeDuration / variables.chargeTime, 1f);
+        float pullForce = Mathf.Lerp(variables.minThrowForce, variables.maxThrowForce, chargeFactor);
 
         ballBehaviour.SetAirDrag();
 
         ballrb2d.AddForce(pullForce * directionToPlayer, ForceMode2D.Impulse);
-        ballrb2d.AddForce(pullForce * upWordsScale * this.transform.up, ForceMode2D.Impulse);
+        ballrb2d.AddForce(pullForce * variables.upWordsScale * this.transform.up, ForceMode2D.Impulse);
 
-        if (ballBehaviour.IsTransformAboveBall(this.transform.position.y, playerAboveBallDifference))
+        if (ballBehaviour.IsTransformAboveBall(this.transform.position.y, ballValues.playerAboveBallDifference))
         {
-            ballBehaviour.SetExcludeLayers(ballExcludeLayers);
+            ballBehaviour.SetExcludeLayers(ballValues.ballExcludeLayers);
         }
 
         StartCoroutine(ResetChargeState());
@@ -522,10 +521,10 @@ public class Player : MonoBehaviour
     public void MovingWhileClimbing()
     {
         // Calculate the target speed based on player input and max movement speed
-        float targetSpeed = playerInput.moveInput.x * maxMovingClimb;
+        float targetSpeed = playerInput.moveInput.x * variables.maxMovingClimb;
 
         // check if the player is moving if is so accel if not deccel 
-        float accelRate = (Mathf.Abs(playerInput.moveInput.x) > 0.01f) ? movingAccelerationRate : movingDecelerationRate;
+        float accelRate = (Mathf.Abs(playerInput.moveInput.x) > 0.01f) ? variables.movingAccelerationRate : variables.movingDecelerationRate;
 
         // Calculate the difference between the target speed and the current velocity
         float speedDif = targetSpeed - rb2d.linearVelocity.x;
@@ -588,7 +587,7 @@ public class Player : MonoBehaviour
 
         Vector2 direction = (targetPosition - (Vector2)this.transform.position).normalized;
 
-        rb2d.AddForce(direction * climbSpeed, ForceMode2D.Force);
+        rb2d.AddForce(direction * variables.climbSpeed, ForceMode2D.Force);
 
     }
 
@@ -599,7 +598,7 @@ public class Player : MonoBehaviour
         rb2d.linearVelocity = new Vector2(rb2d.linearVelocity.x, 0);
 
         // Apply upward force to finish the climb
-        rb2d.AddForce(Vector2.up * climbEndJump, ForceMode2D.Impulse);
+        rb2d.AddForce(Vector2.up * variables.climbEndJump, ForceMode2D.Impulse);
 
         // clear the list of chains
         checkForChains.chainsInHitbox.Clear();

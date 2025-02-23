@@ -1,24 +1,28 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "PlayerValues", menuName = "Player/Player values")]
+[CreateAssetMenu(fileName = "BallValues", menuName = "Ball/Ball values")]
 public class BallValues : ScriptableObject
 {
-    [SerializeField] private CheckForGround playerGroundCheck;
-    [SerializeField] private LayerMask groundLayerMask;
-    [SerializeField] private float groundDrag;
-    [SerializeField] private float airDrag;
-    [SerializeField] private float raycastRange;
-    [SerializeField] private float maxVelocity;
+    [Header("LayerMask")]
+    [SerializeField] public LayerMask groundLayerMask;
+
+    [Header("Velocity")]
+    [SerializeField] public float maxVelocity;
+
+    [Header("Drag")]
+    [SerializeField] public float groundDrag;
+    [SerializeField] public float airDrag;
 
     [Header("LayerMask")]
-    [SerializeField] private LayerMask excludeLayersThrow;
+    [SerializeField] public LayerMask ballExcludeLayers;
 
     [Header("Forces")]
-    [SerializeField] private float minForceOnHinge = 40f;
-    [SerializeField] private float minForceOnBall = 40f;
+    [SerializeField] public float minForceOnHinge;
+    [SerializeField] public float minForceOnBall;
 
     [Header("Range")]
-    [SerializeField] private float playerAboveBallDifference;
+    [SerializeField] public float playerAboveBallDifference;
     [SerializeField] public float playerBellowBallDifference;
     [SerializeField] public float playerFromBallDifference;
+    [SerializeField] public float raycastRange;
 }
