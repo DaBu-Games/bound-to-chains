@@ -459,7 +459,7 @@ public class Player : MonoBehaviour
         ballBehaviour.SetAirDrag();
 
         ballrb2d.AddForce(throwForce * this.transform.right, ForceMode2D.Impulse);
-        ballrb2d.AddForce(throwForce * variables.upWordsScale * this.transform.up, ForceMode2D.Impulse);
+        ballrb2d.AddForce(throwForce * variables.upWordsScaleThrow * this.transform.up, ForceMode2D.Impulse);
 
         StartCoroutine(ResetChargeState());
     }
@@ -477,7 +477,7 @@ public class Player : MonoBehaviour
         ballBehaviour.SetAirDrag();
 
         ballrb2d.AddForce(pullForce * directionToPlayer, ForceMode2D.Impulse);
-        ballrb2d.AddForce(pullForce * variables.upWordsScale * this.transform.up, ForceMode2D.Impulse);
+        ballrb2d.AddForce(pullForce * variables.upWordsScalePull * this.transform.up, ForceMode2D.Impulse);
 
         if (ballBehaviour.IsTransformAboveBall(this.transform.position.y, ballValues.playerAboveBallDifference))
         {

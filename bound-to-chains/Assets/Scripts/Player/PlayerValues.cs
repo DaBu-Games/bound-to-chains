@@ -32,6 +32,7 @@ public class PlayerValues : ScriptableObject
     [SerializeField] public float jumpInputBufferTime;
 
     [Header("Throwing")]
+    [SerializeField] public float upWordsScaleThrow;
     [SerializeField] public float maxThrowForce;
     [SerializeField] public float minThrowForce;
 
@@ -42,7 +43,6 @@ public class PlayerValues : ScriptableObject
 
     [Header("Charge")]
     [SerializeField] public Color targetColor;
-    [SerializeField] public float upWordsScale;
     [SerializeField] public float maxChargeTime;
     [SerializeField] public float chargeTime;
 

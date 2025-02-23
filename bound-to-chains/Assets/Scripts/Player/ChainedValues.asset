@@ -33,20 +33,20 @@ MonoBehaviour:
   maxJumpForce: 22
   leaveGroundBufferTime: 0.1
   jumpInputBufferTime: 0.2
-  maxThrowForce: 0
-  minThrowForce: 0
-  upWordsScalePull: 0
-  maxPullForce: 0
-  minPullForce: 0
-  targetColor: {r: 0, g: 0, b: 0, a: 0}
-  upWordsScale: 0
-  maxChargeTime: 0
-  chargeTime: 0
+  upWordsScaleThrow: 1.5
+  maxThrowForce: 90
+  minThrowForce: 20
+  upWordsScalePull: 1.1
+  maxPullForce: 65
+  minPullForce: 10
+  targetColor: {r: 0.7056604, g: 0.046600115, b: 0.046600115, a: 1}
+  maxChargeTime: 5
+  chargeTime: 1.5
   climbExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
-  maxMovingClimb: 0
-  movingAccelerationRate: 0
-  movingDecelerationRate: 0
-  climbSpeed: 0
-  climbEndJump: 0
+    m_Bits: 576
+  maxMovingClimb: 4
+  movingAccelerationRate: 4
+  movingDecelerationRate: 4
+  climbSpeed: 9
+  climbEndJump: 25
