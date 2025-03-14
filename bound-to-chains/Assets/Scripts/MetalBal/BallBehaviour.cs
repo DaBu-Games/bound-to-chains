@@ -79,10 +79,10 @@ public class BallBehaviour : MonoBehaviour
     {
         circleCollider2D.excludeLayers = excludeLayers;
     }
-    public float GetForceOnBall()
-    {
-        return hingeJoint2D.reactionForce.magnitude;
-    }
+    //public float GetForceOnBall()
+    //{
+    //    return hingeJoint2D.reactionForce.magnitude;
+    //}
 
     public bool IsTransformBellowBall( float transformYCheck, float diffrence )
     {

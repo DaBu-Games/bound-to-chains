@@ -139,8 +139,7 @@ public class Player : MonoBehaviour
 
     private bool IsPlayerHanging()
     {
-        return lastHinge.reactionForce.magnitude > ballValues.minForceOnHinge && ballBehaviour.isGrounded && 
-                ballBehaviour.IsTransformBellowBall(this.transform.position.y, ballValues.playerBellowBallDifference);
+        return  ballBehaviour.isGrounded && ballBehaviour.IsTransformBellowBall(this.transform.position.y, ballValues.playerBellowBallDifference);
     }
 
     private bool CanPlayerHang()
@@ -178,7 +177,7 @@ public class Player : MonoBehaviour
     private bool CanPlayerPull()
     {
         return playerGroundCheck.isGrounded && !checkForBall.BallCheck()
-                && (ballBehaviour.GetForceOnBall() > ballValues.minForceOnBall || ballBehaviour.isGrounded);
+                && ballBehaviour.isGrounded;
     }
 
     private bool CanPlayerThrow()
@@ -606,6 +605,11 @@ public class Player : MonoBehaviour
 
         // Switch to the risingState
         stateMachine.SwitchState(risingState);
+    }
+
+    public void MaxChainDistance()
+    {
+
     }
     #endregion
 }
