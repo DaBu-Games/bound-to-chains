@@ -1,23 +1,36 @@
 using UnityEngine;
 using System.Collections;
-using UnityEditor.Animations;
 
+[RequireComponent(typeof(PlayerInput))]
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(BoxCollider2D))]
+[RequireComponent(typeof(Animator))]
 public class Player : MonoBehaviour
 {
+    [Header("The diffrent Player / Ball Values")]
     [SerializeField] private PlayerValues chained;
     [SerializeField] private PlayerValues unchained;
+    [SerializeField] private BallValues ballValues;
+
+    [Header("Player components")]
     [SerializeField] private PlayerInput playerInput;
-    [SerializeField] private HingeJoint2D lastHinge;
     [SerializeField] private CheckForGround playerGroundCheck;
     [SerializeField] private Rigidbody2D rb2d;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private BoxCollider2D boxCollider2D;
+
+    [Header("Ball components")]
     [SerializeField] private BallBehaviour ballBehaviour;
-    [SerializeField] private BallValues ballValues;
-    [SerializeField] private Rigidbody2D ballrb2d;
-    [SerializeField] public Animator playerAnimator;
-    [SerializeField] public CheckForChains checkForChains;
     [SerializeField] public CheckForBall checkForBall;
+    [SerializeField] private Rigidbody2D ballrb2d;
+
+    [Header("Player animator")]
+    [SerializeField] public Animator playerAnimator;
+   
+    
+    [SerializeField] private HingeJoint2D lastHinge;
+    [SerializeField] public CheckForChains checkForChains;
 
     public PlayerValues variables { get; private set; }
     private bool facingRight;
@@ -118,8 +131,6 @@ public class Player : MonoBehaviour
 
     // All conditions for transtions 
     #region 
-
-    // check if the player is holding the climbe button has more then 0 chains and the player is bellow the ball
     private bool CanPlayerClimbe()
     {
         return playerInput.isHoldingClimbe && checkForChains.chainsInHitbox.Count > 0 && 
@@ -131,7 +142,6 @@ public class Player : MonoBehaviour
         return playerGroundCheck.isGrounded && ( playerInput.isHoldingCrouch || ballBehaviour.isGrounded && checkForBall.BallCheck() );
     }
 
-    // Check if the player has no upward velocity and the player is not grounded
     private bool CanPlayerFall()
     {
         return rb2d.linearVelocity.y < 0 && !playerGroundCheck.isGrounded;
@@ -148,7 +158,6 @@ public class Player : MonoBehaviour
                 !playerGroundCheck.isGrounded && IsPlayerHanging();
     }
 
-    // Check if the player has no x input and is grounded
     private bool CanPlayerIdle()
     {
         return playerInput.moveInput.x == 0 && playerGroundCheck.isGrounded;
@@ -164,8 +173,6 @@ public class Player : MonoBehaviour
         return Time.time - playerInput.lastPressedJumpTime <= variables.jumpInputBufferTime && Time.time > variables.jumpInputBufferTime;
     }
 
-    // Check if the player is grounded or if the player has touched te ground in time of 'variables.leaveGroundBufferTime'
-    // And check if the player is not already jumping and if the player has pressed the jump butten in the time of 'variables.jumpInputBufferTime'
     private bool CanPlayerJump()
     {
 
@@ -173,7 +180,6 @@ public class Player : MonoBehaviour
 
     }
 
-    // Check if the player can charge and is holding the charge button
     private bool CanPlayerPull()
     {
         return playerGroundCheck.isGrounded && !checkForBall.BallCheck()
@@ -185,13 +191,11 @@ public class Player : MonoBehaviour
         return playerGroundCheck.isGrounded && checkForBall.BallCheck() && ballBehaviour.isGrounded;
     }
 
-    // Check if the player has a upward velocity above 0 and the player is not grounded
     private bool CanPlayerRise()
     {
         return rb2d.linearVelocity.y > 0 && !playerGroundCheck.isGrounded;
     }
 
-    // Check if the player input x is not equal to 0 and if the player is grounded
     private bool CanPlayerWalk()
     {
         return playerInput.moveInput.x != 0 && playerGroundCheck.isGrounded;
@@ -261,7 +265,7 @@ public class Player : MonoBehaviour
     {
         return boxCollider2D.excludeLayers == originalExcludeLayers;
     }
-    #endregion // 
+    #endregion
 
     // All functions that influnce the player it zelf
     #region
@@ -281,10 +285,8 @@ public class Player : MonoBehaviour
     {
         if ( !facingRight && playerInput.moveInput.x > 0 || facingRight && playerInput.moveInput.x < 0)
         {
-            // reverse the bool value
             facingRight = !facingRight;
 
-            // rotate the player 180 degerees 
             this.transform.Rotate(0f, 180f, 0f);
         }
     }
@@ -295,44 +297,11 @@ public class Player : MonoBehaviour
         this.transform.rotation = Quaternion.identity;
     }
 
-    public void DecelPlayer()
-    {
-        // Calculate the target speed based on player input and max movement speed
-        float targetSpeed = playerInput.moveInput.x * variables.maxMoveSpeed;
-
-        // Calculate the difference between the target speed and the current velocity
-        float speedDif = targetSpeed - rb2d.linearVelocity.x;
-
-        // Calculate the deceleration force to apply
-        float movement = speedDif * ( playerGroundCheck.isGrounded ? variables.moveSpeedDeccelGround : variables.moveSpeedDeccelAir );
-
-        // Apply the calculated force to decelerate the Rigidbody2D
-        rb2d.AddForce(movement * Vector2.right, ForceMode2D.Force);
-    }
-
-    public void MovingAir()
-    {
-        // Calculate the target speed based on player input and max movement speed
-        float targetSpeed = playerInput.moveInput.x * variables.maxMoveSpeed;
-
-        // check if the player is moving if is so accel if not deccel 
-        float accelRate = (Mathf.Abs(playerInput.moveInput.x) > 0.01f) ? variables.moveSpeedAccelAir : variables.moveSpeedDeccelAir;
-
-        // Calculate the difference between the target speed and the current velocity
-        float speedDif = targetSpeed - rb2d.linearVelocity.x;
-
-        // Calculate the force to be applied based on the acceleration rate and speed difference
-        float movement = speedDif * accelRate;
-
-        // Apply the calculated force to the Rigidbody2D
-        rb2d.AddForce(movement * Vector2.right, ForceMode2D.Force);
-    }
-
+    /// <summary>
+    /// Check if the player is holding the jump button
+    /// </summary>
     public void WhileJumping()
     {
-
-        // check if the jump button is let go while jumping
-        // if so increase the gravity of the player and "cancel" the jump
         if ( isJumping && !playerInput.isHoldingJump )
         {
 
@@ -353,6 +322,9 @@ public class Player : MonoBehaviour
         canJump = true;
     }
 
+    /// <summary>
+    /// Adds a upwards force to the player but clamps the force to the maxJumpForce
+    /// </summary>
     public void Jump()
     {
         if (!canJump)
@@ -360,11 +332,8 @@ public class Player : MonoBehaviour
 
         canJump = false;
         isJumping = true;
-
         float force = variables.jumpForce;
 
-
-        // check if there is any down force if so reset it 
         if (rb2d.linearVelocity.y < 0)
         {
 
@@ -372,10 +341,8 @@ public class Player : MonoBehaviour
 
         }
 
-        // add postive y force to the player 
         rb2d.AddForce(Vector2.up * force, ForceMode2D.Impulse);
 
-        // Clamp the upward velocity to the maximum jump force
         rb2d.linearVelocity = new Vector2(
             rb2d.linearVelocity.x,
             Mathf.Clamp(
@@ -400,23 +367,25 @@ public class Player : MonoBehaviour
         chargeStartTime = Time.time;
     }
 
+    /// <summary>
+    /// Check the charge duration of the player and throw or pull the ball using the chargeDuration
+    /// </summary>
+    /// <param name="isThrowing"></param>
     public void CheckChargeDuration( bool isThrowing )
     {
 
         if ( ( isThrowing ? CanPlayerThrow() : CanPlayerPull() ) && chargeStartTime != 0f)
         {
-            // Calculate how long the player has been charging
+
             float chargeDuration = Time.time - chargeStartTime;
 
-            // Calculate the charge ratio
             float chargeRatio = chargeDuration / variables.chargeTime;
-            chargeRatio = Mathf.Clamp01(chargeRatio); // Ensure it's between 0 and 1
+            chargeRatio = Mathf.Clamp01(chargeRatio);
 
             Color newColor = Color.Lerp(spriteRenderer.material.color, variables.targetColor, chargeRatio);
 
             spriteRenderer.color = newColor;
 
-            // if the player has let go the charge button
             if (!playerInput.isHoldingCharge)
             {
                 if (!isThrowing) 
@@ -428,7 +397,6 @@ public class Player : MonoBehaviour
                     ThrowBallWithForce(chargeDuration);
                 }
             }
-            // Set the max chargeduration to maxChargeTime
             else if (chargeDuration >= variables.maxChargeTime )
             {
                 if (!isThrowing)
@@ -448,11 +416,14 @@ public class Player : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Add force to the bal in the direction the player is facing. Makes the force stronger the higher chargeDuration is
+    /// </summary>
+    /// <param name="chargeDuration"></param>
     public void ThrowBallWithForce(float chargeDuration)
     {
         playerAnimator.Play("ThrowingAnimation");
 
-        // Calculate how hard the player can throw the ball
         float chargeFactor = Mathf.Min(chargeDuration / variables.chargeTime, 1f);
         float throwForce = Mathf.Lerp(variables.minThrowForce, variables.maxThrowForce, chargeFactor);
 
@@ -464,13 +435,16 @@ public class Player : MonoBehaviour
         StartCoroutine(ResetChargeState());
     }
 
+    /// <summary>
+    /// Add force to the bal in towards the player. Makes the force stronger the higher chargeDuration is
+    /// </summary>
+    /// <param name="chargeDuration"></param>
     private void PullBallWithForce(float chargeDuration)
     {
         playerAnimator.Play("ThrowingAnimation");
 
         Vector2 directionToPlayer = (this.transform.position - ballrb2d.transform.position).normalized;
 
-        // Calculate how hard the player can throw the ball
         float chargeFactor = Mathf.Min(chargeDuration / variables.chargeTime, 1f);
         float pullForce = Mathf.Lerp(variables.minThrowForce, variables.maxThrowForce, chargeFactor);
 
@@ -487,8 +461,6 @@ public class Player : MonoBehaviour
         StartCoroutine(ResetChargeState());
     }
 
-
-    // Reset the ChargeStartTime and switch state
     public IEnumerator ResetChargeState()
     {
         chargeStartTime = 0f;
@@ -499,117 +471,59 @@ public class Player : MonoBehaviour
         stateMachine.SwitchState(idleState);
     }
 
-    public void Walking()
+    /// <summary>
+    /// Adds a accel or deccel force to the player depending on the x move input.
+    /// </summary>
+    /// <param name="accel"></param>
+    /// <param name="deccel"></param>
+    public void MovePlayer(float accel, float deccel)
     {
-        // Calculate the target speed based on player input and max movement speed
         float targetSpeed = playerInput.moveInput.x * variables.maxMoveSpeed;
-
-        // check if the player is moving if is so accel if not deccel 
-        float accelRate = (Mathf.Abs(playerInput.moveInput.x) > 0.01f) ? variables.moveSpeedAccelGround : variables.moveSpeedDeccelGround;
-
-        // Calculate the difference between the target speed and the current velocity
+        float accelRate = (Mathf.Abs(playerInput.moveInput.x) > 0.01f) ? accel: deccel;
         float speedDif = targetSpeed - rb2d.linearVelocity.x;
+        float force = speedDif * accelRate;
 
-        // Calculate the force to be applied based on the acceleration rate and speed difference
-        float movement = speedDif * accelRate;
-
-        // Apply the calculated force to the Rigidbody2D
-        rb2d.AddForce(movement * Vector2.right, ForceMode2D.Force);
-
+        rb2d.AddForce(force * Vector2.right, ForceMode2D.Force);
     }
 
-    public void MovingWhileClimbing()
+    /// <summary>
+    /// Adds a deccel force over time
+    /// </summary>
+    /// <param name="deccel"></param>
+    public void DecelPlayer(float deccel)
     {
-        // Calculate the target speed based on player input and max movement speed
-        float targetSpeed = playerInput.moveInput.x * variables.maxMovingClimb;
+        float speedDif = -rb2d.linearVelocity.x;
+        float decelerationForce = speedDif * deccel;
 
-        // check if the player is moving if is so accel if not deccel 
-        float accelRate = (Mathf.Abs(playerInput.moveInput.x) > 0.01f) ? variables.movingAccelerationRate : variables.movingDecelerationRate;
-
-        // Calculate the difference between the target speed and the current velocity
-        float speedDif = targetSpeed - rb2d.linearVelocity.x;
-
-        // Calculate the force to be applied based on the acceleration rate and speed difference
-        float movement = speedDif * accelRate;
-
-        // Apply the calculated force to the Rigidbody2D
-        rb2d.AddForce(movement * Vector2.right, ForceMode2D.Force);
+        rb2d.AddForce(decelerationForce * Vector2.right, ForceMode2D.Force);
     }
 
-    public void UpdateHighestChain()
-    {
-        if (checkForChains.chainsInHitbox.Count == 0)
-        {
-            checkForChains.SetChain( null ); // No chains in hitbox
-            return;
-        }
-
-        // Find the highest chain above the player
-        Transform highestChain = null;
-        float highestY = float.MinValue;
-        Vector2 playerPosition = this.transform.position;
-
-        foreach ( Transform chain in checkForChains.chainsInHitbox)
-        {
-            if (chain.position.y > playerPosition.y && chain.position.y > highestY)
-            {
-                highestY = chain.position.y;
-                highestChain = chain;
-            }
-        }
-
-        if (highestChain != null && highestChain.transform.position.y >= this.transform.position.y)
-        {
-            // Update the current chain to the highest one found
-            checkForChains.SetChain(highestChain);
-        }
-
-    }
-
-    // Get the position of the hinge joined ancher point and convert it to world space
-    public Vector2 GetAnchorPoint(HingeJoint2D hingeJoint)
-    {
-        // Get the anchor point in local space
-        Vector2 localAnchor = hingeJoint.anchor;
-
-        // Convert it to world space
-        Vector2 worldAnchor = hingeJoint.transform.TransformPoint(localAnchor);
-
-        return worldAnchor;
-    }
-
+    /// <summary>
+    /// Add a updwards force slowly over time towards the ball
+    /// </summary>
     public void ClimbChain()
     {
         if (checkForChains.currentChain == null) return;
 
-        // Get the target position of where the player is going to 
-        Vector2 targetPosition = GetAnchorPoint(checkForChains.currentChain.GetComponent<HingeJoint2D>());
+        //// Get the target position of where the player is going to 
+        //Vector2 targetPosition = 0f;
 
-        Vector2 direction = (targetPosition - (Vector2)this.transform.position).normalized;
+        //Vector2 direction = (targetPosition - (Vector2)this.transform.position).normalized;
 
-        rb2d.AddForce(direction * variables.climbSpeed, ForceMode2D.Force);
+        //rb2d.AddForce(direction * variables.climbSpeed, ForceMode2D.Force);
 
     }
 
+    /// <summary>
+    /// Add a upwards force to the player and switch to the risingstate
+    /// </summary>
     public void FinishClimb()
     {
-
-        // Slightly dampen movement before applying jump force
         rb2d.linearVelocity = new Vector2(rb2d.linearVelocity.x, 0);
-
-        // Apply upward force to finish the climb
         rb2d.AddForce(Vector2.up * variables.climbEndJump, ForceMode2D.Impulse);
-
-        // clear the list of chains
-        checkForChains.chainsInHitbox.Clear();
 
         // Switch to the risingState
         stateMachine.SwitchState(risingState);
-    }
-
-    public void MaxChainDistance()
-    {
-
     }
     #endregion
 }

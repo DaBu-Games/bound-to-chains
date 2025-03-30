@@ -1,20 +1,21 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using Unity.Mathematics;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 public class GenerateChain : MonoBehaviour
 {
-    [SerializeField] private GameObject player;
+    [SerializeField] private Transform playerTransform;
 
+    [Header("Chain values")]
     [SerializeField] private float chainGravity;
     [SerializeField] private float maxChainDistance;
     [SerializeField] private float chainSegmentSize;
     [SerializeField] private int maxChainSegments;
     [SerializeField] private int minChainSegments;
+    [SerializeField] private int simulationTickRate;
+
+    [Header("Joint")]
+    [SerializeField] private DistanceJoint2D distanceJoined2D;
     private int chainSegmentAmount;
 
     private LineRenderer lineRenderer;
@@ -23,7 +24,6 @@ public class GenerateChain : MonoBehaviour
     private Vector2 startPoint;
     private Vector2 endPoint;
     private Vector2 gravity;
-    private float distance; 
 
 
     private void Start()
@@ -31,7 +31,7 @@ public class GenerateChain : MonoBehaviour
         lineRenderer = this.GetComponent<LineRenderer>();
         gravity = new Vector2( 0f, -chainGravity);
 
-        Debug.Log(gravity); 
+        distanceJoined2D.distance = maxChainDistance; 
 
         if (!lineRenderer)
         {
@@ -46,32 +46,21 @@ public class GenerateChain : MonoBehaviour
         if(!lineRenderer)
             return;
 
-        SetMaxDistance(); 
         CreateChain();
         Simulate();
         UpdateLineRenderer();
     }
 
-    private void SetMaxDistance()
-    {
-        startPoint = this.transform.position;
-        endPoint = player.gameObject.transform.position; 
-
-        distance = Vector2.Distance(startPoint, endPoint);
-
-        if(distance > maxChainDistance)
-        {
-            Vector2 direction = (startPoint - endPoint).normalized;
-            Vector2 force = direction * 100f; // Adjust this value to control pull strength
-
-            // Apply force to player's Rigidbody2D
-            player.GetComponent<Rigidbody2D>().AddForce(force);
-        }
-    }
-
+    /// <summary>
+    /// Calculates how many chainSegments are needed to make a chain between the player and the ball. 
+    /// If there is a diffrence between the current and calculated amount add or delte segments. 
+    /// </summary>
     private void CreateChain()
     {
+        startPoint = this.transform.position;
+        endPoint = playerTransform.position;
         Vector2 direction = endPoint - startPoint;
+        float distance = Vector2.Distance(startPoint, endPoint);
 
         chainSegmentAmount = math.clamp(Mathf.FloorToInt(distance / chainSegmentSize), minChainSegments, maxChainSegments);
 
@@ -96,6 +85,10 @@ public class GenerateChain : MonoBehaviour
  
 
     }
+
+    /// <summary>
+    /// Calculate the new position of every chainSegment bye using gravity and velocity 
+    /// </summary>
     private void Simulate()
     {
         for (int i = 1; i < chainSegmentAmount; i++)
@@ -108,12 +101,15 @@ public class GenerateChain : MonoBehaviour
             chainSegments[i] = firstSegment;
         }
 
-        for (int i = 0; i < 50; i++)
+        for (int i = 0; i < simulationTickRate; i++)
         {
             ApplyConstraint();
         }
     }
 
+    /// <summary>
+    /// add constraints to every chainSegment
+    /// </summary>
     private void ApplyConstraint()
     {
         chainSegments[0].newPosition = startPoint;
@@ -153,6 +149,9 @@ public class GenerateChain : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Add every chainSegment to the linderender to visualise the chain
+    /// </summary>
     private void UpdateLineRenderer()
     {
         Vector3[] positions = new Vector3[chainSegments.Count + 1];

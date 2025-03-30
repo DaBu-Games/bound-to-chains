@@ -10,9 +10,9 @@ public class ClimbingState : BaseState<Player>
 
     public override void OnFixedUpdate()
     {
-        stateMachine.UpdateHighestChain();
+        //stateMachine.UpdateHighestChain();
         stateMachine.ClimbChain();
-        stateMachine.MovingWhileClimbing();
+        stateMachine.MovePlayer(stateMachine.variables.moveSpeedAccelClimbing, stateMachine.variables.moveSpeedDeccelClimbing);
     }
 
     public override void OnEnterState()

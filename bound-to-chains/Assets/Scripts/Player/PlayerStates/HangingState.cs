@@ -9,7 +9,7 @@ public class HangingState : BaseState<Player>
 
     public override void OnFixedUpdate()
     {
-        stateMachine.DecelPlayer();
+        //stateMachine.DecelPlayer();
         stateMachine.FlipCharachter();
     }
     public override void OnEnterState()

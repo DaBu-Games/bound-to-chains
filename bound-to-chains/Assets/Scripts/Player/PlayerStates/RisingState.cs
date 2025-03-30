@@ -11,7 +11,7 @@ public class RisingState : BaseState<Player>
     public override void OnFixedUpdate()
     {
         stateMachine.WhileJumping();
-        stateMachine.MovingAir();
+        stateMachine.MovePlayer( stateMachine.variables.moveSpeedAccelAir, stateMachine.variables.moveSpeedDeccelAir );
         stateMachine.FlipCharachter();
     }
 

@@ -49,8 +49,8 @@ public class PlayerValues : ScriptableObject
     [Header("Climbing")]
     [SerializeField] public LayerMask climbExcludeLayers;
     [SerializeField] public float maxMovingClimb;
-    [SerializeField] public float movingAccelerationRate;
-    [SerializeField] public float movingDecelerationRate;
+    [SerializeField] public float moveSpeedAccelClimbing;
+    [SerializeField] public float moveSpeedDeccelClimbing;
     [SerializeField] public float climbSpeed;
     [SerializeField] public float climbEndJump;
 

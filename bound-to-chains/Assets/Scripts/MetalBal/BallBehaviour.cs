@@ -7,16 +7,14 @@ public class BallBehaviour : MonoBehaviour
 
     private Rigidbody2D rb2d;
     private CircleCollider2D circleCollider2D;
-    private HingeJoint2D hingeJoint2D;
     private LayerMask originalExcludeLayers;
 
     public bool isGrounded {  get; private set; }
 
-    private void Start()
+    private void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
         circleCollider2D = GetComponent<CircleCollider2D>();
-        hingeJoint2D = GetComponent<HingeJoint2D>();
 
         originalExcludeLayers = circleCollider2D.excludeLayers;
     }
@@ -79,10 +77,6 @@ public class BallBehaviour : MonoBehaviour
     {
         circleCollider2D.excludeLayers = excludeLayers;
     }
-    //public float GetForceOnBall()
-    //{
-    //    return hingeJoint2D.reactionForce.magnitude;
-    //}
 
     public bool IsTransformBellowBall( float transformYCheck, float diffrence )
     {
@@ -98,5 +92,4 @@ public class BallBehaviour : MonoBehaviour
     {
         return Vector2.Distance(this.transform.position, objectPosition) >= diffrence;
     }
-
 }

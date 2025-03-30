@@ -9,7 +9,7 @@ public class IdleState : BaseState<Player>
 
     public override void OnFixedUpdate()
     {
-        stateMachine.DecelPlayer(); 
+        stateMachine.DecelPlayer( stateMachine.variables.moveSpeedDeccelGround ); 
     }
 
     public override void OnEnterState()

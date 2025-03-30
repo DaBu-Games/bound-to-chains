@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1663360480081063983}
   - component: {fileID: 4225987509034597118}
   m_Layer: 6
-  m_Name: MetalBal2
+  m_Name: MetalBall
   m_TagString: Ball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -242,12 +242,12 @@ LineRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1138713437
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Positions:
   - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 0}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -256,7 +256,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1
+        value: 0.13093555
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -319,6 +319,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 122c4fc7f34a0204295b79bcfb0b7e60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPosition: {fileID: 0}
-  chainSegmentDistance: 0.25
-  maxChainDistance: 35
+  playerTransform: {fileID: 0}
+  chainGravity: 1
+  maxChainDistance: 7.5
+  chainSegmentSize: 0.05
+  maxChainSegments: 75
+  minChainSegments: 10
+  distanceJoined2D: {fileID: 0}

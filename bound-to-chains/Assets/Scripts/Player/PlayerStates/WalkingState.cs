@@ -10,7 +10,7 @@ public class WalkingState : BaseState<Player>
 
     public override void OnFixedUpdate()
     {
-        stateMachine.Walking();
+        stateMachine.MovePlayer( stateMachine.variables.moveSpeedAccelGround, stateMachine.variables.moveSpeedDeccelGround );
         stateMachine.FlipCharachter();
     }
 
