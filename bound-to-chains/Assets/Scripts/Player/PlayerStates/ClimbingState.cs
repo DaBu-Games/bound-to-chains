@@ -10,9 +10,7 @@ public class ClimbingState : BaseState<Player>
 
     public override void OnFixedUpdate()
     {
-        //stateMachine.UpdateHighestChain();
         stateMachine.ClimbChain();
-        stateMachine.MovePlayer(stateMachine.variables.moveSpeedAccelClimbing, stateMachine.variables.moveSpeedDeccelClimbing);
     }
 
     public override void OnEnterState()
@@ -30,8 +28,7 @@ public class ClimbingState : BaseState<Player>
     public override void OnExitState()
     {
         stateMachine.SetPlayerGravity(stateMachine.variables.defaultGravity);
-        if (!stateMachine.checkForChains.isColliding)
-            stateMachine.ResetExludeLayers();
+        stateMachine.ResetExludeLayers();
     }
 }
 

@@ -51,6 +51,11 @@ public class GenerateChain : MonoBehaviour
         UpdateLineRenderer();
     }
 
+    public bool IsChainMaxLength(float margin)
+    {
+        return Vector2.Distance(this.transform.position, playerTransform.position) >= (maxChainDistance - margin);
+    }
+
     /// <summary>
     /// Calculates how many chainSegments are needed to make a chain between the player and the ball. 
     /// If there is a diffrence between the current and calculated amount add or delte segments. 

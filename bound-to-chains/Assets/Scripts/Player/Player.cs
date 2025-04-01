@@ -22,15 +22,14 @@ public class Player : MonoBehaviour
 
     [Header("Ball components")]
     [SerializeField] private BallBehaviour ballBehaviour;
-    [SerializeField] public CheckForBall checkForBall;
+    [SerializeField] private CheckForBall checkForBall;
     [SerializeField] private Rigidbody2D ballrb2d;
+
+    [Header("Chain component")]
+    [SerializeField] private GenerateChain generateChain; 
 
     [Header("Player animator")]
     [SerializeField] public Animator playerAnimator;
-   
-    
-    [SerializeField] private HingeJoint2D lastHinge;
-    [SerializeField] public CheckForChains checkForChains;
 
     public PlayerValues variables { get; private set; }
     private bool facingRight;
@@ -133,13 +132,12 @@ public class Player : MonoBehaviour
     #region 
     private bool CanPlayerClimbe()
     {
-        return playerInput.isHoldingClimbe && checkForChains.chainsInHitbox.Count > 0 && 
-                ballBehaviour.IsTransformBellowBall( this.transform.position.y, ballValues.playerBellowBallDifference) && 
-                    ballBehaviour.isGrounded;
+        return playerInput.isHoldingClimbe && ballBehaviour.isGrounded &&
+                ballBehaviour.IsTransformBellowBall(this.transform.position.y, ballValues.playerBellowBallDifference);
     }
     private bool CanPlayerCrouch()
     {
-        return playerGroundCheck.isGrounded && ( playerInput.isHoldingCrouch || ballBehaviour.isGrounded && checkForBall.BallCheck() );
+        return playerGroundCheck.isGrounded && (playerInput.isHoldingCrouch || ballBehaviour.isGrounded && checkForBall.BallCheck());
     }
 
     private bool CanPlayerFall()
@@ -147,15 +145,10 @@ public class Player : MonoBehaviour
         return rb2d.linearVelocity.y < 0 && !playerGroundCheck.isGrounded;
     }
 
-    private bool IsPlayerHanging()
-    {
-        return  ballBehaviour.isGrounded && ballBehaviour.IsTransformBellowBall(this.transform.position.y, ballValues.playerBellowBallDifference);
-    }
-
     private bool CanPlayerHang()
     {
-        return ballBehaviour.CheckDistanceFromBall(this.transform.position, ballValues.playerFromBallDifference) && 
-                !playerGroundCheck.isGrounded && IsPlayerHanging();
+        return generateChain.IsChainMaxLength( variables.hangingMargin ) && !playerGroundCheck.isGrounded && ballBehaviour.isGrounded &&
+                ballBehaviour.IsTransformBellowBall(this.transform.position.y, ballValues.playerBellowBallDifference);
     }
 
     private bool CanPlayerIdle()
@@ -274,13 +267,6 @@ public class Player : MonoBehaviour
         playerInput.SetJumpTime(variables.jumpInputBufferTime);
     }
 
-    public void UnChainePlayer()
-    {
-        variables = unchained;
-        lastHinge.connectedBody = null;
-        lastHinge.useConnectedAnchor = false;
-        SetPlayerGravity(variables.defaultGravity);
-    }
     public void FlipCharachter()
     {
         if ( !facingRight && playerInput.moveInput.x > 0 || facingRight && playerInput.moveInput.x < 0)
@@ -499,19 +485,13 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// Add a updwards force slowly over time towards the ball
+    /// Add a updwards force slowly to the player towards the ball
     /// </summary>
     public void ClimbChain()
     {
-        if (checkForChains.currentChain == null) return;
+        Vector2 direction = (ballBehaviour.GetPosition() - this.transform.position).normalized;
 
-        //// Get the target position of where the player is going to 
-        //Vector2 targetPosition = 0f;
-
-        //Vector2 direction = (targetPosition - (Vector2)this.transform.position).normalized;
-
-        //rb2d.AddForce(direction * variables.climbSpeed, ForceMode2D.Force);
-
+        rb2d.AddForce(direction * variables.climbSpeed, ForceMode2D.Force);
     }
 
     /// <summary>
@@ -519,10 +499,9 @@ public class Player : MonoBehaviour
     /// </summary>
     public void FinishClimb()
     {
-        rb2d.linearVelocity = new Vector2(rb2d.linearVelocity.x, 0);
+        SetLinearVelocity( new Vector2(rb2d.linearVelocity.x, 0) );
         rb2d.AddForce(Vector2.up * variables.climbEndJump, ForceMode2D.Impulse);
 
-        // Switch to the risingState
         stateMachine.SwitchState(risingState);
     }
     #endregion

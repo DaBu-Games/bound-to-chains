@@ -26,7 +26,7 @@ public class RisingState : BaseState<Player>
         {
             stateMachine.CancelJump();
         }
-        if (!stateMachine.HasNoExcludeLayers() && !stateMachine.checkForChains.isColliding)
+        if (!stateMachine.HasNoExcludeLayers())
         {
             stateMachine.ResetExludeLayers();
         }

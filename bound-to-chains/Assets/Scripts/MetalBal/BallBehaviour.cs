@@ -92,4 +92,9 @@ public class BallBehaviour : MonoBehaviour
     {
         return Vector2.Distance(this.transform.position, objectPosition) >= diffrence;
     }
+
+    public Vector3 GetPosition()
+    {
+        return this.transform.position;
+    }
 }
