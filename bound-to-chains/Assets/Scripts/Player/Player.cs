@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
     [Header("Player components")]
     [SerializeField] private PlayerInput playerInput;
     [SerializeField] private CheckForGround playerGroundCheck;
+    [SerializeField] public CheckForCollision playerCollisionCheck;
     [SerializeField] private Rigidbody2D rb2d;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private BoxCollider2D boxCollider2D;
@@ -26,7 +27,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Rigidbody2D ballrb2d;
 
     [Header("Chain component")]
-    [SerializeField] private GenerateChain generateChain; 
+    [SerializeField] public GenerateChain generateChain; 
 
     [Header("Player animator")]
     [SerializeField] public Animator playerAnimator;
@@ -72,6 +73,7 @@ public class Player : MonoBehaviour
         //Climbing 
         stateMachine.AddTransition(new Transition(climbingState, risingState, () => CanPlayerRise() && !CanPlayerClimbe()));
         stateMachine.AddTransition(new Transition(climbingState, fallingState, () => CanPlayerFall() && !CanPlayerClimbe()));
+        stateMachine.AddTransition(new Transition(climbingState, hangingState, () => CanPlayerHang() && !CanPlayerClimbe()));
 
         //Crouching
         stateMachine.AddTransition(new Transition(crouchingState, throwState, () => CanPlayerThrow() && playerInput.isHoldingCharge));
@@ -243,15 +245,9 @@ public class Player : MonoBehaviour
         return rb2d.linearVelocity;
     }
 
-    public void SetExcludeLayers(LayerMask excludeLayers)
+    public void SetIsTrigger(bool isTriger)
     {
-        boxCollider2D.excludeLayers = excludeLayers;
-    }
-
-    public void ResetExludeLayers()
-    {
-        Debug.Log("reset");
-        SetExcludeLayers(originalExcludeLayers);
+        boxCollider2D.isTrigger = isTriger;
     }
 
     public bool HasNoExcludeLayers()
@@ -489,9 +485,14 @@ public class Player : MonoBehaviour
     /// </summary>
     public void ClimbChain()
     {
-        Vector2 direction = (ballBehaviour.GetPosition() - this.transform.position).normalized;
-
-        rb2d.AddForce(direction * variables.climbSpeed, ForceMode2D.Force);
+        if(!generateChain.IsChainMinLength(variables.climbingMargin))
+        {
+            generateChain.ShortenDistanceJoint(variables.climbSpeed);
+        }
+        else
+        {
+            FinishClimb();
+        }
     }
 
     /// <summary>
@@ -499,7 +500,7 @@ public class Player : MonoBehaviour
     /// </summary>
     public void FinishClimb()
     {
-        SetLinearVelocity( new Vector2(rb2d.linearVelocity.x, 0) );
+        SetLinearVelocity(new Vector2(rb2d.linearVelocity.x, 0));
         rb2d.AddForce(Vector2.up * variables.climbEndJump, ForceMode2D.Impulse);
 
         stateMachine.SwitchState(risingState);

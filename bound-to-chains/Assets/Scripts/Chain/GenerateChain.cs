@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GenerateChain : MonoBehaviour
@@ -8,8 +9,10 @@ public class GenerateChain : MonoBehaviour
 
     [Header("Chain values")]
     [SerializeField] private float chainGravity;
-    [SerializeField] private float maxChainDistance;
+    [SerializeField] private float maxChainLength;
+    [SerializeField] private float minChainLength;
     [SerializeField] private float chainSegmentSize;
+    [SerializeField] private float elongateSpeed;
     [SerializeField] private int maxChainSegments;
     [SerializeField] private int minChainSegments;
     [SerializeField] private int simulationTickRate;
@@ -25,13 +28,14 @@ public class GenerateChain : MonoBehaviour
     private Vector2 endPoint;
     private Vector2 gravity;
 
+    public bool autoLength {  get; private set; }
 
     private void Start()
     {
         lineRenderer = this.GetComponent<LineRenderer>();
         gravity = new Vector2( 0f, -chainGravity);
-
-        distanceJoined2D.distance = maxChainDistance; 
+        SetLengthDistanceJoined(maxChainLength);
+        autoLength = true; 
 
         if (!lineRenderer)
         {
@@ -40,20 +44,60 @@ public class GenerateChain : MonoBehaviour
         }
     }
 
+    public bool IsChainMaxLength(float margin)
+    {
+        return GetChainLength() >= (maxChainLength - margin);
+    }
+
+    public bool IsChainMinLength(float margin)
+    {
+        return GetChainLength() <= (minChainLength + margin);
+    }
+
+    public void SetAutoLength(bool autoLength)
+    {
+        this.autoLength = autoLength;
+    }
+
+    public float GetChainLength()
+    {
+        if(autoLength)
+            return distanceJoined2D.distance;
+
+        return Vector2.Distance(this.transform.position, playerTransform.position); 
+    }
+
+    public void SetCurrentChainLength()
+    {
+        SetLengthDistanceJoined(GetChainLength());
+    }
+
+    public void ShortenDistanceJoint(float shortenSpeed)
+    {
+        SetLengthDistanceJoined(distanceJoined2D.distance - (shortenSpeed * Time.fixedDeltaTime));
+    }
+
+    public void ElongateDistanceJoint(float elongateSpeed)
+    {
+        SetLengthDistanceJoined(distanceJoined2D.distance + (elongateSpeed * Time.fixedDeltaTime));
+    }
+
+    public void SetLengthDistanceJoined(float length)
+    {
+        distanceJoined2D.distance = length;
+    }
 
     private void FixedUpdate()
     {
         if(!lineRenderer)
             return;
 
-        CreateChain();
+        if (!IsChainMaxLength(0f) && autoLength)
+            ElongateDistanceJoint(elongateSpeed); 
+
+        CreateChain(); 
         Simulate();
         UpdateLineRenderer();
-    }
-
-    public bool IsChainMaxLength(float margin)
-    {
-        return Vector2.Distance(this.transform.position, playerTransform.position) >= (maxChainDistance - margin);
     }
 
     /// <summary>
@@ -65,7 +109,7 @@ public class GenerateChain : MonoBehaviour
         startPoint = this.transform.position;
         endPoint = playerTransform.position;
         Vector2 direction = endPoint - startPoint;
-        float distance = Vector2.Distance(startPoint, endPoint);
+        float distance = GetChainLength();
 
         chainSegmentAmount = math.clamp(Mathf.FloorToInt(distance / chainSegmentSize), minChainSegments, maxChainSegments);
 
@@ -87,8 +131,6 @@ public class GenerateChain : MonoBehaviour
                 chainSegments.RemoveAt(chainSegments.Count - 1);
             }
         }
- 
-
     }
 
     /// <summary>
@@ -96,6 +138,8 @@ public class GenerateChain : MonoBehaviour
     /// </summary>
     private void Simulate()
     {
+        startPoint = this.transform.position;
+        endPoint = playerTransform.position;
         for (int i = 1; i < chainSegmentAmount; i++)
         {
             ChainSegment firstSegment = chainSegments[i];

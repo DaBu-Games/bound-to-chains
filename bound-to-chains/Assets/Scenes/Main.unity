@@ -376,6 +376,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1464477227}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &33513982 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3161821094649015714, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
+  m_PrefabInstance: {fileID: 1767605381}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &73139938
 GameObject:
   m_ObjectHideFlags: 0
@@ -8902,13 +8907,17 @@ PrefabInstance:
       propertyPath: checkForChains
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 3412935908261778618, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
+      propertyPath: playerCollisionCheck
+      value: 
+      objectReference: {fileID: 1767605396}
     - target: {fileID: 9209175119351591768, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
       propertyPath: m_LocalPosition.x
       value: -35.1
       objectReference: {fileID: 0}
     - target: {fileID: 9209175119351591768, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -5.1500006
+      value: -1.37
       objectReference: {fileID: 0}
     - target: {fileID: 9209175119351591768, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
       propertyPath: m_LocalPosition.z
@@ -8945,7 +8954,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3161821094649015714, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1767605396}
   m_SourcePrefab: {fileID: 100100000, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
 --- !u!50 &1767605382 stripped
 Rigidbody2D:
@@ -8962,6 +8974,21 @@ DistanceJoint2D:
   m_CorrespondingSourceObject: {fileID: 795052625791971666, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
   m_PrefabInstance: {fileID: 1767605381}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1767605396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 33513982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da5dc4731a463ed4184cf1e6e1c8832e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  whatIsCollision:
+    serializedVersion: 2
+    m_Bits: 584
 --- !u!1 &1820118518
 GameObject:
   m_ObjectHideFlags: 0
@@ -15473,11 +15500,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1554542375044241030, guid: 775d5461660047c4babd0b8f9385e330, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -34.61
+      value: -34.8
       objectReference: {fileID: 0}
     - target: {fileID: 1554542375044241030, guid: 775d5461660047c4babd0b8f9385e330, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.7
+      value: 1.8
       objectReference: {fileID: 0}
     - target: {fileID: 1554542375044241030, guid: 775d5461660047c4babd0b8f9385e330, type: 3}
       propertyPath: m_LocalPosition.z
@@ -15510,6 +15537,18 @@ PrefabInstance:
     - target: {fileID: 1554542375044241030, guid: 775d5461660047c4babd0b8f9385e330, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3385967285229719975, guid: 775d5461660047c4babd0b8f9385e330, type: 3}
+      propertyPath: elongateSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3385967285229719975, guid: 775d5461660047c4babd0b8f9385e330, type: 3}
+      propertyPath: maxChainLength
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3385967285229719975, guid: 775d5461660047c4babd0b8f9385e330, type: 3}
+      propertyPath: minChainLength
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3385967285229719975, guid: 775d5461660047c4babd0b8f9385e330, type: 3}
       propertyPath: playerTransform
@@ -15685,6 +15724,6 @@ SceneRoots:
   - {fileID: 1396936947}
   - {fileID: 1289692588}
   - {fileID: 1767605381}
+  - {fileID: 2083172702}
   - {fileID: 2115497998}
   - {fileID: 1464477227}
-  - {fileID: 2083172702}

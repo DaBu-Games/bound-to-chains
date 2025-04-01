@@ -11,24 +11,26 @@ public class ClimbingState : BaseState<Player>
     public override void OnFixedUpdate()
     {
         stateMachine.ClimbChain();
+        stateMachine.MovePlayer(stateMachine.variables.moveSpeedAccelClimbing, stateMachine.variables.moveSpeedAccelClimbing);
     }
 
     public override void OnEnterState()
     {
-        stateMachine.SetPlayerGravity(0f);
-        stateMachine.SetExcludeLayers( stateMachine.variables.climbExcludeLayers);
-
+        stateMachine.generateChain.SetAutoLength(false);
+        stateMachine.generateChain.SetCurrentChainLength();
+        stateMachine.SetIsTrigger(true);
         stateMachine.ResetCharachterRotation();
-
-        stateMachine.SetLinearVelocity( new Vector2( stateMachine.GetLinearVelocity().x, 0) );
-
+        stateMachine.SetPlayerGravity(0f);
         stateMachine.playerAnimator.Play("ClimbingAnimation");
     }
 
     public override void OnExitState()
     {
         stateMachine.SetPlayerGravity(stateMachine.variables.defaultGravity);
-        stateMachine.ResetExludeLayers();
+        stateMachine.generateChain.SetAutoLength(true);
+
+        if (!stateMachine.playerCollisionCheck.isColliding)
+            stateMachine.SetIsTrigger(false);
     }
 }
 

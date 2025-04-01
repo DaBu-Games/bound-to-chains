@@ -48,7 +48,7 @@ public class StateMachine
         currentTransitions = transitions.FindAll(x => x.fromState == currentState || x.fromState == null);
         currentState.OnEnterState();
 
-        //Debug.Log(currentState.ToString());
+        Debug.Log(currentState.ToString());
     }
 
     public void AddTransition(Transition transition)

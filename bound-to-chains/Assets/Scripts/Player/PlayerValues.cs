@@ -49,7 +49,10 @@ public class PlayerValues : ScriptableObject
     [Header("Climbing")]
     [SerializeField] public LayerMask climbExcludeLayers;
     [SerializeField] public float climbSpeed;
+    [SerializeField] public float moveSpeedAccelClimbing;
+    [SerializeField] public float moveSpeedDeccelClimbing;
     [SerializeField] public float climbEndJump;
+    [SerializeField] public float climbingMargin;
 
     [Header("Hanging")]
     [SerializeField] public float hangingMargin;

@@ -23,12 +23,9 @@ public class RisingState : BaseState<Player>
     public override void OnExitState()
     {
         if (stateMachine.isJumping)
-        {
             stateMachine.CancelJump();
-        }
-        if (!stateMachine.HasNoExcludeLayers())
-        {
-            stateMachine.ResetExludeLayers();
-        }
+
+        if (!stateMachine.playerCollisionCheck.isColliding)
+            stateMachine.SetIsTrigger(false);
     }
 }

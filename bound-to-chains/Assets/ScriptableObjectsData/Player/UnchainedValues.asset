@@ -45,8 +45,6 @@ MonoBehaviour:
   climbExcludeLayers:
     serializedVersion: 2
     m_Bits: 576
-  maxMovingClimb: 4
-  movingAccelerationRate: 4
-  movingDecelerationRate: 4
   climbSpeed: 9
   climbEndJump: 25
+  hangingMargin: 0
