@@ -11,7 +11,9 @@ public class FallingState : BaseState<Player>
     {
         stateMachine.WhileJumping();
         stateMachine.MovePlayer( stateMachine.variables.moveSpeedAccelAir, stateMachine.variables.moveSpeedDeccelAir );
-        stateMachine.FlipCharachter();
+        stateMachine.FlipCharachterOnInput();
+        if (!stateMachine.playerCollisionCheck.IsColliding())
+            stateMachine.ResetExludeLayers();
     }
 
     public override void OnEnterState()
@@ -23,8 +25,5 @@ public class FallingState : BaseState<Player>
     public override void OnExitState()
     {
         stateMachine.SetPlayerGravity(stateMachine.variables.defaultGravity);
-
-        if (!stateMachine.playerCollisionCheck.isColliding)
-            stateMachine.SetIsTrigger(false);
     }
 }

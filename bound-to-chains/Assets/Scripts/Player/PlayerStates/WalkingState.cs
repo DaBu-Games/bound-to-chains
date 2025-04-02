@@ -11,7 +11,7 @@ public class WalkingState : BaseState<Player>
     public override void OnFixedUpdate()
     {
         stateMachine.MovePlayer( stateMachine.variables.moveSpeedAccelGround, stateMachine.variables.moveSpeedDeccelGround );
-        stateMachine.FlipCharachter();
+        stateMachine.FlipCharachterOnInput();
     }
 
     public override void OnEnterState()

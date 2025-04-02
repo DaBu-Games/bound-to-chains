@@ -48,6 +48,7 @@ MonoBehaviour:
   climbSpeed: 2
   moveSpeedAccelClimbing: 1
   moveSpeedDeccelClimbing: 5
-  climbEndJump: 25
-  climbingMargin: 0.5
+  climbEndJump: 20
+  climbingMargin: 0
   hangingMargin: 0.5
+  minVeclocityForRotate: 5

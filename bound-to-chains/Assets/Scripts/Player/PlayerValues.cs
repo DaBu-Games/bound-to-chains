@@ -56,5 +56,5 @@ public class PlayerValues : ScriptableObject
 
     [Header("Hanging")]
     [SerializeField] public float hangingMargin;
-
+    [SerializeField] public float minVeclocityForRotate;
 }

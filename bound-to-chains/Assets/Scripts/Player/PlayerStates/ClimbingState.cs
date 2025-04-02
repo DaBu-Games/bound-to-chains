@@ -6,7 +6,10 @@ public class ClimbingState : BaseState<Player>
 {
     public ClimbingState(Player stateMachine) : base(stateMachine) { }
 
-    public override void OnUpdate() { }
+    public override void OnUpdate() 
+    {
+        stateMachine.RotateCharachterToDirection(stateMachine.playerTransform.position, stateMachine.ballTransform.position);
+    }
 
     public override void OnFixedUpdate()
     {
@@ -16,21 +19,19 @@ public class ClimbingState : BaseState<Player>
 
     public override void OnEnterState()
     {
-        stateMachine.generateChain.SetAutoLength(false);
-        stateMachine.generateChain.SetCurrentChainLength();
-        stateMachine.SetIsTrigger(true);
+        stateMachine.generateChain.SetIsShortening(true);
+        stateMachine.SetExcludeLayers(stateMachine.variables.climbExcludeLayers);
         stateMachine.ResetCharachterRotation();
-        stateMachine.SetPlayerGravity(0f);
         stateMachine.playerAnimator.Play("ClimbingAnimation");
     }
 
     public override void OnExitState()
     {
-        stateMachine.SetPlayerGravity(stateMachine.variables.defaultGravity);
-        stateMachine.generateChain.SetAutoLength(true);
+        stateMachine.generateChain.SetIsShortening(false);
+        stateMachine.ResetCharachterRotation();
 
-        if (!stateMachine.playerCollisionCheck.isColliding)
-            stateMachine.SetIsTrigger(false);
+        if (!stateMachine.playerCollisionCheck.IsColliding())
+            stateMachine.ResetExludeLayers();
     }
 }
 

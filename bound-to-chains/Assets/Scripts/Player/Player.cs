@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.Rendering;
 
 [RequireComponent(typeof(PlayerInput))]
 [RequireComponent(typeof(Rigidbody2D))]
@@ -20,11 +21,13 @@ public class Player : MonoBehaviour
     [SerializeField] private Rigidbody2D rb2d;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private BoxCollider2D boxCollider2D;
+    public Transform playerTransform {  get; private set; } 
 
     [Header("Ball components")]
     [SerializeField] private BallBehaviour ballBehaviour;
     [SerializeField] private CheckForBall checkForBall;
     [SerializeField] private Rigidbody2D ballrb2d;
+    public Transform ballTransform; 
 
     [Header("Chain component")]
     [SerializeField] public GenerateChain generateChain; 
@@ -48,13 +51,13 @@ public class Player : MonoBehaviour
     private void Start()
     {
         variables = chained;
-
         originalExcludeLayers = boxCollider2D.excludeLayers;
+        playerCollisionCheck.SetCollisionLayers(variables.climbExcludeLayers);
         rb2d.gravityScale = variables.defaultGravity;
         startingMass = rb2d.mass;
         startingLinearDamping = rb2d.linearDamping;
         startingAngularDamping = rb2d.angularDamping;
-
+        playerTransform = this.transform;
         facingRight = true;
 
         stateMachine = new StateMachine();
@@ -71,8 +74,6 @@ public class Player : MonoBehaviour
         IState walkingState = new WalkingState(this);
 
         //Climbing 
-        stateMachine.AddTransition(new Transition(climbingState, risingState, () => CanPlayerRise() && !CanPlayerClimbe()));
-        stateMachine.AddTransition(new Transition(climbingState, fallingState, () => CanPlayerFall() && !CanPlayerClimbe()));
         stateMachine.AddTransition(new Transition(climbingState, hangingState, () => CanPlayerHang() && !CanPlayerClimbe()));
 
         //Crouching
@@ -105,8 +106,8 @@ public class Player : MonoBehaviour
 
         //Rising
         stateMachine.AddTransition(new Transition(risingState, fallingState, () => CanPlayerFall()));
-        stateMachine.AddTransition(new Transition(risingState, climbingState, () => CanPlayerClimbe()));
-        stateMachine.AddTransition(new Transition(risingState, hangingState, () => CanPlayerHang()));
+        stateMachine.AddTransition(new Transition(risingState, climbingState, () => CanPlayerClimbe() && HasNoExcludeLayers()));
+        stateMachine.AddTransition(new Transition(risingState, hangingState, () => CanPlayerHang() && HasNoExcludeLayers()));
         stateMachine.AddTransition(new Transition(risingState, jumpingState, () => CanPlayerJump() && !isJumping && HasNoExcludeLayers()));
         stateMachine.AddTransition(new Transition(risingState, walkingState, () => CanPlayerWalk() && !isJumping && HasNoExcludeLayers()));
         stateMachine.AddTransition(new Transition(risingState, idleState, () => CanPlayerIdle() && !isJumping && HasNoExcludeLayers()));
@@ -149,7 +150,7 @@ public class Player : MonoBehaviour
 
     private bool CanPlayerHang()
     {
-        return generateChain.IsChainMaxLength( variables.hangingMargin ) && !playerGroundCheck.isGrounded && ballBehaviour.isGrounded &&
+        return generateChain.IsChainStretchtOut( variables.hangingMargin ) && !playerGroundCheck.isGrounded && ballBehaviour.isGrounded &&
                 ballBehaviour.IsTransformBellowBall(this.transform.position.y, ballValues.playerBellowBallDifference);
     }
 
@@ -245,18 +246,24 @@ public class Player : MonoBehaviour
         return rb2d.linearVelocity;
     }
 
-    public void SetIsTrigger(bool isTriger)
+    public void SetExcludeLayers(LayerMask excludeLayers)
     {
-        boxCollider2D.isTrigger = isTriger;
+        boxCollider2D.excludeLayers = excludeLayers;
+    }
+
+    public void ResetExludeLayers()
+    {
+        SetExcludeLayers(originalExcludeLayers);
     }
 
     public bool HasNoExcludeLayers()
     {
         return boxCollider2D.excludeLayers == originalExcludeLayers;
     }
+
     #endregion
 
-    // All functions that influnce the player it zelf
+    // All functions that influence the player it zelf
     #region
     public void ResetJumpTime()
     {
@@ -265,12 +272,35 @@ public class Player : MonoBehaviour
 
     public void FlipCharachter()
     {
-        if ( !facingRight && playerInput.moveInput.x > 0 || facingRight && playerInput.moveInput.x < 0)
-        {
-            facingRight = !facingRight;
+        facingRight = !facingRight;
+        this.transform.Rotate(0f, 180f, 0f);
+    }
 
-            this.transform.Rotate(0f, 180f, 0f);
+    public void FlipCharachterOnInput()
+    {
+        if (!facingRight && playerInput.moveInput.x > 0 || facingRight && playerInput.moveInput.x < 0)
+        { 
+            FlipCharachter();
         }
+    }
+
+    public void FlipCharachterOnForces()
+    {
+        if(Mathf.Abs(rb2d.linearVelocityX) < variables.minVeclocityForRotate)
+            return;
+
+        if (!facingRight && rb2d.linearVelocityX > 0 || facingRight && rb2d.linearVelocityX < 0)
+        {
+            FlipCharachter(); 
+        }
+    }
+
+    public void RotateCharachterToDirection(Vector2 startPoint, Vector2 endPoint)
+    {
+        Vector2 direction = (endPoint - startPoint).normalized;
+
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        this.transform.rotation = Quaternion.Euler(0, 0, (angle - 90));
     }
 
     public void ResetCharachterRotation()
@@ -284,14 +314,11 @@ public class Player : MonoBehaviour
     /// </summary>
     public void WhileJumping()
     {
-        if ( isJumping && !playerInput.isHoldingJump )
+        if (isJumping && !playerInput.isHoldingJump)
         {
-
             rb2d.gravityScale = variables.jumpCutGravity;
             CancelJump();
-
         }
-
     }
 
     public void CancelJump()
@@ -336,7 +363,6 @@ public class Player : MonoBehaviour
         ResetJumpTime();
 
         stateMachine.SwitchState(risingState);
-
     }
 
     public void LimitVelocity()
@@ -355,10 +381,8 @@ public class Player : MonoBehaviour
     /// <param name="isThrowing"></param>
     public void CheckChargeDuration( bool isThrowing )
     {
-
-        if ( ( isThrowing ? CanPlayerThrow() : CanPlayerPull() ) && chargeStartTime != 0f)
+        if ((isThrowing ? CanPlayerThrow() : CanPlayerPull() ) && chargeStartTime != 0f)
         {
-
             float chargeDuration = Time.time - chargeStartTime;
 
             float chargeRatio = chargeDuration / variables.chargeTime;
@@ -379,7 +403,7 @@ public class Player : MonoBehaviour
                     ThrowBallWithForce(chargeDuration);
                 }
             }
-            else if (chargeDuration >= variables.maxChargeTime )
+            else if (chargeDuration >= variables.maxChargeTime)
             {
                 if (!isThrowing)
                 {
@@ -395,7 +419,6 @@ public class Player : MonoBehaviour
         {
             StartCoroutine(ResetChargeState());
         }
-
     }
 
     /// <summary>

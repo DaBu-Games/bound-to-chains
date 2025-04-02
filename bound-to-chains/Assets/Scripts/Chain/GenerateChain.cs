@@ -28,14 +28,14 @@ public class GenerateChain : MonoBehaviour
     private Vector2 endPoint;
     private Vector2 gravity;
 
-    public bool autoLength {  get; private set; }
+    private bool isShortening; 
 
     private void Start()
     {
         lineRenderer = this.GetComponent<LineRenderer>();
         gravity = new Vector2( 0f, -chainGravity);
         SetLengthDistanceJoined(maxChainLength);
-        autoLength = true; 
+        isShortening = false; 
 
         if (!lineRenderer)
         {
@@ -46,7 +46,7 @@ public class GenerateChain : MonoBehaviour
 
     public bool IsChainMaxLength(float margin)
     {
-        return GetChainLength() >= (maxChainLength - margin);
+        return GetChainLength() >= maxChainLength - margin;
     }
 
     public bool IsChainMinLength(float margin)
@@ -54,22 +54,19 @@ public class GenerateChain : MonoBehaviour
         return GetChainLength() <= (minChainLength + margin);
     }
 
-    public void SetAutoLength(bool autoLength)
+    public bool IsChainStretchtOut(float margin)
     {
-        this.autoLength = autoLength;
+        return Vector2.Distance(this.transform.position, playerTransform.position) + margin >= GetChainLength();
+    }
+
+    public void SetIsShortening(bool IsShortening)
+    {
+        this.isShortening = IsShortening;
     }
 
     public float GetChainLength()
     {
-        if(autoLength)
-            return distanceJoined2D.distance;
-
-        return Vector2.Distance(this.transform.position, playerTransform.position); 
-    }
-
-    public void SetCurrentChainLength()
-    {
-        SetLengthDistanceJoined(GetChainLength());
+        return distanceJoined2D.distance; 
     }
 
     public void ShortenDistanceJoint(float shortenSpeed)
@@ -92,7 +89,7 @@ public class GenerateChain : MonoBehaviour
         if(!lineRenderer)
             return;
 
-        if (!IsChainMaxLength(0f) && autoLength)
+        if (!IsChainMaxLength(0f) && !isShortening)
             ElongateDistanceJoint(elongateSpeed); 
 
         CreateChain(); 

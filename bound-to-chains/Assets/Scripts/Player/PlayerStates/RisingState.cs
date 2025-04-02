@@ -12,7 +12,9 @@ public class RisingState : BaseState<Player>
     {
         stateMachine.WhileJumping();
         stateMachine.MovePlayer( stateMachine.variables.moveSpeedAccelAir, stateMachine.variables.moveSpeedDeccelAir );
-        stateMachine.FlipCharachter();
+        stateMachine.FlipCharachterOnInput();
+        if (!stateMachine.playerCollisionCheck.IsColliding())
+            stateMachine.ResetExludeLayers();
     }
 
     public override void OnEnterState()
@@ -24,8 +26,5 @@ public class RisingState : BaseState<Player>
     {
         if (stateMachine.isJumping)
             stateMachine.CancelJump();
-
-        if (!stateMachine.playerCollisionCheck.isColliding)
-            stateMachine.SetIsTrigger(false);
     }
 }
