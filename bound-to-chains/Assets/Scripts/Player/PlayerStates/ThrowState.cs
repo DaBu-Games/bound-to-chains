@@ -8,7 +8,10 @@ public class ThrowState : BaseState<Player>
 
     public override void OnUpdate()
     {
-        stateMachine.CheckChargeDuration( true );
+        if (!stateMachine.playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("ThrowingAnimation"))
+        {
+            stateMachine.CheckChargeDuration(true);
+        }
     }
 
     public override void OnFixedUpdate() { }

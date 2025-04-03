@@ -28,17 +28,19 @@ MonoBehaviour:
   moveSpeedAccelAir: 5
   moveSpeedDeccelAir: 6
   maxMoveSpeed: 8
-  jumpForce: 22
+  jumpForce: 15
   doubleJumpForce: 15
-  maxJumpForce: 22
+  maxJumpForce: 15
   leaveGroundBufferTime: 0.1
   jumpInputBufferTime: 0.2
+  crouchingMass: 5
+  crouchingDamping: 2
   upWordsScaleThrow: 1.5
-  maxThrowForce: 90
+  maxThrowForce: 80
   minThrowForce: 20
-  upWordsScalePull: 1.1
-  maxPullForce: 65
-  minPullForce: 10
+  upWordsScalePull: 1.5
+  maxPullForce: 80
+  minPullForce: 20
   targetColor: {r: 0.7056604, g: 0.046600115, b: 0.046600115, a: 1}
   maxChargeTime: 5
   chargeTime: 1.5
@@ -48,7 +50,7 @@ MonoBehaviour:
   climbSpeed: 2
   moveSpeedAccelClimbing: 1
   moveSpeedDeccelClimbing: 5
-  climbEndJump: 20
+  climbEndJump: 18
   climbingMargin: 0
-  hangingMargin: 0.5
+  hangingMargin: 0.1
   minVeclocityForRotate: 5

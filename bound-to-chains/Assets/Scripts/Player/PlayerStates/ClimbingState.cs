@@ -19,6 +19,7 @@ public class ClimbingState : BaseState<Player>
 
     public override void OnEnterState()
     {
+        stateMachine.generateChain.SetLengthDistanceJoined(stateMachine.generateChain.GetDistance()); 
         stateMachine.generateChain.SetIsShortening(true);
         stateMachine.SetExcludeLayers(stateMachine.variables.climbExcludeLayers);
         stateMachine.ResetCharachterRotation();

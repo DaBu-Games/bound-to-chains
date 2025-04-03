@@ -24,6 +24,6 @@ MonoBehaviour:
   minForceOnHinge: 20
   minForceOnBall: 40
   playerAboveBallDifference: 0.55
-  playerBellowBallDifference: 0.2
+  playerBellowBallDifference: 2
   playerFromBallDifference: 4
   raycastRange: 0.42

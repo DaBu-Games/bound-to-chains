@@ -31,6 +31,10 @@ public class PlayerValues : ScriptableObject
     [SerializeField] public float leaveGroundBufferTime;
     [SerializeField] public float jumpInputBufferTime;
 
+    [Header("Crouching")]
+    [SerializeField] public float crouchingMass;
+    [SerializeField] public float crouchingDamping;
+
     [Header("Throwing")]
     [SerializeField] public float upWordsScaleThrow;
     [SerializeField] public float maxThrowForce;

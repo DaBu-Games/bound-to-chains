@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class GenerateChain : MonoBehaviour
 {
-    [SerializeField] private Transform playerTransform;
-
     [Header("Chain values")]
     [SerializeField] private float chainGravity;
     [SerializeField] private float maxChainLength;
@@ -16,6 +14,7 @@ public class GenerateChain : MonoBehaviour
     [SerializeField] private int maxChainSegments;
     [SerializeField] private int minChainSegments;
     [SerializeField] private int simulationTickRate;
+    [SerializeField] private float chainOffset;
 
     [Header("Joint")]
     [SerializeField] private DistanceJoint2D distanceJoined2D;
@@ -35,7 +34,9 @@ public class GenerateChain : MonoBehaviour
         lineRenderer = this.GetComponent<LineRenderer>();
         gravity = new Vector2( 0f, -chainGravity);
         SetLengthDistanceJoined(maxChainLength);
-        isShortening = false; 
+        isShortening = false;
+
+        CreateChain();
 
         if (!lineRenderer)
         {
@@ -56,7 +57,7 @@ public class GenerateChain : MonoBehaviour
 
     public bool IsChainStretchtOut(float margin)
     {
-        return Vector2.Distance(this.transform.position, playerTransform.position) + margin >= GetChainLength();
+        return (GetDistance() + margin) >= GetChainLength();
     }
 
     public void SetIsShortening(bool IsShortening)
@@ -69,19 +70,31 @@ public class GenerateChain : MonoBehaviour
         return distanceJoined2D.distance; 
     }
 
+    public float GetDistance()
+    {
+        return Vector2.Distance(this.transform.position, GetAnchorPosition()); 
+    }
+
     public void ShortenDistanceJoint(float shortenSpeed)
     {
         SetLengthDistanceJoined(distanceJoined2D.distance - (shortenSpeed * Time.fixedDeltaTime));
+        CreateChain();
     }
 
     public void ElongateDistanceJoint(float elongateSpeed)
     {
         SetLengthDistanceJoined(distanceJoined2D.distance + (elongateSpeed * Time.fixedDeltaTime));
+        CreateChain();
     }
 
     public void SetLengthDistanceJoined(float length)
     {
         distanceJoined2D.distance = length;
+    }
+
+    private Vector2 GetAnchorPosition()
+    {
+        return distanceJoined2D.transform.TransformPoint(distanceJoined2D.anchor);
     }
 
     private void FixedUpdate()
@@ -92,7 +105,6 @@ public class GenerateChain : MonoBehaviour
         if (!IsChainMaxLength(0f) && !isShortening)
             ElongateDistanceJoint(elongateSpeed); 
 
-        CreateChain(); 
         Simulate();
         UpdateLineRenderer();
     }
@@ -104,7 +116,7 @@ public class GenerateChain : MonoBehaviour
     private void CreateChain()
     {
         startPoint = this.transform.position;
-        endPoint = playerTransform.position;
+        endPoint = GetAnchorPosition();
         Vector2 direction = endPoint - startPoint;
         float distance = GetChainLength();
 
@@ -136,7 +148,7 @@ public class GenerateChain : MonoBehaviour
     private void Simulate()
     {
         startPoint = this.transform.position;
-        endPoint = playerTransform.position;
+        endPoint = GetAnchorPosition();
         for (int i = 1; i < chainSegmentAmount; i++)
         {
             ChainSegment firstSegment = chainSegments[i];
@@ -201,11 +213,12 @@ public class GenerateChain : MonoBehaviour
     private void UpdateLineRenderer()
     {
         Vector3[] positions = new Vector3[chainSegments.Count + 1];
-        positions[0] = startPoint;
+        positions[0] = new Vector3(startPoint.x, startPoint.y, chainOffset);
 
         for (int i = 0; i < chainSegments.Count; i++)
         {
-            positions[i + 1] = chainSegments[i].newPosition;
+            Vector2 position = chainSegments[i].newPosition;
+            positions[i + 1] = new Vector3(position.x, position.y, chainOffset);
         }
 
         lineRenderer.positionCount = chainSegments.Count + 1;

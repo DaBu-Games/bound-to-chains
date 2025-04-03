@@ -79,8 +79,8 @@ public class Player : MonoBehaviour
         //Crouching
         stateMachine.AddTransition(new Transition(crouchingState, throwState, () => CanPlayerThrow() && playerInput.isHoldingCharge));
         stateMachine.AddTransition(new Transition(crouchingState, pullingState, () => CanPlayerPull() && playerInput.isHoldingCharge));
-        stateMachine.AddTransition(new Transition(crouchingState, idleState, () => CanPlayerIdle() && !checkForBall.BallCheck() && !playerInput.isHoldingCrouch ));
-        stateMachine.AddTransition(new Transition(crouchingState, walkingState, () => CanPlayerWalk() && !checkForBall.BallCheck() && !playerInput.isHoldingCrouch));
+        stateMachine.AddTransition(new Transition(crouchingState, idleState, () => CanPlayerIdle() && !checkForBall.RayCastCheck(playerTransform.right) && !playerInput.isHoldingCrouch ));
+        stateMachine.AddTransition(new Transition(crouchingState, walkingState, () => CanPlayerWalk() && !checkForBall.RayCastCheck(playerTransform.right) && !playerInput.isHoldingCrouch));
 
         //Falling
         stateMachine.AddTransition(new Transition(fallingState, climbingState, () => CanPlayerClimbe()));
@@ -114,7 +114,7 @@ public class Player : MonoBehaviour
 
         //Walking
         stateMachine.AddTransition(new Transition(walkingState, jumpingState, () => CanPlayerJump()));
-        stateMachine.AddTransition(new Transition(walkingState, idleState, () => CanPlayerIdle()));
+        stateMachine.AddTransition(new Transition(walkingState, idleState, () => CanPlayerIdle() && !CanPlayerWalk()));
         stateMachine.AddTransition(new Transition(walkingState, hangingState, () => CanPlayerHang()));
         stateMachine.AddTransition(new Transition(walkingState, fallingState, () => CanPlayerFall()));
 
@@ -140,7 +140,7 @@ public class Player : MonoBehaviour
     }
     private bool CanPlayerCrouch()
     {
-        return playerGroundCheck.isGrounded && (playerInput.isHoldingCrouch || ballBehaviour.isGrounded && checkForBall.BallCheck());
+        return playerGroundCheck.isGrounded && (playerInput.isHoldingCrouch || ballBehaviour.isGrounded && checkForBall.RayCastCheck(playerTransform.right));
     }
 
     private bool CanPlayerFall()
@@ -178,13 +178,12 @@ public class Player : MonoBehaviour
 
     private bool CanPlayerPull()
     {
-        return playerGroundCheck.isGrounded && !checkForBall.BallCheck()
-                && ballBehaviour.isGrounded;
+        return playerGroundCheck.isGrounded && !checkForBall.RayCastCheck(playerTransform.right); 
     }
 
     private bool CanPlayerThrow()
     {
-        return playerGroundCheck.isGrounded && checkForBall.BallCheck() && ballBehaviour.isGrounded;
+        return playerGroundCheck.isGrounded && checkForBall.RayCastCheck(playerTransform.right) && ballBehaviour.isGrounded;
     }
 
     private bool CanPlayerRise()
@@ -394,85 +393,68 @@ public class Player : MonoBehaviour
 
             if (!playerInput.isHoldingCharge)
             {
-                if (!isThrowing) 
-                {
-                    PullBallWithForce(chargeDuration);
-                }
-                else
-                {
-                    ThrowBallWithForce(chargeDuration);
-                }
+                AddForceToBall(chargeDuration, isThrowing);
             }
             else if (chargeDuration >= variables.maxChargeTime)
             {
-                if (!isThrowing)
-                {
-                    PullBallWithForce(variables.maxChargeTime);
-                }
-                else
-                {
-                    ThrowBallWithForce(variables.maxChargeTime);
-                }
+                AddForceToBall(variables.maxChargeTime, isThrowing);
             }
         }
         else
         {
-            StartCoroutine(ResetChargeState());
+            ResetChargeState();
         }
     }
 
     /// <summary>
-    /// Add force to the bal in the direction the player is facing. Makes the force stronger the higher chargeDuration is
+    /// Add force to the bal in the direction the player is facing or towards the player depending on isThrowing. 
+    /// Makes the force stronger the higher chargeDuration is
     /// </summary>
     /// <param name="chargeDuration"></param>
-    public void ThrowBallWithForce(float chargeDuration)
+    public void AddForceToBall(float chargeDuration, bool isThrowing)
     {
         playerAnimator.Play("ThrowingAnimation");
 
         float chargeFactor = Mathf.Min(chargeDuration / variables.chargeTime, 1f);
-        float throwForce = Mathf.Lerp(variables.minThrowForce, variables.maxThrowForce, chargeFactor);
+        float throwForce = Mathf.Lerp(
+            isThrowing ? variables.minThrowForce : variables.minPullForce, 
+            isThrowing ? variables.maxThrowForce : variables.maxPullForce, 
+            chargeFactor
+        );
 
-        ballBehaviour.SetAirDrag();
+        Vector2 forceDirection; 
 
-        ballrb2d.AddForce(throwForce * this.transform.right, ForceMode2D.Impulse);
-        ballrb2d.AddForce(throwForce * variables.upWordsScaleThrow * this.transform.up, ForceMode2D.Impulse);
-
-        StartCoroutine(ResetChargeState());
-    }
-
-    /// <summary>
-    /// Add force to the bal in towards the player. Makes the force stronger the higher chargeDuration is
-    /// </summary>
-    /// <param name="chargeDuration"></param>
-    private void PullBallWithForce(float chargeDuration)
-    {
-        playerAnimator.Play("ThrowingAnimation");
-
-        Vector2 directionToPlayer = (this.transform.position - ballrb2d.transform.position).normalized;
-
-        float chargeFactor = Mathf.Min(chargeDuration / variables.chargeTime, 1f);
-        float pullForce = Mathf.Lerp(variables.minThrowForce, variables.maxThrowForce, chargeFactor);
-
-        ballBehaviour.SetAirDrag();
-
-        ballrb2d.AddForce(pullForce * directionToPlayer, ForceMode2D.Impulse);
-        ballrb2d.AddForce(pullForce * variables.upWordsScalePull * this.transform.up, ForceMode2D.Impulse);
-
-        if (ballBehaviour.IsTransformAboveBall(this.transform.position.y, ballValues.playerAboveBallDifference))
+        if(isThrowing)
         {
-            ballBehaviour.SetExcludeLayers(ballValues.ballExcludeLayers);
+            forceDirection = playerTransform.right;
+        }
+        else
+        {
+            if (checkForBall.RayCastCheck(Vector2.down))
+            {
+                forceDirection = Vector2.up;
+            }
+            else
+            {
+                forceDirection = (playerTransform.position.x > ballTransform.position.x) ? Vector2.right : Vector2.left;
+            }
+
+            if (ballBehaviour.IsTransformAboveBall(this.transform.position.y, ballValues.playerAboveBallDifference))
+            {
+                ballBehaviour.SetExcludeLayers(ballValues.ballExcludeLayers);
+            }
         }
 
-        StartCoroutine(ResetChargeState());
+        ballBehaviour.SetAirDrag();
+
+        ballrb2d.AddForce(throwForce * forceDirection, ForceMode2D.Impulse);
+        ballrb2d.AddForce(throwForce * (isThrowing ? variables.upWordsScaleThrow : variables.upWordsScalePull) * playerTransform.up, ForceMode2D.Impulse);
     }
 
-    public IEnumerator ResetChargeState()
+    public void ResetChargeState()
     {
         chargeStartTime = 0f;
         spriteRenderer.color = spriteRenderer.material.color;
-
-        yield return new WaitForSeconds(0.25f);
-
         stateMachine.SwitchState(idleState);
     }
 
