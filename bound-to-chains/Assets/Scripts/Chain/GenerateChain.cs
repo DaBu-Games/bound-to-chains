@@ -27,7 +27,7 @@ public class GenerateChain : MonoBehaviour
     private Vector2 endPoint;
     private Vector2 gravity;
 
-    private bool isShortening; 
+    private bool isShortening;
 
     private void Start()
     {
@@ -43,6 +43,12 @@ public class GenerateChain : MonoBehaviour
             Debug.Log("No Line renderer found!");
             return;
         }
+    }
+
+    public void UnChainPlayer()
+    {
+        distanceJoined2D.enabled = false;
+        lineRenderer.enabled = false;
     }
 
     public bool IsChainMaxLength(float margin)

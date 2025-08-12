@@ -42,7 +42,8 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 12
+  serializedVersion: 13
+  m_BakeOnSceneLoad: 0
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -4005,7 +4006,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 3.771163, y: -0.3589344}
+  m_Offset: {x: 4.328745, y: -0.3589344}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -4015,7 +4016,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 8.761381, y: 0.80059433}
+  m_Size: {x: 7.6462173, y: 0.80059433}
   m_EdgeRadius: 0
 --- !u!50 &1350474120
 Rigidbody2D:
@@ -8320,6 +8321,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 795052625791971666, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 795052625791971666, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
       propertyPath: m_Anchor.x
       value: 0.025
       objectReference: {fileID: 0}
@@ -8353,11 +8358,11 @@ PrefabInstance:
       objectReference: {fileID: 1953952573}
     - target: {fileID: 9209175119351591768, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -71.33
+      value: -71.59
       objectReference: {fileID: 0}
     - target: {fileID: 9209175119351591768, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -10.75
+      value: -10.83
       objectReference: {fileID: 0}
     - target: {fileID: 9209175119351591768, guid: f8436ac049f340644bbe7a8c756f60ad, type: 3}
       propertyPath: m_LocalPosition.z
@@ -16280,11 +16285,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1554542375044241030, guid: 775d5461660047c4babd0b8f9385e330, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -66.98
+      value: -67.24
       objectReference: {fileID: 0}
     - target: {fileID: 1554542375044241030, guid: 775d5461660047c4babd0b8f9385e330, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -11.059999
+      value: -11.140001
       objectReference: {fileID: 0}
     - target: {fileID: 1554542375044241030, guid: 775d5461660047c4babd0b8f9385e330, type: 3}
       propertyPath: m_LocalPosition.z

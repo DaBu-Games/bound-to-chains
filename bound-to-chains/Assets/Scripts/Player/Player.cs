@@ -260,6 +260,11 @@ public class Player : MonoBehaviour
         return boxCollider2D.excludeLayers == originalExcludeLayers;
     }
 
+    public void UnChainePlayer()
+    {
+        generateChain.UnChainPlayer();
+    }
+
     #endregion
 
     // All functions that influence the player it zelf
