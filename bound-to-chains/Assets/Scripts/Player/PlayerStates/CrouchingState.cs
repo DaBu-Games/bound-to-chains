@@ -12,7 +12,7 @@ public class CrouchingState : BaseState<Player>
 
     public override void OnFixedUpdate()
     {
-        stateMachine.FlipCharachter();
+        stateMachine.FlipCharachterOnInput();
     }
 
     public override void OnEnterState()

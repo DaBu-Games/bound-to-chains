@@ -1,23 +1,22 @@
 using UnityEngine;
+using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+
+
 
 public class StateMachine
 {
     public IState currentState { get; private set; }
-    private Dictionary<System.Type, IState> allStates = new Dictionary<System.Type, IState>();
+    private Dictionary<Type, IState> allStates = new Dictionary<Type, IState>();
     private List<Transition> transitions = new List<Transition>();
     private List<Transition> currentTransitions = new List<Transition>();
 
     public void OnUpdate()
     {
-
-        foreach ( var transition in currentTransitions ) 
+        foreach (var transition in currentTransitions) 
         {
            if( transition.CheckCondition())
-           {
-                SwitchState( transition.toState );
-           }
+               SwitchState( transition.toState );
         }
         
         currentState?.OnUpdate();
@@ -33,7 +32,7 @@ public class StateMachine
         allStates.TryAdd(state.GetType(), state);
     }
 
-    public void RemoveState(System.Type type) 
+    public void RemoveState(Type type) 
     {
         if ( allStates.ContainsKey(type) )
             allStates.Remove(type);

@@ -5,7 +5,7 @@ using System.Collections;
 public class AlOrNothing : MonoBehaviour
 {
     [SerializeField] private Collider2D invisibleWall; 
-    [SerializeField] private GameObject objectToSpawn; // The prefab to spawn
+    [SerializeField] private GameObject objectToSpawn; // The bold cutters
     [SerializeField] private Transform spawnPoint;    // Where the object will spawn
     [SerializeField] private float throwForce = 10f;  // Force to throw the object
     [SerializeField] private AudioSource lastJump1;

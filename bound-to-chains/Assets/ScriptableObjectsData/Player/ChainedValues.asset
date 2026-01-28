@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f9befcdbf5efe9947964bc40b22ff52c, type: 3}
-  m_Name: UnchainedValues
+  m_Name: ChainedValues
   m_EditorClassIdentifier: 
   ScaleXtimes: 0.6
   ScaleYtimes: 0.1
   whatIsGround:
     serializedVersion: 2
     m_Bits: 584
-  defaultGravity: 6
-  fallingGravity: 6
-  jumpCutGravity: 12
-  maxVelocity: 10
+  defaultGravity: 4
+  fallingGravity: 4
+  jumpCutGravity: 10
+  maxVelocity: 8
   moveSpeedAccelGround: 5
   moveSpeedDeccelGround: 6
   moveSpeedAccelCrouching: 8
@@ -28,25 +28,29 @@ MonoBehaviour:
   moveSpeedAccelAir: 5
   moveSpeedDeccelAir: 6
   maxMoveSpeed: 8
-  jumpForce: 18
+  jumpForce: 15
   doubleJumpForce: 15
-  maxJumpForce: 18
+  maxJumpForce: 15
   leaveGroundBufferTime: 0.1
   jumpInputBufferTime: 0.2
+  crouchingMass: 5
+  crouchingDamping: 2
   upWordsScaleThrow: 1.5
-  maxThrowForce: 90
+  maxThrowForce: 80
   minThrowForce: 20
-  upWordsScalePull: 1.1
-  maxPullForce: 65
-  minPullForce: 10
+  upWordsScalePull: 1.5
+  maxPullForce: 80
+  minPullForce: 20
   targetColor: {r: 0.7056604, g: 0.046600115, b: 0.046600115, a: 1}
   maxChargeTime: 5
   chargeTime: 1.5
   climbExcludeLayers:
     serializedVersion: 2
     m_Bits: 576
-  maxMovingClimb: 4
-  movingAccelerationRate: 4
-  movingDecelerationRate: 4
-  climbSpeed: 9
-  climbEndJump: 25
+  climbSpeed: 2
+  moveSpeedAccelClimbing: 1
+  moveSpeedDeccelClimbing: 5
+  climbEndJump: 18
+  climbingMargin: 0
+  hangingMargin: 0.1
+  minVeclocityForRotate: 5

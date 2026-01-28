@@ -31,6 +31,10 @@ public class PlayerValues : ScriptableObject
     [SerializeField] public float leaveGroundBufferTime;
     [SerializeField] public float jumpInputBufferTime;
 
+    [Header("Crouching")]
+    [SerializeField] public float crouchingMass;
+    [SerializeField] public float crouchingDamping;
+
     [Header("Throwing")]
     [SerializeField] public float upWordsScaleThrow;
     [SerializeField] public float maxThrowForce;
@@ -48,10 +52,13 @@ public class PlayerValues : ScriptableObject
 
     [Header("Climbing")]
     [SerializeField] public LayerMask climbExcludeLayers;
-    [SerializeField] public float maxMovingClimb;
-    [SerializeField] public float movingAccelerationRate;
-    [SerializeField] public float movingDecelerationRate;
     [SerializeField] public float climbSpeed;
+    [SerializeField] public float moveSpeedAccelClimbing;
+    [SerializeField] public float moveSpeedDeccelClimbing;
     [SerializeField] public float climbEndJump;
+    [SerializeField] public float climbingMargin;
 
+    [Header("Hanging")]
+    [SerializeField] public float hangingMargin;
+    [SerializeField] public float minVeclocityForRotate;
 }

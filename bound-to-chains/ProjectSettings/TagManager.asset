@@ -48,11 +48,11 @@ TagManager:
   - name: player
     uniqueID: 730597497
     locked: 0
-  - name: cosmetic
-    uniqueID: 3281274479
-    locked: 0
   - name: chain
     uniqueID: 1138713437
+    locked: 0
+  - name: ball
+    uniqueID: 3642651321
     locked: 0
   m_RenderingLayers:
   - Default
