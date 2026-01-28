@@ -1,60 +1,59 @@
 using UnityEngine;
-using UnityEngine.Playables;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 
-public class StateMachine : MonoBehaviour
+public class StateMachine
 {
+    public IState currentState { get; private set; }
+    private Dictionary<System.Type, IState> allStates = new Dictionary<System.Type, IState>();
+    private List<Transition> transitions = new List<Transition>();
+    private List<Transition> currentTransitions = new List<Transition>();
 
-    private State currentState;
-    [SerializeField] private PlayerInput playerInput;
-    [SerializeField] private Animator playerAnimator;
-    [SerializeField] private Transform states; 
-
-    void Start()
+    public void OnUpdate()
     {
 
-        // Get all the states of the parent transform states
-        foreach ( Transform stateTransform in states ) 
+        foreach ( var transition in currentTransitions ) 
         {
-            State state = stateTransform.GetComponent<State>(); 
-
-            // Call the Initialize function and pas in the stateMachine and the playerinput
-            state.Initialize( this, playerInput, playerAnimator );
-
-            // make the start state the IdleState
-            if( state is IdleState)
-            {
-                currentState = state;
-            }
-            
+           if( transition.CheckCondition())
+           {
+                SwitchState( transition.toState );
+           }
         }
         
-        // Call the EnterState function of the IdleState
-        currentState.EnterState();
+        currentState?.OnUpdate();
     }
 
-    void Update()
+    public void OnFixedUpdate()
     {
-        // if current state is not empty call the UpdateState function
-        currentState?.UpdateState();
+        currentState?.OnFixedUpdate();
     }
 
-    void FixedUpdate()
+    public void AddState(IState state)
     {
-        // if currentState is not empty call the FixedUpdateState function
-        currentState?.FixedUpdateState();
+        allStates.TryAdd(state.GetType(), state);
     }
 
-    // When the state gets switched call the ExitState function on the old state
-    // and call the EnterState function on the newState
-    public void SwitchState( State newState )
+    public void RemoveState(System.Type type) 
     {
-        currentState.ExitState();
-        currentState = newState;
-        currentState.EnterState();
+        if ( allStates.ContainsKey(type) )
+            allStates.Remove(type);
     }
 
-    public State GetCurrentState()
+    public void SwitchState(IState state)
     {
-        return currentState;
+        currentState?.OnExitState();
+        currentState = state;
+        if (currentState == null)
+            return;
+
+        currentTransitions = transitions.FindAll(x => x.fromState == currentState || x.fromState == null);
+        currentState.OnEnterState();
+
+        Debug.Log(currentState.ToString());
+    }
+
+    public void AddTransition(Transition transition)
+    {
+        transitions.Add(transition);
     }
 }

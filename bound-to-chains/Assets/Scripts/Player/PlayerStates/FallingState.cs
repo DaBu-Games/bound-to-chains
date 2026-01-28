@@ -1,40 +1,31 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class FallingState : RisingState
+public class FallingState : BaseState<Player>
 {
-    public override void EnterState()
+    public FallingState(Player stateMachine) : base(stateMachine) { }
+
+    public override void OnUpdate() { }
+
+    public override void OnFixedUpdate()
     {
-        playerInput.rb2d.gravityScale = playerInput.variables.fallingGravity;
-        playerAnimator.Play("FallingAnimation");
+        stateMachine.WhileJumping();
+        stateMachine.MovingAir();
+        stateMachine.FlipCharachter();
     }
 
-    public override void ExitState()
+    public override void OnEnterState()
     {
-        playerInput.rb2d.gravityScale = playerInput.variables.defaultGravity;
+        stateMachine.SetPlayerGravity(stateMachine.variables.fallingGravity);
+        stateMachine.playerAnimator.Play("FallingAnimation");
     }
 
-    // Return nothing because jumping will always be false in this state
-    protected override void WhileJumping()
+    public override void OnExitState()
     {
-
+        stateMachine.SetPlayerGravity(stateMachine.variables.defaultGravity);
+        if (!stateMachine.HasNoExcludeLayers() && !stateMachine.checkForChains.isColliding)
+        {
+            stateMachine.ResetExludeLayers();
+        }
     }
-
-    // Return nothing because you are already in the falling state
-    protected override void HandleAirborneSpecific()
-    {
-        
-    }
-
-    protected override void LimitVelocity()
-    {
-
-        playerInput.rb2d.linearVelocityY = Mathf.Clamp( playerInput.rb2d.linearVelocity.y, -playerInput.variables.maxVelocity, float.MaxValue );
-    }
-
-    // Check if the player has no upward velocity and the player is not grounded
-    public bool CanPlayerFall()
-    {
-        return playerInput.rb2d.linearVelocity.y < 0 && !playerGroundCheck.isGrounded;
-    }
-
 }

@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6f3ebe848ed3b244b531d9658434849, type: 3}
-  m_Name: ChainedVariables
+  m_Script: {fileID: 11500000, guid: f9befcdbf5efe9947964bc40b22ff52c, type: 3}
+  m_Name: ChainedValues
   m_EditorClassIdentifier: 
   ScaleXtimes: 0.6
   ScaleYtimes: 0.1
@@ -33,3 +33,20 @@ MonoBehaviour:
   maxJumpForce: 22
   leaveGroundBufferTime: 0.1
   jumpInputBufferTime: 0.2
+  upWordsScaleThrow: 1.5
+  maxThrowForce: 90
+  minThrowForce: 20
+  upWordsScalePull: 1.1
+  maxPullForce: 65
+  minPullForce: 10
+  targetColor: {r: 0.7056604, g: 0.046600115, b: 0.046600115, a: 1}
+  maxChargeTime: 5
+  chargeTime: 1.5
+  climbExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 576
+  maxMovingClimb: 4
+  movingAccelerationRate: 4
+  movingDecelerationRate: 4
+  climbSpeed: 9
+  climbEndJump: 25

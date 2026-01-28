@@ -3,13 +3,7 @@ using UnityEngine.InputSystem;
 
 public class BallBehaviour : MonoBehaviour
 {
-
-    [SerializeField] private CheckForGround playerGroundCheck;
-    [SerializeField] private LayerMask groundLayerMask;
-    [SerializeField] private float groundDrag;
-    [SerializeField] private float airDrag;
-    [SerializeField] private float raycastRange;
-    [SerializeField] private float maxVelocity; 
+    [SerializeField] private BallValues ballValues;
 
     private Rigidbody2D rb2d;
     private CircleCollider2D circleCollider2D;
@@ -35,7 +29,7 @@ public class BallBehaviour : MonoBehaviour
     }
     private void LimitVelocity()
     {
-        rb2d.linearVelocityY = Mathf.Clamp( rb2d.linearVelocity.y, -maxVelocity, float.MaxValue);
+        rb2d.linearVelocityY = Mathf.Clamp( rb2d.linearVelocity.y, -ballValues.maxVelocity, float.MaxValue);
     }
 
 
@@ -44,20 +38,20 @@ public class BallBehaviour : MonoBehaviour
 
         bool oldGroundState = isGrounded;
 
-        isGrounded = Physics2D.Raycast( transform.position, Vector2.down, raycastRange, groundLayerMask ) && circleCollider2D.excludeLayers == originalExcludeLayers;
+        isGrounded = Physics2D.Raycast( transform.position, Vector2.down, ballValues.raycastRange, ballValues.groundLayerMask) && circleCollider2D.excludeLayers == originalExcludeLayers;
 
         if ( oldGroundState != isGrounded )
         {
             SetAngularDrag();
         }
 
-        Debug.DrawRay( transform.position, Vector2.down * raycastRange, isGrounded ? Color.green : Color.red );
+        Debug.DrawRay( transform.position, Vector2.down * ballValues.raycastRange, isGrounded ? Color.green : Color.red );
 
     }
 
     private void SetAngularDrag()
     {
-        rb2d.linearDamping = isGrounded ? groundDrag : airDrag;
+        rb2d.linearDamping = isGrounded ? ballValues.groundDrag : ballValues.airDrag;
     }
 
     private void CheckExcludeLayers()
@@ -66,7 +60,7 @@ public class BallBehaviour : MonoBehaviour
         if ( rb2d.linearVelocity.y <= 0 && originalExcludeLayers != circleCollider2D.excludeLayers )
         {
             // Check if the ball is still inside a tilemap or platform
-            bool isStillInsideTilemap = Physics2D.OverlapCircle(transform.position, raycastRange, LayerMask.GetMask("Platform") );
+            bool isStillInsideTilemap = Physics2D.OverlapCircle(transform.position, ballValues.raycastRange, LayerMask.GetMask("Platform") );
 
             if (!isStillInsideTilemap)
             {
@@ -78,12 +72,11 @@ public class BallBehaviour : MonoBehaviour
 
     public void SetAirDrag()
     {
-        rb2d.linearDamping = airDrag; 
+        rb2d.linearDamping = ballValues.airDrag; 
     }
 
     public void SetExcludeLayers( LayerMask excludeLayers )
     {
-        Debug.Log("test"); 
         circleCollider2D.excludeLayers = excludeLayers;
     }
     public float GetForceOnBall()
